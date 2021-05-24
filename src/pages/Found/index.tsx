@@ -12,9 +12,9 @@ const Found: FC = () => {
     <div className="app-found">
       <Banner/>
       <Divider style={{borderTopColor: "transparent"}}/>
-      <RecommendedPlaylist />
-      <Divider style={{borderTopColor: "transparent"}}/>
       <NewMusic />
+      <Divider style={{borderTopColor: "transparent"}}/>
+      <RecommendedPlaylist />
       <Divider style={{borderTopColor: "transparent"}}/>
     </div>
   )

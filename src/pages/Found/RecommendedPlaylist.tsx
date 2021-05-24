@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 10:49:18
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-24 14:02:41
+ * @Last Modified time: 2021-05-24 17:14:37
  */
 
 import { FC, useEffect, useState } from 'react';
@@ -25,7 +25,7 @@ const RecommendedPlaylist: FC = () => {
 
   useEffect(() => {
     // limt 最大30
-    ajax<RecommendedPlaylistResponse>('/personalized?limit=7', 'GET')
+    ajax<RecommendedPlaylistResponse>('/personalized', 'GET')
       .then((response) => {
         setRecommendedPlaylist(response.result);
       })

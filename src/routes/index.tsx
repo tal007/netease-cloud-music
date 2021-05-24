@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Found from '../pages/Found/index';
 import FM from '../pages/FM/index';
 import Sidebar from '../components/Sidebar/index';
+import Player from '../components/Player';
 import { useTimeoutWithUnmount } from '../hooks/useTimeoutWithUnmount';
 
 const RenderPage: FC = () => {
@@ -23,8 +24,11 @@ const RenderPage: FC = () => {
 const Layout: FC = () => {
   return (
     <div className="app">
-      <Sidebar />
-      <RenderPage />
+      <div className="app-content">
+        <Sidebar />
+        <RenderPage />
+      </div>
+      <Player />
     </div>
   );
 };

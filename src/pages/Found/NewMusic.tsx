@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 14:28:41
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-24 15:23:40
+ * @Last Modified time: 2021-05-24 17:51:51
  * 新歌速递
  */
 
@@ -16,7 +16,7 @@ import NewMusicItem from '../../components/MusicItem/NewMusicItem';
 
 type NewMusicItemList = NewMusicItem[];
 interface NewMusicItemListResponse {
-  data: NewMusicItem[];
+  result: NewMusicItem[];
 }
 
 const NewMusic: FC = () => {
@@ -25,9 +25,9 @@ const NewMusic: FC = () => {
 
   useEffect(() => {
     // limt 最大30
-    ajax<NewMusicItemListResponse>('/top/song?type=0', 'GET')
+    ajax<NewMusicItemListResponse>('/personalized/newsong?limit=10', 'GET')
       .then((response) => {
-        setNewMusicList(response.data.slice(0, 10));
+        setNewMusicList(response.result);
       })
       .catch((err) => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps

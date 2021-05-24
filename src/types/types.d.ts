@@ -102,8 +102,8 @@ interface NewMusicItem {
   name: string
   id: number
   mvid: number
-  album: {
-    picUrl: string
+  picUrl: string
+  song: {
     alias: string[]
     artists: [{
       name: string

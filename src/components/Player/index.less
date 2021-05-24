@@ -1,0 +1,57 @@
+@height: 60px;
+
+.music-player-no-music {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: @height;
+}
+
+.music-player {
+  height: @height;
+  box-sizing: border-box;
+
+  .play-progress {
+    width: 100%;
+    height: 4px;
+    // background-color: var(--color-light);
+    background-color: #ccc;
+
+    .current {
+      position: relative;
+      height: 100%;
+      background-color: var(--red);
+      transition: width linear 0.3;
+    }
+
+    @width: 16px;
+    .dot {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: @width;
+      height: @width;
+      
+      border-radius: 50%;
+      background-color: var(--red);
+      transform: translateY(-50%) translateX(@width;);
+      cursor: pointer;
+    }
+  }
+
+  .info {
+    height: calc(@height - 4px);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+
+    .muisc {
+      display: flex;
+      flex-direction: row;
+
+      .ant-avatar {
+        margin-right: 10px;
+      }
+    }
+  }
+}
