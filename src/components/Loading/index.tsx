@@ -1,3 +1,4 @@
+import './index.less'
 import { FC } from 'react';
 import { Spin } from 'antd';
 

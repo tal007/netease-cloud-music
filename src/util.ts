@@ -5,3 +5,7 @@ export function checkIsEmpty(value: string | number): boolean {
   
   return !value.trim().length;
 }
+
+export function fillNumber(value: number) {
+  return value < 10 ? '0' + value : value;
+}

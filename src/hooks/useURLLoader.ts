@@ -9,7 +9,8 @@ function useURLLoader() {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState<boolean | {}>(false);
   
-  function ajax<T> (url: string, method: Method, data: any) {
+  function ajax<T> (url: string, method: Method, data?: any) {
+    setLoading(true);
     return request({
       method,
       url,

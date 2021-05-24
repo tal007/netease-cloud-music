@@ -73,3 +73,41 @@ interface LoginData {
   profile: LoginProfile
   token: string
 }
+
+// banner
+interface Banner {
+  imageUrl: "http://p1.music.126.net/p-X_FB0qUI0RVwn3CpQeTg==/109951166003834354.jpg"
+  targetId: 1844442105
+  targetType: 1
+  titleColor: "red"
+  typeTitle: "独家"
+}
+
+// 推荐歌单
+interface RecommendedPlaylistItem {
+  id: 563059165,
+  type: 0,
+  name: "考公务员 加油吧",
+  copywriter: "根据你喜欢的单曲《我相信》推荐",
+  picUrl: "https://p1.music.126.net/nWZlBIEROvPWj2A_M14I6g==/109951163765538944.jpg",
+  canDislike: true,
+  trackNumberUpdateTime: 1618799475286,
+  playCount: 20725,
+  trackCount: 46,
+}
+
+// 新歌速递
+// 1844442105
+interface NewMusicItem {
+  name: string
+  id: number
+  mvid: number
+  album: {
+    picUrl: string
+    alias: string[]
+    artists: [{
+      name: string
+      id: number
+    }]
+  }
+}

@@ -1,37 +1,21 @@
 import './index.less'
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
+import { Divider } from 'antd'
 
-import useUrlLoader from '../../hooks/useURLLoader';
-
-import Loading from '../../components/Loading'
 import Banner from './Banner'
+import RecommendedPlaylist from './RecommendedPlaylist'
+import NewMusic from './NewMusic'
 
 const Found: FC = () => {
-  const {
-    ajax,
-    loading,
-    setLoading
-  } = useUrlLoader();
-
-  useEffect(() => {
-    setLoading(true);
-    ajax('/homepage/block/page', "GET", {})
-    .then(response => {
-      console.log(response);
-    })
-    .catch(err => console.log(err))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  console.log(loading);
-
-  if (loading) {
-    return <Loading/>
-  }
   
   return (
     <div className="app-found">
       <Banner/>
+      <Divider style={{borderTopColor: "transparent"}}/>
+      <RecommendedPlaylist />
+      <Divider style={{borderTopColor: "transparent"}}/>
+      <NewMusic />
+      <Divider style={{borderTopColor: "transparent"}}/>
     </div>
   )
 }

@@ -1,31 +1,33 @@
-import './index.less'
+import './index.less';
 import { FC } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Found from '../pages/Found/index';
 import FM from '../pages/FM/index';
-import Sidebar from '../components/Sidebar/index'
+import Sidebar from '../components/Sidebar/index';
 import { useTimeoutWithUnmount } from '../hooks/useTimeoutWithUnmount';
 
 const RenderPage: FC = () => {
   return (
     <div className="app-render-page">
-      <Switch>
-        <Route path='/' exact component={Found}/>
-        <Route path='/fm' component={FM}/>
-      </Switch>
+      <div className="app-content">
+        <Switch>
+          <Route path="/" exact component={Found} />
+          <Route path="/fm" component={FM} />
+        </Switch>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 const Layout: FC = () => {
   return (
     <div className="app">
       <Sidebar />
-      <RenderPage/>
+      <RenderPage />
     </div>
-  )
-}
+  );
+};
 
 const App: FC = () => {
   useTimeoutWithUnmount(

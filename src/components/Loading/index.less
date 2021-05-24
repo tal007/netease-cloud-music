@@ -1,11 +1,12 @@
 .loading {
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: 100%;
 
-  display: flex;
-
   &-spin {
-    margin: auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
   }
 }
