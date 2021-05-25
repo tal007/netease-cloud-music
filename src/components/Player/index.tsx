@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-25 15:41:59
+ * @Last Modified time: 2021-05-25 16:36:34
  * 音乐播放组件
  */
 
@@ -14,7 +14,7 @@ import { Avatar, Image, Spin } from 'antd';
 import MyIcon from '../../Icons';
 
 import useUrlLoader from '../../hooks/useURLLoader';
-import { MUISCID } from '../../constant';
+import { MUISCID, MUISCLIST } from '../../constant';
 import { formatTime } from '../../util';
 
 import MusicName from '../../components/MusicName';
@@ -46,30 +46,36 @@ const Player: FC = () => {
   const [music, setMusic] = useState<Music | null>(null);
   const [percent, setPercent] = useState<number>(0);
   // 音乐列表
-  const [hiddenList, setHiddenList] = useState<boolean>(false)
+  const [hiddenList, setHiddenList] = useState<boolean>(true);
   const { ajax, loading } = useUrlLoader();
 
+  
+  function setProgress(animation: any) {
+    if (audioNode.current) {
+      const percent =
+        audioNode.current.currentTime / audioNode.current.duration;
+      if (percent >= 1) {
+        cancelAnimationFrame(animation);
+      } else {
+        requestAnimationFrame(setProgress)
+      }
+      setPercent(percent * 100);
+    }
+  }
+  
   useEffect(() => {
     const pubsub = Pubsub.subscribe(
       MUISCID,
       (msg: string, data: number | string) => {
-        let timer: any;
+        let animation: any;
         ajax<MusicResponse>(`/song/detail?ids=${data}`, 'GET')
           .then((response) => {
             const playUrl = `https://music.163.com/song/media/outer/url?id=${data}.mp3`;
             setMusic(Object.assign(response.songs[0], { playUrl }));
             setPercent(0);
-            clearInterval(timer);
+            cancelAnimationFrame(animation);
 
-            timer = setInterval(() => {
-              if (audioNode.current) {
-                const percent = audioNode.current.currentTime / audioNode.current.duration;
-                if (percent >= 1) {
-                  clearInterval(timer);
-                }
-                setPercent(percent * 100);
-              }
-            }, 1000);
+            animation = requestAnimationFrame(setProgress);
           })
           .catch((err) => {});
       }
@@ -83,21 +89,22 @@ const Player: FC = () => {
 
   const playOrPauseMusic = () => {
     if (audioNode.current) {
-      audioNode.current.paused ? audioNode.current.play() : audioNode.current.pause();
+      audioNode.current.paused
+        ? audioNode.current.play()
+        : audioNode.current.pause();
     }
   };
 
   const showMusicList = () => {
     setHiddenList(!hiddenList);
-  }
-  
+  };
 
   if (!music)
     return <div className="music-player-no-music">请选择要播放的音乐</div>;
 
   return (
     <div className="music-player">
-      <audio ref={audioNode} src={music.playUrl} autoPlay></audio>
+      <audio ref={audioNode} src={music.playUrl} autoPlay/>
       {audioNode.current ? (
         <div className="controler">
           <Progress current={percent} />
@@ -135,7 +142,11 @@ const Player: FC = () => {
             </div>
             <div className="list">
               <MyIcon type="icon-yinliang" className="vioce" />
-              <MyIcon type="icon-bofangliebiao" className="musiclist" onClick={showMusicList} />
+              <MyIcon
+                type="icon-bofangliebiao"
+                className="musiclist"
+                onClick={showMusicList}
+              />
               <MyIcon type="icon-shunxubofang" className="playtype" />
             </div>
           </div>
@@ -145,7 +156,7 @@ const Player: FC = () => {
           <Spin />
         </div>
       )}
-      <MusicList hidden={hiddenList}/>
+      <MusicList hidden={hiddenList} />
     </div>
   );
 };

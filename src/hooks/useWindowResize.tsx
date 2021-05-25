@@ -16,8 +16,6 @@ function useWindowResize() {
       window.removeEventListener('resize', setData)
     }
   }, []);
-
-  console.log(windowInnerHeight, windowInnerWidth);
   
   return {
     windowInnerWidth,

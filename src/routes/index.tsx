@@ -4,6 +4,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Found from '../pages/Found/index';
 import FM from '../pages/FM/index';
+import NewMusic from '../pages/NewMusic'
+
 import Sidebar from '../components/Sidebar/index';
 import Player from '../components/Player';
 import { useTimeoutWithUnmount } from '../hooks/useTimeoutWithUnmount';
@@ -15,6 +17,7 @@ const RenderPage: FC = () => {
         <Switch>
           <Route path="/" exact component={Found} />
           <Route path="/fm" component={FM} />
+          <Route path="/new-music" component={NewMusic} />
         </Switch>
       </div>
     </div>
@@ -36,10 +39,10 @@ const Layout: FC = () => {
 const App: FC = () => {
   useTimeoutWithUnmount(
     () => {
-      console.log('定时器开始');
+      console.log('页面加载');
     },
     () => {
-      console.log('定时器结束');
+      console.log('页面卸载');
     },
     1000
   );
