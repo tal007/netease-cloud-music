@@ -2,15 +2,16 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 14:28:41
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-24 17:51:51
+ * @Last Modified time: 2021-05-25 10:40:31
  * 新歌速递
  */
 
 import { FC, useState, useEffect } from 'react';
-import { Row } from 'antd'
+import { Row, Skeleton } from 'antd'
 
 import { fillNumber } from '../../util';
 import EntryTitle from '../../components/EntryTitle/index';
+import Loading from '../../components/Loading/index'
 import useUrlLoader from '../../hooks/useURLLoader';
 import NewMusicItem from '../../components/MusicItem/NewMusicItem';
 
@@ -32,6 +33,12 @@ const NewMusic: FC = () => {
       .catch((err) => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (loading) return (
+    <Loading showIcon={false}>
+      <Skeleton avatar paragraph={{ rows: 2 }} />
+    </Loading>
+  )
 
   return (
     <div className="app-found-new-music">

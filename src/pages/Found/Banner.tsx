@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Carousel, Image } from 'antd';
+import { Carousel, Image, Skeleton } from 'antd';
 
 import useUrlLoader from '../../hooks/useURLLoader';
 import Loading from '../../components/Loading';
@@ -22,7 +22,9 @@ const Banner: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) return <Loading />;
+  if (loading) return (
+      <Loading><Skeleton.Image/></Loading>
+  );
 
   return (
     <div className="app-found-banner">

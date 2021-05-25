@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:03:25
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-24 16:15:58
+ * @Last Modified time: 2021-05-25 10:47:02
  * 音乐信息
  */
 
@@ -22,7 +22,7 @@ const NewMusicItem: FC<{ music: NewMusicItem; num: number | string }> = ({
   }
   
   return (
-    <Col span={12} className="new-music-item" onClick={() => handleClick(music.id)}>
+    <Col lg={12} xs={24} sm={24} className="new-music-item" onClick={() => handleClick(music.id)}>
       <Avatar
         shape="square"
         size={64}

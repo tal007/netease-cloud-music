@@ -1,4 +1,4 @@
-import './index.less'
+import './index.less';
 import { FC } from 'react';
 import { Spin } from 'antd';
 
@@ -10,4 +10,16 @@ const Loading: FC = () => {
   );
 };
 
-export default Loading;
+export const LoadingContainer: FC<{
+  children?: React.ReactElement;
+  showIcon?: boolean;
+}> = ({ children, showIcon = true }) => {
+  return (
+    <div className="loading-container">
+      {children}
+      {showIcon && <Loading />}
+    </div>
+  );
+};
+
+export default LoadingContainer;
