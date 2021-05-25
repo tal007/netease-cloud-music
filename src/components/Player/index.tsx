@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-25 14:23:26
+ * @Last Modified time: 2021-05-25 15:41:59
  * 音乐播放组件
  */
 
@@ -17,7 +17,9 @@ import useUrlLoader from '../../hooks/useURLLoader';
 import { MUISCID } from '../../constant';
 import { formatTime } from '../../util';
 
+import MusicName from '../../components/MusicName';
 import Progress from './Progress';
+import MusicList from './MusicList';
 
 interface Music {
   name: string;
@@ -40,26 +42,28 @@ interface MusicResponse {
 }
 
 const Player: FC = () => {
-  const ref = useRef<HTMLAudioElement | null>(null);
+  const audioNode = useRef<HTMLAudioElement | null>(null);
   const [music, setMusic] = useState<Music | null>(null);
-  const [percent, setPercent] = useState(0);
+  const [percent, setPercent] = useState<number>(0);
+  // 音乐列表
+  const [hiddenList, setHiddenList] = useState<boolean>(false)
   const { ajax, loading } = useUrlLoader();
 
   useEffect(() => {
     const pubsub = Pubsub.subscribe(
       MUISCID,
       (msg: string, data: number | string) => {
-        let timer:any;
+        let timer: any;
         ajax<MusicResponse>(`/song/detail?ids=${data}`, 'GET')
           .then((response) => {
             const playUrl = `https://music.163.com/song/media/outer/url?id=${data}.mp3`;
             setMusic(Object.assign(response.songs[0], { playUrl }));
             setPercent(0);
-            clearInterval(timer)
+            clearInterval(timer);
 
             timer = setInterval(() => {
-              if (ref.current) {
-                const percent = ref.current.currentTime / ref.current.duration;
+              if (audioNode.current) {
+                const percent = audioNode.current.currentTime / audioNode.current.duration;
                 if (percent >= 1) {
                   clearInterval(timer);
                 }
@@ -78,18 +82,23 @@ const Player: FC = () => {
   }, []);
 
   const playOrPauseMusic = () => {
-    if (ref.current) {
-      ref.current.paused ? ref.current.play() : ref.current.pause();
+    if (audioNode.current) {
+      audioNode.current.paused ? audioNode.current.play() : audioNode.current.pause();
     }
   };
+
+  const showMusicList = () => {
+    setHiddenList(!hiddenList);
+  }
+  
 
   if (!music)
     return <div className="music-player-no-music">请选择要播放的音乐</div>;
 
   return (
     <div className="music-player">
-      <audio ref={ref} src={music.playUrl} autoPlay></audio>
-      {ref.current ? (
+      <audio ref={audioNode} src={music.playUrl} autoPlay></audio>
+      {audioNode.current ? (
         <div className="controler">
           <Progress current={percent} />
           <div className="info">
@@ -100,25 +109,16 @@ const Player: FC = () => {
                 icon={<Image src={music.al.picUrl} />}
               />
               <div>
+                <MusicName name={music.name} alia={music.alia} />
                 <div>
-                  {music.name}{' '}
-                  {music.alia[0] &&
-                    (music.alia[0].length < 10
-                      ? `(${music.alia[0]})`
-                      : `(${music.alia[0].slice(
-                          0,
-                          12 - music.name.length
-                        )}...`)}
-                </div>
-                <div>
-                  {formatTime(ref.current.currentTime)} /{' '}
-                  {formatTime(ref.current.duration)}
+                  {formatTime(audioNode.current.currentTime)} /{' '}
+                  {formatTime(audioNode.current.duration)}
                 </div>
               </div>
             </div>
             <div className="control">
               <MyIcon type="icon-shangyiqu1" className="prev" />
-              {ref.current.paused ? (
+              {audioNode.current.paused ? (
                 <MyIcon
                   type="icon-bofang"
                   className="pause"
@@ -134,9 +134,9 @@ const Player: FC = () => {
               <MyIcon type="icon-xiayiqu" className="next" />
             </div>
             <div className="list">
-              <MyIcon type="icon-yinliang" className="vioce"/>
-              <MyIcon type="icon-bofangliebiao" className="musiclist"/>
-              <MyIcon type="icon-shunxubofang" className="playtype"/>
+              <MyIcon type="icon-yinliang" className="vioce" />
+              <MyIcon type="icon-bofangliebiao" className="musiclist" onClick={showMusicList} />
+              <MyIcon type="icon-shunxubofang" className="playtype" />
             </div>
           </div>
         </div>
@@ -145,6 +145,7 @@ const Player: FC = () => {
           <Spin />
         </div>
       )}
+      <MusicList hidden={hiddenList}/>
     </div>
   );
 };

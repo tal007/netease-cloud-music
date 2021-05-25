@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:03:25
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-25 11:35:16
+ * @Last Modified time: 2021-05-25 15:19:42
  * 音乐信息
  */
 
@@ -11,14 +11,18 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, Image, Col } from 'antd';
 import Pubsub from 'pubsub-js';
-import { MUISCID } from '../../constant';
+import { MUISCID, MUISCLIST } from '../../constant';
 
-const NewMusicItem: FC<{ music: NewMusicItem; num: number | string }> = ({
-  music,
-  num,
-}) => {
+import MusicName from '../../components/MusicName';
+
+const NewMusicItem: FC<{
+  music: MusicItem;
+  num: number | string;
+  musicList: MusicItem[];
+}> = ({ music, num, musicList }) => {
   const handleClick = (id: number) => {
     Pubsub.publish(MUISCID, id);
+    Pubsub.publish(MUISCLIST, musicList);
   };
 
   return (
@@ -36,14 +40,7 @@ const NewMusicItem: FC<{ music: NewMusicItem; num: number | string }> = ({
       />
       <span className="num">{num}</span>
       <div className="desc">
-        <div>
-          {music.name}{' '}
-          <span className="alias">
-            {music.song.alias[0] && (music.song.alias[0].length < 10
-              ? `(${music.song.alias[0]})`
-              : `(${music.song.alias[0].slice(0, 12 - music.name.length)}...`)}
-          </span>
-        </div>
+        <MusicName name={music.name} alia={music.song.alias} />
         <div>
           <Link to="">{music.song.artists[0].name}</Link>
         </div>

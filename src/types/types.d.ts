@@ -98,7 +98,7 @@ interface RecommendedPlaylistItem {
 
 // 新歌速递
 // 1844442105
-interface NewMusicItem {
+interface MusicItem {
   name: string
   id: number
   mvid: number
@@ -111,3 +111,5 @@ interface NewMusicItem {
     }]
   }
 }
+
+type MusicList = MusicItem[];

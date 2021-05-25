@@ -8,6 +8,7 @@
 }
 
 .music-player {
+  position: relative;
   height: @height;
   box-sizing: border-box;
   min-width: 800px;
@@ -85,6 +86,41 @@
       .musiclist {
         margin: 0 20px;
       }
+    }
+  }
+
+  .muisc-list-container {
+    position: absolute;
+    right: 0;
+    bottom: @height;
+
+    width: 300px;
+    background-color: var(--color-light);
+    overflow: hidden;
+    transition: width .3s ease;
+
+    &.hidden {
+      width: 0;
+    }
+
+    .muisc-list {
+      overflow-y: scroll;
+    }
+
+    .music-list-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .index {
+      color: var(--gray-text-color);
+    }
+
+    .img {
+      margin: 0 10px;
     }
   }
 }
