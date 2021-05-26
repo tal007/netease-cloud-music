@@ -111,9 +111,7 @@ interface MusicItem {
     picUrl: string
     name: string
   },
-  lMusic: {
-    playTime: number
-  }
+  duration: number
 }
 
 type MusicList = MusicItem[];

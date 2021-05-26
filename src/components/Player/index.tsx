@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-26 16:30:47
+ * @Last Modified time: 2021-05-26 18:25:06
  * 音乐播放组件
  */
 
@@ -14,6 +14,7 @@ import { Avatar, Image, Spin, Space, message } from 'antd';
 import MyIcon from '../../Icons';
 
 import useUrlLoader from '../../hooks/useURLLoader';
+import useAnimationFrame from '../../hooks/useAnimationFrame';
 import { MUSICID, MUISCLIST } from '../../constant';
 import { formatTime } from '../../util';
 
@@ -43,12 +44,6 @@ interface MusicResponse {
   songs: Music[];
 }
 
-interface UrlResponse {
-  data: {
-    url: string | null;
-  }
-}
-
 type playType = 'NEXT' | 'PREV' | 'RANDOM' | 'CYCLE';
 
 const Player: FC = () => {
@@ -57,60 +52,37 @@ const Player: FC = () => {
   const [music, setMusic] = useState<Music | null>(null);
   const [musicList, setMusicList] = useState<MusicList>([]);
   const [percent, setPercent] = useState<number>(0);
+  const [runing, setRunning] = useState<boolean>(false);
   // 音乐列表
   const [hiddenList, setHiddenList] = useState<boolean>(true);
   const { ajax, loading } = useUrlLoader();
 
-  function setProgress(animation: any) {
+  const setProgress = () => {
     if (audioNode.current) {
       const percent =
         audioNode.current.currentTime / audioNode.current.duration;
       if (percent >= 1) {
-        cancelAnimationFrame(animation);
         PubSub.publish(MUSICID, findMusic('NEXT').id);
-      } else {
-        requestAnimationFrame(setProgress);
       }
       setPercent(percent * 100);
     }
-  }
+  };
+
+  useAnimationFrame(setProgress, runing);
 
   useEffect(() => {
     const pubsubNusicID = Pubsub.subscribe(
       MUSICID,
       (msg: string, data: number | string) => {
-        let animation: any;
+        setRunning(false);
         ajax<MusicResponse>(`/song/detail?ids=${data}`, 'GET')
           .then((response) => {
-            // // // ajax<UrlResponse>(`/song/url?id=${data}`, 'GET')
-            // // // .then(urlData => {
-            // //   let playUrl = urlData.data.url;
-            // //   if (!playUrl) playUrl = `https://music.163.com/song/media/outer/url?id=${data}.mp3`;
+            let playUrl = `https://music.163.com/song/media/outer/url?id=${data}.mp3`;
 
-            // //   setCurrentMusicID(data);
-            // //   setMusic(Object.assign(response.songs[0], { playUrl }));
-            // //   setPercent(0);
-            // //   cancelAnimationFrame(animation);
-
-            // //   animation = requestAnimationFrame(setProgress);
-            // // })
-            // .catch(() => {
-              let playUrl = `https://music.163.com/song/media/outer/url?id=${data}.mp3`;
-
-              setCurrentMusicID(data);
-              setMusic(Object.assign(response.songs[0], { playUrl }));
-              setPercent(0);
-              cancelAnimationFrame(animation);
-
-              animation = requestAnimationFrame(setProgress);
-            // })
-            // if (response.songs[0].copyright) {
-            //   // 没有版权
-            //   // setMusic(Object.assign(response.songs[0], { playUrl }));
-            //   setCurrentMusicID(data);
-            //   setTimeout(() => platNextMusic, 300)
-            //   Promise.reject('没有版权，播放下一首');
-            // }
+            setCurrentMusicID(data);
+            setRunning(true);
+            setMusic(Object.assign(response.songs[0], { playUrl }));
+            setPercent(0);
           })
           .catch((err) => {
             console.log(err.message);
@@ -139,9 +111,13 @@ const Player: FC = () => {
 
   const playOrPauseMusic = () => {
     if (audioNode.current) {
-      audioNode.current.paused
-        ? audioNode.current.play()
-        : audioNode.current.pause();
+      if (audioNode.current.paused) {
+        audioNode.current.play();
+        setRunning(true);
+      } else {
+        audioNode.current.pause();
+        setRunning(false);
+      }
     }
   };
 
@@ -153,7 +129,6 @@ const Player: FC = () => {
     const i = musicList.findIndex((music) => {
       return music.id === currentMusicID;
     });
-    console.log(i, currentMusicID);
 
     switch (type) {
       case 'NEXT':
@@ -179,7 +154,7 @@ const Player: FC = () => {
   return (
     <div className="music-player">
       <audio ref={audioNode} src={music.playUrl} autoPlay />
-      {audioNode.current ? (
+      {!loading && audioNode.current ? (
         <div className="controler">
           <Progress current={percent} />
           <div className="info">
