@@ -23,11 +23,11 @@ request.interceptors.response.use(response => {
   const { status, config: { url }, data, data: { code } } = response;
   if (status === 200) {
     if (code !== 200) {
-      message.success(`${url}--数据请求成功，但是内部状态为 ${code} `)
-      message.warning(data?.message || '登陆失败');
+      // message.success(`${url}--数据请求成功，但是内部状态为 ${code} `)
+      // message.warning(data?.message || '登陆失败');
       return Promise.reject<AxiosResponse>(response);
     }
-    message.success(`${url}--数据请求成功`)
+    // message.success(`${url}--数据请求成功`)
     return Promise.resolve<AxiosResponse>(response);
   }
   return Promise.reject<AxiosResponse>(response);

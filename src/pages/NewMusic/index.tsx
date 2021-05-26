@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 16:36:59
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-26 14:48:58
+ * @Last Modified time: 2021-05-26 15:57:21
  * 新歌速递页面
  */
 
@@ -27,7 +27,6 @@ const NewMusic: FC = () => {
   useEffect(() => {
     ajax<MusicListResponse>(`/top/song?type=${type}`, 'GET')
       .then((response) => {
-        console.log(response.data);
         setMusicList(response.data);
       })
       .catch((error) => {});
