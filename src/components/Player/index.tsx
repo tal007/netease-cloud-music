@@ -9,12 +9,12 @@
 import './index.less';
 import { FC, useEffect, useState, useRef } from 'react';
 import Pubsub from 'pubsub-js';
-import { Avatar, Image, Spin } from 'antd';
+import { Avatar, Image, Spin, Space } from 'antd';
 
 import MyIcon from '../../Icons';
 
 import useUrlLoader from '../../hooks/useURLLoader';
-import { MUISCID, MUISCLIST } from '../../constant';
+import { MUSICID, MUISCLIST } from '../../constant';
 import { formatTime } from '../../util';
 
 import MusicName from '../../components/MusicName';
@@ -65,7 +65,7 @@ const Player: FC = () => {
   
   useEffect(() => {
     const pubsub = Pubsub.subscribe(
-      MUISCID,
+      MUSICID,
       (msg: string, data: number | string) => {
         let animation: any;
         ajax<MusicResponse>(`/song/detail?ids=${data}`, 'GET')
@@ -109,7 +109,7 @@ const Player: FC = () => {
         <div className="controler">
           <Progress current={percent} />
           <div className="info">
-            <div className="muisc">
+            <Space size={10} className="muisc">
               <Avatar
                 shape="square"
                 size={40}
@@ -122,8 +122,8 @@ const Player: FC = () => {
                   {formatTime(audioNode.current.duration)}
                 </div>
               </div>
-            </div>
-            <div className="control">
+            </Space>
+            <Space size={10} className="control">
               <MyIcon type="icon-shangyiqu1" className="prev" />
               {audioNode.current.paused ? (
                 <MyIcon
@@ -139,8 +139,8 @@ const Player: FC = () => {
                 />
               )}
               <MyIcon type="icon-xiayiqu" className="next" />
-            </div>
-            <div className="list">
+            </Space>
+            <Space className="list">
               <MyIcon type="icon-yinliang" className="vioce" />
               <MyIcon
                 type="icon-bofangliebiao"
@@ -148,7 +148,7 @@ const Player: FC = () => {
                 onClick={showMusicList}
               />
               <MyIcon type="icon-shunxubofang" className="playtype" />
-            </div>
+            </Space>
           </div>
         </div>
       ) : (

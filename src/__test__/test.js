@@ -1,13 +1,5 @@
-describe("pow", function() {
+import { strlength } from '../util'
 
-  // ...
-
-  it("for negative n the result is NaN", function() {
-    expect(10);
-  });
-
-  it("for non-integer n the result is NaN", function() {
-    expect(10);
-  });
-
+test('two plus two is four', () => {
+  expect(strlength('不怕痛的人 (大制作家1简单与伟大)')).toBe(17);
 });

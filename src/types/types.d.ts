@@ -102,13 +102,17 @@ interface MusicItem {
   name: string
   id: number
   mvid: number
-  picUrl: string
-  song: {
-    alias: string[]
-    artists: [{
-      name: string
-      id: number
-    }]
+  alias: string[]
+  artists: [{
+    name: string
+    id: number
+  }]
+  album: {
+    picUrl: string
+    name: string
+  },
+  lMusic: {
+    playTime: number
   }
 }
 

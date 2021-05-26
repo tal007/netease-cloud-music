@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 14:28:41
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-25 16:40:59
+ * @Last Modified time: 2021-05-26 14:57:10
  * 新歌速递
  */
 
@@ -10,7 +10,7 @@ import { FC, useState, useEffect } from 'react';
 import { Row, Skeleton } from 'antd'
 import Pubsub from 'pubsub-js'
 
-import { MUISCID, MUISCLIST } from '../../constant'
+import { MUSICID, MUISCLIST } from '../../constant'
 import { fillNumber } from '../../util';
 import EntryTitle from '../../components/EntryTitle/index';
 import Loading from '../../components/Loading/index'
@@ -19,7 +19,7 @@ import NewMusicItem from '../../components/MusicItem/NewMusicItem';
 
 
 interface MusicItemListResponse {
-  result: MusicItem[];
+  data: MusicItem[];
 }
 
 const NewMusic: FC = () => {
@@ -28,11 +28,12 @@ const NewMusic: FC = () => {
 
   useEffect(() => {
     // limt 最大30
-    ajax<MusicItemListResponse>('/personalized/newsong?limit=10', 'GET')
+    // ajax<MusicItemListResponse>('/personalized/newsong?limit=10', 'GET')
+    ajax<MusicItemListResponse>('/top/song?type=0', 'GET')
       .then((response) => {
-        setNewMusicList(response.result);
-        Pubsub.publish(MUISCID, response.result[0].id)
-        setTimeout(() => Pubsub.publish(MUISCLIST, response.result), 1000)
+        const res = response.data.slice(0, 10)
+        setNewMusicList(res);
+        // Pubsub.publish(MUSICID, res[0].id)
       })
       .catch((err) => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps

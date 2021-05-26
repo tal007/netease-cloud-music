@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 14:34:24
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-25 16:22:47
+ * @Last Modified time: 2021-05-26 14:53:13
  * 播放列表
  */
 
@@ -10,13 +10,13 @@ import { FC, useEffect, useState } from 'react';
 import Pubsub from 'pubsub-js';
 import { Avatar, Image } from 'antd';
 
-import { MUISCLIST, MUISCID } from '../../constant';
+import { MUISCLIST, MUSICID } from '../../constant';
 import { fillNumber } from '../../util';
 import useWindowResize from '../../hooks/useWindowResize';
 import MusicName from '../../components/MusicName';
 
 const MusicItem: FC<{ music: MusicItem; i: number }> = ({ music, i }) => {
-  const play = () => Pubsub.publish(MUISCID, music.id)
+  const play = () => Pubsub.publish(MUSICID, music.id)
   
   return (
     <li className="music-list-item" onDoubleClick={play}>
@@ -24,9 +24,9 @@ const MusicItem: FC<{ music: MusicItem; i: number }> = ({ music, i }) => {
       <Avatar
         className="img"
         shape="square"
-        icon={<Image preview={false} src={music.picUrl} />}
+        icon={<Image preview={false} src={music.album.picUrl} />}
       />
-      <MusicName name={music.name} alia={music.song.alias} />
+      <MusicName name={music.name} alia={music.alias} />
     </li>
   );
 };
