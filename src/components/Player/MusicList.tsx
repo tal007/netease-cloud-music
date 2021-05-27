@@ -2,15 +2,15 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 14:34:24
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-26 15:08:33
+ * @Last Modified time: 2021-05-27 14:19:36
  * 播放列表
  */
 
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Pubsub from 'pubsub-js';
 import { Avatar, Image } from 'antd';
 
-import { MUISCLIST, MUSICID } from '../../constant';
+import {  MUSICID } from '../../constant';
 import { fillNumber } from '../../util';
 import useWindowResize from '../../hooks/useWindowResize';
 import MusicName from '../../components/MusicName';

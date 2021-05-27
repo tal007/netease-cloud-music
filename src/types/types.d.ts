@@ -115,3 +115,10 @@ interface MusicItem {
 }
 
 type MusicList = MusicItem[];
+
+// 歌词
+interface Lyric {
+  time: string
+  duration: number
+  text: string
+}

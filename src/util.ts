@@ -50,3 +50,44 @@ export function mySubString(str: string, len: number, hasDot: boolean = true) {
   }
   return newStr;
 }
+
+
+/**
+ * 歌词处理
+ *
+ * @export
+ * @param {string} str
+ */
+export function dealWithLyric(str: string): Lyric[] {
+  const lyricArr = str.split('\n');
+  lyricArr.pop();
+  return lyricArr.map((item) => {
+    const time = item.slice(0, 11);
+    const min: any = time.slice(1, 3);
+    const sec: any = time.slice(4, 10);
+    const duration = min * 60 + sec * 1;
+    return {
+      time,
+      duration,
+      text: item.slice(11, item.length)
+    }
+  })
+}
+
+// 节流
+export function throttle() {}
+
+// 防抖
+export function debounce(method: Function, delay: number) {
+  let timer: null | number = null;
+  return function () {
+    // let context = this, args = arguments;
+    if (timer) {
+      window.clearTimeout(timer);
+      timer = null;
+    }
+    timer = window.setTimeout(function () {
+      method();
+    }, delay);
+  }
+}

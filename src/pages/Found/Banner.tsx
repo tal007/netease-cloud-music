@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Carousel, Image, Skeleton } from 'antd';
+import { Carousel, Image } from 'antd';
 
 import useUrlLoader from '../../hooks/useURLLoader';
 import Loading from '../../components/Loading';
@@ -23,7 +23,7 @@ const Banner: FC = () => {
   }, []);
 
   if (loading) return (
-      <Loading><Skeleton.Image/></Loading>
+      <Loading></Loading>
   );
 
   return (

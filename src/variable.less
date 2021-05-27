@@ -1,9 +1,11 @@
+@primary-linear-gradient: rgba(@primary-color, 30%);
+
 :root {
   --color-deep: #1f2731;
   --color-middle: #242f3c;
   --color-light: #2c3b4b;
-  --red: #ec717d;
-  --red-linear-gradient: rgba(236, 113, 125, .3);
+  --red: @primary-color;
+  --red-linear-gradient: @primary-linear-gradient;
   --text-color: #fff;
 
   --gray-text-color: rgb(134, 134, 134);

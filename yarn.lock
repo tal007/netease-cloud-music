@@ -3838,6 +3838,14 @@ craco-less@1.17.0:
     less "^3.11.1"
     less-loader "^6.1.0"
 
+craco-less@^1.17.1:
+  version "1.17.1"
+  resolved "https://registry.npm.taobao.org/craco-less/download/craco-less-1.17.1.tgz#aa23cf10d09f0f99657bed977788cc9b501add70"
+  integrity sha1-qiPPENCfD5lle+2Xd4jMm1Aa3XA=
+  dependencies:
+    less "^3.11.1"
+    less-loader "^6.1.0"
+
 create-ecdh@^4.0.0:
   version "4.0.4"
   resolved "https://registry.npm.taobao.org/create-ecdh/download/create-ecdh-4.0.4.tgz?cache=0&sync_timestamp=1596557810113&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcreate-ecdh%2Fdownload%2Fcreate-ecdh-4.0.4.tgz#d6e7f4bffa66736085a0762fd3a632684dabcc4e"

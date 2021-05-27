@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-26 18:25:06
+ * @Last Modified time: 2021-05-27 15:46:49
  * 音乐播放组件
  */
 
@@ -21,6 +21,7 @@ import { formatTime } from '../../util';
 import MusicName from '../../components/MusicName';
 import Progress from './Progress';
 import MusicList from './MusicList';
+import MusicLyric from './MusicLyric';
 
 interface Music {
   name: string;
@@ -52,9 +53,11 @@ const Player: FC = () => {
   const [music, setMusic] = useState<Music | null>(null);
   const [musicList, setMusicList] = useState<MusicList>([]);
   const [percent, setPercent] = useState<number>(0);
+  const [currentTime, setCurrentTime] = useState<number>(0);
   const [runing, setRunning] = useState<boolean>(false);
   // 音乐列表
   const [hiddenList, setHiddenList] = useState<boolean>(true);
+  const [hiddenLyric, setHiddenLyric] = useState<boolean>(true);
   const { ajax, loading } = useUrlLoader();
 
   const setProgress = () => {
@@ -65,6 +68,7 @@ const Player: FC = () => {
         PubSub.publish(MUSICID, findMusic('NEXT').id);
       }
       setPercent(percent * 100);
+      setCurrentTime(audioNode.current.currentTime);
     }
   };
 
@@ -83,6 +87,7 @@ const Player: FC = () => {
             setRunning(true);
             setMusic(Object.assign(response.songs[0], { playUrl }));
             setPercent(0);
+            setCurrentTime(0);
           })
           .catch((err) => {
             console.log(err.message);
@@ -148,6 +153,10 @@ const Player: FC = () => {
     PubSub.publish(MUSICID, findMusic('PREV').id);
   };
 
+  const showLyric = () => {
+    setHiddenLyric(!hiddenLyric);
+  };
+
   if (!music)
     return <div className="music-player-no-music">请选择要播放的音乐</div>;
 
@@ -162,7 +171,13 @@ const Player: FC = () => {
               <Avatar
                 shape="square"
                 size={40}
-                icon={<Image src={music.al.picUrl} />}
+                icon={
+                  <Image
+                    preview={false}
+                    src={music.al.picUrl}
+                    onClick={showLyric}
+                  />
+                }
               />
               <div>
                 <MusicName name={music.name} alia={music.alia} />
@@ -214,6 +229,13 @@ const Player: FC = () => {
         </div>
       )}
       <MusicList hidden={hiddenList} musicList={musicList} />
+      <MusicLyric
+        hidden={hiddenLyric}
+        id={currentMusicID}
+        currentTime={currentTime}
+        percent={percent}
+        runing={runing}
+      />
     </div>
   );
 };

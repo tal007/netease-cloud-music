@@ -26,7 +26,6 @@ function useAnimationFrame(callback: Function, runing: boolean) {
         animationID.current = animationFrame(run);
       }
     }
-    console.log(runing);
 
     if (runing) {
       animationID.current = animationFrame(run);
