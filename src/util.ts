@@ -80,14 +80,13 @@ export function throttle() {}
 // 防抖
 export function debounce(method: Function, delay: number) {
   let timer: null | number = null;
-  return function () {
-    // let context = this, args = arguments;
+  return (...args: any) => {
     if (timer) {
       window.clearTimeout(timer);
       timer = null;
     }
     timer = window.setTimeout(function () {
-      method();
+      method(...args);
     }, delay);
   }
 }

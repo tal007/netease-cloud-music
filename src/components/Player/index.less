@@ -140,7 +140,7 @@
     width: 100%;
     height: 100%;
     background-color: var(--color-light);
-    overflow-y: scroll;
+    overflow: hidden;
     transition: height .3s ease;
 
     color: var(--text-color);
@@ -151,9 +151,10 @@
     }
     
     .lyric-container {
-      position: relative;
-      top: 0;
-      transition: top .3s linear;
+      transform: translateY(0);
+      width: 100%;
+      
+      transition: all .3s linear;
       
       div:last-of-type {
         color: var(--red);
@@ -169,6 +170,24 @@
       font-size: 20px;
       height: 40px;
       margin: 0;
+      transition: all .3s linear;
+    }
+  }
+
+  .scroll-bar {
+    position: absolute;
+    right: 2px;
+    top: 0;
+    width: 8px;
+    height: 100%;
+
+    .progress {
+      width: 100%;
+      height: 50px;
+      cursor: pointer;
+      border-radius: 8px;
+      background-color: var(--text-color);
+      opacity: .2;
       transition: all .3s linear;
     }
   }

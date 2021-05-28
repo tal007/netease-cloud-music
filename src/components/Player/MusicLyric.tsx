@@ -2,18 +2,24 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-27 17:43:04
+ * @Last Modified time: 2021-05-28 11:40:39
  * 歌词
  */
 
-import { FC, useEffect, useState, useRef } from 'react';
+import {
+  FC,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  WheelEvent,
+} from 'react';
 import useUrlLoader from '../../hooks/useURLLoader';
 import useWindowResize from '../../hooks/useWindowResize';
 import useAnimationFrame from '../../hooks/useAnimationFrame';
 
 import { dealWithLyric, debounce } from '../../util';
 import Loading from '../../components/Loading';
-
 interface LyricResponse {
   lrc: {
     lyric: string;
@@ -28,6 +34,7 @@ const MusicLyric: FC<{
   runing: boolean;
 }> = ({ id, hidden, currentTime, percent, runing }) => {
   const container = useRef<HTMLDivElement | null>(null);
+  const lyricProgressNode = useRef<HTMLDivElement | null>(null);
   const { windowInnerHeight } = useWindowResize();
   const [lyric, setLyric] = useState<Lyric[]>([]);
   const [lyricScroll, setLyricScroll] = useState<boolean>(true);
@@ -44,18 +51,41 @@ const MusicLyric: FC<{
   }, [id]);
 
   useAnimationFrame(() => {
-    if (container.current) {
-      const halfWindowInnerHeight = (windowInnerHeight - 60) / 2;
+    if (container.current && lyricProgressNode.current) {
+      const containerHeight = windowInnerHeight - 60;
+      const halfWindowInnerHeight = containerHeight / 2;
       const passNodeList = document.querySelectorAll('.pass').length;
-      container.current.style.top = halfWindowInnerHeight - (passNodeList * 40 + 8) + 'px';
+      const passHeight = halfWindowInnerHeight - (passNodeList * 40 + 8);
+      container.current.style.transform = `translateY(${passHeight}px)`;
+      const scrollBarPassHeight = percent / 100 * (containerHeight - 50)
+      lyricProgressNode.current.style.transform = `translateY(${scrollBarPassHeight}px)`
     }
   }, runing && lyricScroll);
 
-  // TODO 这里这个 e 的类型
-  const scrollFn = () => {
-    console.log(123);
-  }
-  const scroll = debounce(scrollFn, 1000)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const scrollFn = useCallback(
+    debounce(() => {
+      setLyricScroll(true);
+    }, 2000),
+    []
+  );
+
+  const scroll = (e: WheelEvent) => {
+    // setLyricScroll(false);
+
+    // if (container.current && lyricProgressNode.current) {
+    //   const direction = (e.deltaY || e.detail) > 0 ? 'UP' : 'DOWN';
+    //   let currentTranslateY: number | string = container.current.style.transform;
+    //   currentTranslateY = parseFloat(currentTranslateY.split('(')[1]);
+
+    //   if (direction === 'UP') {
+    //     container.current.style.transform = `translateY(${currentTranslateY + 10}px)`;
+    //   } else {
+    //     container.current.style.transform = `translateY(${currentTranslateY - 10}px)`;
+    //   }
+    // }
+    // scrollFn();
+  };
 
   if (loading) return <Loading />;
 
@@ -64,10 +94,13 @@ const MusicLyric: FC<{
       className={
         hidden ? 'music-lyric-container hidden' : 'music-lyric-container'
       }
-      style={{ height: windowInnerHeight - 60 }}
-      onScroll={() => scroll()}
+      style={{ height: hidden ? 0 : windowInnerHeight - 60 }}
     >
-      <div className="lyric-container" ref={container}>
+      <div
+        className="lyric-container"
+        ref={container}
+        onWheel={(e) => scroll(e)}
+      >
         {lyric.map((value) => {
           if (value.duration <= currentTime) {
             return (
@@ -82,6 +115,9 @@ const MusicLyric: FC<{
             </p>
           );
         })}
+      </div>
+      <div className="scroll-bar">
+        <div className="progress" ref={lyricProgressNode}></div>
       </div>
     </div>
   );
