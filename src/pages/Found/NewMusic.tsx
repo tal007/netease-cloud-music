@@ -2,15 +2,13 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 14:28:41
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-26 14:57:10
+ * @Last Modified time: 2021-05-28 13:47:45
  * 新歌速递
  */
 
 import { FC, useState, useEffect } from 'react';
 import { Row, Skeleton } from 'antd'
-import Pubsub from 'pubsub-js'
 
-import { MUSICID, MUISCLIST } from '../../constant'
 import { fillNumber } from '../../util';
 import EntryTitle from '../../components/EntryTitle/index';
 import Loading from '../../components/Loading/index'
@@ -33,7 +31,6 @@ const NewMusic: FC = () => {
       .then((response) => {
         const res = response.data.slice(0, 10)
         setNewMusicList(res);
-        // Pubsub.publish(MUSICID, res[0].id)
       })
       .catch((err) => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps

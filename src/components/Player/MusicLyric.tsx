@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-28 11:40:39
+ * @Last Modified time: 2021-05-28 13:48:42
  * 歌词
  */
 
@@ -48,6 +48,7 @@ const MusicLyric: FC<{
       .catch((error) => {
         console.log(error);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useAnimationFrame(() => {
@@ -71,7 +72,7 @@ const MusicLyric: FC<{
   );
 
   const scroll = (e: WheelEvent) => {
-    // setLyricScroll(false);
+    setLyricScroll(false);
 
     // if (container.current && lyricProgressNode.current) {
     //   const direction = (e.deltaY || e.detail) > 0 ? 'UP' : 'DOWN';
@@ -84,7 +85,7 @@ const MusicLyric: FC<{
     //     container.current.style.transform = `translateY(${currentTranslateY - 10}px)`;
     //   }
     // }
-    // scrollFn();
+    scrollFn();
   };
 
   if (loading) return <Loading />;

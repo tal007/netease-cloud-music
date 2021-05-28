@@ -20,6 +20,7 @@ const request: AxiosInstance = Axios.create({
 });
 
 request.interceptors.response.use(response => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { status, config: { url }, data, data: { code } } = response;
   if (status === 200) {
     if (code !== 200) {
