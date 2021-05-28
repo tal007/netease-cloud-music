@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-27 15:46:49
+ * @Last Modified time: 2021-05-28 11:52:24
  * 音乐播放组件
  */
 
@@ -75,6 +75,14 @@ const Player: FC = () => {
   useAnimationFrame(setProgress, runing);
 
   useEffect(() => {
+    function keydownPauseOrPlay(e: KeyboardEvent) {
+      if (e.code === "Space") {
+        playOrPauseMusic();
+      }
+    }
+    
+    window.addEventListener('keydown', keydownPauseOrPlay)
+    
     const pubsubNusicID = Pubsub.subscribe(
       MUSICID,
       (msg: string, data: number | string) => {
@@ -110,6 +118,8 @@ const Player: FC = () => {
     return () => {
       Pubsub.unsubscribe(pubsubNusicID);
       Pubsub.unsubscribe(pubsubNusicList);
+
+      window.removeEventListener('keydown', keydownPauseOrPlay)
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
