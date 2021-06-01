@@ -44,6 +44,7 @@ const RecommendedPlaylist: FC = () => {
             key={playlistItem.id}
             name={playlistItem.name}
             imageUrl={playlistItem.picUrl}
+            id={playlistItem.id}
           />
         ))}
       </Row>

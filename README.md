@@ -12,3 +12,4 @@ baseURL: https://netease-cloud-music-wheat.vercel.app/
 - `/top/song?type=0` 新歌页面新歌速递 全部:0 华语:7 欧美:96 日本:8 韩国:16
 - `/lyric?id=33894312` 获取歌词
 - `/song/url?id=33894312` 获取播放URL
+- `/playlist/detail?id=6779188586` 获取歌单详情

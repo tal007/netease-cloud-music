@@ -2,9 +2,11 @@ import './index.less';
 import { FC } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+import SearchHeader from '../components/SearchHeader';
 import Found from '../pages/Found/index';
 import FM from '../pages/FM/index';
-import NewMusic from '../pages/NewMusic'
+import NewMusic from '../pages/NewMusic';
+import SongListDetail from '../pages/SongListDetail'
 
 import Sidebar from '../components/Sidebar/index';
 import Player from '../components/Player';
@@ -18,6 +20,7 @@ const RenderPage: FC = () => {
           <Route path="/" exact component={Found} />
           <Route path="/fm" component={FM} />
           <Route path="/new-music" component={NewMusic} />
+          <Route path="/song-list-detail" component={SongListDetail} />
         </Switch>
       </div>
     </div>
