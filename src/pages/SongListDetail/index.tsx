@@ -2,17 +2,22 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 15:57:07
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-01 16:49:34
+ * @Last Modified time: 2021-06-01 18:21:35
  * 歌单详情
  */
 
+import './index.less';
 import { FC, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import queryString from 'query-string';
-import { Image, Avatar, Typography } from 'antd';
+import dayjs from 'dayjs';
+import { Image, Avatar, Typography, Space } from 'antd';
 
 import useUrlLoader from '../../hooks/useURLLoader';
 
 import Loading from '../../components/Loading';
+
+import Item from './Item';
 
 interface SongList {
   name: string;
@@ -28,8 +33,17 @@ interface SongList {
   trackIds: { id: number }[];
 }
 interface SongListResponse {
-  playlist: SongList
+  playlist: SongList;
 }
+
+export interface MusicItem {
+  name: string;
+  al: {name: string, id: number}
+  ar: {name: string, id: number}[]
+  dt: number
+}
+
+type MusicList = MusicItem[]
 
 const SongListDetail: FC = () => {
   const id = queryString.parse(window.location.search).id;
@@ -53,11 +67,13 @@ const SongListDetail: FC = () => {
   useEffect(() => {
     ajax<SongListResponse>(`/playlist/detail?id=${id}`, 'GET')
       .then((playlistResponse) => {
+        console.log(playlistResponse.playlist);
         setSongListDetail(playlistResponse.playlist);
         let trackIds = ids(playlistResponse.playlist.trackIds);
 
         ajax<{ songs: MusicList }>(`/song/detail?ids=${trackIds}`, 'GET')
           .then((songResponse) => {
+            console.log(songResponse);
             setMusicList(songResponse.songs);
           })
           .catch((err) => console.log(err));
@@ -71,25 +87,47 @@ const SongListDetail: FC = () => {
   return (
     <div className="song-list-detail">
       <header className="song-list-detail-info">
-        <Avatar
-          size={200}
-          shape="square"
-          icon={
-            <Image
-              preview={false}
-              width={200}
-              height={200}
-              src={songListDetail.coverImgUrl}
-            />
-          }
+        <Image
+          preview={false}
+          width={200}
+          height={200}
+          src={songListDetail.coverImgUrl}
         />
         <div className="infos">
-          <Typography.Title level={3}>
-            {songListDetail.name}
-          </Typography.Title>
+          <Typography.Title level={3}>{songListDetail.name}</Typography.Title>
+          <Space direction="vertical">
+            <Space size={10}>
+              <Avatar
+                icon={
+                  <Image
+                    preview={false}
+                    src={songListDetail.creator.avatarUrl}
+                  />
+                }
+              />
+              <Link to="">{songListDetail.creator.nickname}</Link>
+              <span>
+                {dayjs(songListDetail.createTime).format('YYYY-MM-DD')}创建
+              </span>
+            </Space>
+            <div>
+              <span>标签：</span>
+              <span>{songListDetail.tags.join('/')}</span>
+            </div>
+            <div>
+              <span>简介：{songListDetail.description}</span>
+            </div>
+          </Space>
         </div>
       </header>
-      <div className="song-list-detail-content"></div>
+      <div className="song-list-detail-content">
+        <Typography.Title level={5}>歌曲列表</Typography.Title>
+        <ul>
+          {musicList.map((music, index) => (
+            <Item music={music} i={index} musicList={musicList} />
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
