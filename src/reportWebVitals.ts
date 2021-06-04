@@ -1,3 +1,5 @@
+// 埋点上报
+
 import { ReportHandler } from 'web-vitals';
 
 const reportWebVitals = (onPerfEntry?: ReportHandler) => {

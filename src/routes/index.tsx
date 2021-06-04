@@ -2,15 +2,15 @@ import './index.less';
 import { FC } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import SearchHeader from '../components/SearchHeader';
-import Found from '../pages/Found/index';
-import FM from '../pages/FM/index';
-import NewMusic from '../pages/NewMusic';
-import SongListDetail from '../pages/SongListDetail'
+import SearchHeader from 'components/SearchHeader';
+import Found from 'pages/Found/index';
+import FM from 'pages/FM/index';
+import NewMusic from 'pages/NewMusic';
+import SongListDetail from 'pages/SongListDetail'
 
-import Sidebar from '../components/Sidebar/index';
-import Player from '../components/Player';
-import { useTimeoutWithUnmount } from '../hooks/useTimeoutWithUnmount';
+import Sidebar from 'components/Sidebar/index';
+import Player from 'components/Player';
+import { useTimeoutWithUnmount } from 'hooks/useTimeoutWithUnmount';
 
 const RenderPage: FC = () => {
   return (
