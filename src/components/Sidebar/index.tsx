@@ -1,16 +1,23 @@
-import './index.less'
-import { FC } from 'react'
+import { FC } from "react";
 
-import User from '../User/index'
-import SideNav from '../SideNav/index'
+import User from "../User/index";
+import SideNav from "../SideNav/index";
+import styled from "@emotion/styled";
 
 const Sidebar: FC = () => {
   return (
-    <aside className="app-sidebar">
+    <Container>
       <User />
       <SideNav />
-    </aside>
-  )
-}
+    </Container>
+  );
+};
 
 export default Sidebar;
+
+const Container = styled.aside`
+  min-width: 20rem;
+  width: 20rem;
+  height: 100%;
+  background: var(--color-middle);
+`;

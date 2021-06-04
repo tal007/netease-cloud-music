@@ -5,8 +5,8 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import Pubsub from "pubsub-js";
 import styled from "@emotion/styled";
 
-import useURLLoader from "../../hooks/useURLLoader";
-import { LOGINDATA, ISLOGIN } from "../../constant";
+import useURLLoader from "hooks/useURLLoader";
+import { LOGINDATA, ISLOGIN } from "constant";
 interface loginRequestData {
   phone?: string;
   email?: string;
