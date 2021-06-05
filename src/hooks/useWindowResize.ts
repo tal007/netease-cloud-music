@@ -1,26 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function useWindowResize() {
   const [windowInnerWidth, setWindowInnerWidth] = useState(window.innerWidth);
-  const [windowInnerHeight, setWindowInnerHeight] = useState(window.innerHeight);
+  const [windowInnerHeight, setWindowInnerHeight] = useState(
+    window.innerHeight
+  );
 
   function setData() {
     setWindowInnerWidth(window.innerWidth);
     setWindowInnerHeight(window.innerHeight);
   }
-  
+
   useEffect(() => {
-    window.addEventListener('resize', setData)
+    window.addEventListener("resize", setData);
 
     return () => {
-      window.removeEventListener('resize', setData)
-    }
+      window.removeEventListener("resize", setData);
+    };
   }, []);
-  
+
   return {
     windowInnerWidth,
-    windowInnerHeight
-  }
+    windowInnerHeight,
+  };
 }
 
-export default useWindowResize
+export default useWindowResize;

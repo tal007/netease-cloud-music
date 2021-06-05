@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 /**
- * 使用自定义 hook 可以解决直接在代码中使用 
+ * 使用自定义 hook 可以解决直接在代码中使用
  * requestAnimationFrame 回调函数无法读取 state 的情况
  *
  * @param {Function} callback 回调函数
