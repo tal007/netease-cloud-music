@@ -1,12 +1,12 @@
-import './index.less';
-import { FC, useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { Avatar, Space, Button } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import Pubsub from 'pubsub-js'
+import { FC, useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import { Avatar, Space, Button } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import Pubsub from "pubsub-js";
 
-import Login from '../Login/index';
-import { LOGINDATA, ISLOGIN } from '../../constant';
+import Login from "../Login/index";
+import { LOGINDATA, ISLOGIN } from "../../constant";
+import styled from "@emotion/styled";
 
 const User: FC = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -17,7 +17,6 @@ const User: FC = () => {
     // 重新打开页面判断是否登陆
     const res = Cookies.get(LOGINDATA);
     if (res) {
-      console.log(res);
       setIsLogin(true);
       setLoginData(JSON.parse(res));
     }
@@ -29,11 +28,11 @@ const User: FC = () => {
         setIsLogin(true);
         setLoginData(JSON.parse(res));
       }
-    })
+    });
 
     return () => {
-      Pubsub.unsubscribe(pubsub)
-    }
+      Pubsub.unsubscribe(pubsub);
+    };
   }, [setIsLogin]);
 
   const loginOut = () => {
@@ -42,8 +41,8 @@ const User: FC = () => {
   };
 
   return (
-    <div className="app-uers">
-      <div className="app-login-status">
+    <Container>
+      <div style={{ textAlign: "center" }}>
         <Space direction="vertical" size="small">
           {isLogin ? (
             <>
@@ -55,7 +54,7 @@ const User: FC = () => {
             </>
           ) : (
             <>
-              <Avatar size="large" icon={<UserOutlined/>} />
+              <Avatar size="large" icon={<UserOutlined />} />
               <span>请登录</span>
               <Button
                 size="small"
@@ -69,8 +68,16 @@ const User: FC = () => {
         </Space>
       </div>
       {showLogin && <Login setShowLogin={setShowLogin} />}
-    </div>
+    </Container>
   );
 };
 
 export default User;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  color: var(--text-color);
+`;

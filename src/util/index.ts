@@ -1,5 +1,5 @@
 export function checkIsEmpty(value: string | number): boolean {
-  if (typeof value === 'number') {
+  if (typeof value === "number") {
     value = value.toString();
   }
 
@@ -7,7 +7,7 @@ export function checkIsEmpty(value: string | number): boolean {
 }
 
 export function fillNumber(value: number) {
-  return value < 10 ? '0' + value : value;
+  return value < 10 ? "0" + value : value;
 }
 
 // 音乐毫秒转换
@@ -28,11 +28,11 @@ export function formatTime(value: string | number) {
  */
 export function mySubString(str: string, len: number, hasDot: boolean = true) {
   var newLength = 0;
-  var newStr = '';
+  var newStr = "";
   // eslint-disable-next-line no-control-regex
   var chineseRegex = /[^\x00-\xff]/g;
-  var singleChar = '';
-  var strLength = str.replace(chineseRegex, '**').length;
+  var singleChar = "";
+  var strLength = str.replace(chineseRegex, "**").length;
   for (var i = 0; i < strLength; i++) {
     singleChar = str.charAt(i).toString();
     if (singleChar.match(chineseRegex) != null) {
@@ -46,11 +46,10 @@ export function mySubString(str: string, len: number, hasDot: boolean = true) {
     newStr += singleChar;
   }
   if (hasDot && strLength > len) {
-    newStr += '...';
+    newStr += "...";
   }
   return newStr;
 }
-
 
 /**
  * 歌词处理
@@ -59,7 +58,7 @@ export function mySubString(str: string, len: number, hasDot: boolean = true) {
  * @param {string} str
  */
 export function dealWithLyric(str: string): Lyric[] {
-  const lyricArr = str.split('\n');
+  const lyricArr = str.split("\n");
   lyricArr.pop();
   return lyricArr.map((item) => {
     const time = item.slice(0, 11);
@@ -69,9 +68,9 @@ export function dealWithLyric(str: string): Lyric[] {
     return {
       time,
       duration,
-      text: item.slice(11, item.length)
-    }
-  })
+      text: item.slice(11, item.length),
+    };
+  });
 }
 
 // 节流
@@ -88,5 +87,5 @@ export function debounce(method: Function, delay: number) {
     timer = window.setTimeout(function () {
       method(...args);
     }, delay);
-  }
+  };
 }
