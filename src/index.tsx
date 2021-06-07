@@ -1,15 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './variable.less';
-import './index.less';
-import App from './routes/index';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./variable.less";
+import "./index.less";
+import App from "./routes/index";
+import reportWebVitals from "./reportWebVitals";
+import { AppProviders } from "./context";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AppProviders>
+      <App />
+    </AppProviders>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
