@@ -16,8 +16,11 @@ const Sidebar: FC = () => {
 export default Sidebar;
 
 const Container = styled.aside`
-  min-width: 20rem;
-  width: 20rem;
+  padding: 4.5rem 2.7rem 0 1.6rem;
+  box-sizing: border-box;
+  width: 30.2rem;
   height: 100%;
-  background: var(--color-middle);
+  background: var(--light-gradient);
+  /* filter: blur(1px); */
+  opacity: 0.91;
 `;

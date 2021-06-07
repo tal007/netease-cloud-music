@@ -1,62 +1,65 @@
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
-
-import MyIcon from "../../Icons";
 import styled from "@emotion/styled";
 
-const LinkItem: FC<{ name: string; to: string; icon: React.ReactElement }> = ({
+import MyIcon from "../../Icons";
+
+const quickAccess = [
+  { name: "首页", icon: "icon-xuanzhongshangcheng", to: "/" },
+  { name: "私人FM", icon: "icon-fm", to: "/fm" },
+];
+
+const LinkItem: FC<{ name: string; to: string; icon: string }> = ({
   name,
   to,
   icon,
 }) => {
   return (
-    <li>
-      <LinkItemS exact to={to}>
-        {icon}
-        <LinkItemText>{name}</LinkItemText>
-      </LinkItemS>
-    </li>
+    <Item exact to={to}>
+      <MyIcon type={icon} />
+      <LinkItemText>{name}</LinkItemText>
+    </Item>
   );
 };
 
 const SideNav: FC = () => {
   return (
-    <Container className="app-side-nav">
-      <ul>
-        <LinkItem
-          to="/"
-          name="发现音乐"
-          icon={<MyIcon type="icon-xuanzhongshangcheng" />}
-        />
-        <LinkItem to="fm" name="私人FM" icon={<MyIcon type="icon-fm" />} />
-      </ul>
+    <Container>
+      <Inner>
+        {quickAccess.map((value) => (
+          <LinkItem key={value.name} {...value} />
+        ))}
+      </Inner>
     </Container>
   );
 };
 
 export default SideNav;
 
-const Container = styled.div`
-  border-top: 4px solid var(--color-deep);
-  border-bottom: 4px solid var(--color-deep);
+const Container = styled.div``;
+
+const Inner = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
-const LinkItemS = styled(NavLink)`
-  display: inline-block;
-  margin: 1em 10px 0;
-  padding: 10px 10px;
-  color: var(--text-color);
+const Item = styled(NavLink)`
+  padding: 4px 0;
   text-transform: uppercase;
   border-left: 4px solid transparent;
+  opacity: 0.5;
+  color: var(--text-color);
+  text-indent: 20px;
+  margin-bottom: 1rem;
 
   &.active {
-    color: var(--red);
-    border-left: 4px solid var(--red);
-    background-image: linear-gradient(
-      to right,
-      var(--red-linear-gradient),
-      var(--color-middle)
-    );
+    opacity: 1;
+    border-left: 4px solid #2763bb;
+    background-color: #000;
+  }
+
+  &:hover {
+    color: var(--text-color);
   }
 `;
 
