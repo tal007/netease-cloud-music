@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input } from "antd";
 import styled from "@emotion/styled";
 import loginBg from "img/login-bg.png";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "context/authContext";
 
 const Login = () => {
-  const { login } = useAuth();
+  const history = useHistory();
+  const { user, login } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values: { account: string; password: string }) => {
     setLoading(true);
-    login(values, async () => setLoading(false));
+    login(values).finally(() => setLoading(false));
   };
+
+  useEffect(() => {
+    if (user) {
+      history.replace("/");
+    }
+  }, [user, history]);
+
+  console.log(user);
 
   return (
     <Container>

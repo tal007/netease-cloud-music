@@ -17,7 +17,7 @@ const Register = () => {
     captcha: string;
   }) => {
     setLoading(true);
-    register(values, async () => setLoading(false));
+    register(values).finally(() => setLoading(false));
   };
 
   const onSearch = () => {};
