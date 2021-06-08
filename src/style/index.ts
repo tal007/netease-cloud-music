@@ -10,10 +10,10 @@ export const FlexBoxCenter = styled.div`
 
 export const MyButton = styled(Button)<{
   width?: number | string;
-  marginLeft?: number | string;
+  ml?: number | string;
 }>`
   background: var(--button-gradient);
-  margin-left: ${(props) => (props.marginLeft ? props.marginLeft : undefined)};
+  margin-left: ${(props) => (props.ml ? props.ml : undefined)};
   width: ${(props) => (props.width ? props.width : undefined)};
   height: 3.5rem;
   color: #212020;

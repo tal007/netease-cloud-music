@@ -21,7 +21,7 @@ const RightSide: FC = () => {
 
   return (
     <Container>
-      <MyButton block marginLeft={"5%"} width={"90%"}>
+      <MyButton block ml={"5%"} width={"90%"}>
         Made For You
       </MyButton>
       <Divider />

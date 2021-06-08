@@ -47,7 +47,7 @@ const Group: FC<{ data: NavItem[]; title: string }> = ({ data, title }) => (
 const LeftSide: FC = () => {
   return (
     <Container>
-      <MyButton block marginLeft={"5%"} width={"90%"}>
+      <MyButton block ml={"5%"} width={"90%"}>
         Made For You
       </MyButton>
       <Group data={quickAccess} title={"快速通道"} />

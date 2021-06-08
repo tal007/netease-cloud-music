@@ -24,13 +24,8 @@ export const getUser = () => window.localStorage.getItem(userData);
 export const getUid = () => window.localStorage.getItem(uid);
 
 export const handleUserResponse = (user: User) => {
-  const data = {
-    nickname: user.profile.nickname,
-    avatarUrl: user.profile.avatarUrl,
-    userId: user.profile.userId,
-  };
   window.localStorage.setItem(localStorageKey, user.token || "");
-  window.localStorage.setItem(userData, JSON.stringify(data) || "");
+  window.localStorage.setItem(userData, JSON.stringify(user) || "");
   window.localStorage.setItem(uid, String(user.profile.userId) || "");
   return user;
 };

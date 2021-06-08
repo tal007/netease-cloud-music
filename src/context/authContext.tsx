@@ -1,7 +1,6 @@
 import React, { useState, ReactNode } from "react";
 import * as auth from "authProvider";
 import { useMount } from "hooks/useMount";
-import { http } from "http/index";
 
 interface AuthLoginForm {
   account: string;
@@ -28,11 +27,10 @@ const AuthContext =
 
 const initialUser = async () => {
   let user = null;
-  let uid = auth.getUid();
-  if (uid) {
-    user = await http("/user/detail", { data: { uid } });
+  let userData = auth.getUser();
+  if (userData) {
+    user = JSON.parse(userData);
   }
-  console.log(user);
   return user;
 };
 
