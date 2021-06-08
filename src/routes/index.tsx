@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 // import SearchHeader from 'components/SearchHeader';
@@ -9,34 +9,34 @@ import SongListDetail from "pages/SongListDetail";
 import Login from "pages/Login";
 import Register from "pages/Register";
 
-import Sidebar from "components/Sidebar/index";
 import styled from "@emotion/styled";
 import Player from "components/Player";
+import LeftSide from "./LeftSide";
+import RightSide from "./RightSide";
 
 const RenderPage: FC = () => {
   return (
-    <div>
-      <div>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/fm" component={FM} />
-          <Route path="/new-music" component={NewMusic} />
-          <Route path="/song-list-detail" component={SongListDetail} />
-        </Switch>
-      </div>
-    </div>
+    <RenderPageContainer>
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/fm" component={FM} />
+        <Route path="/new-music" component={NewMusic} />
+        <Route path="/song-list-detail" component={SongListDetail} />
+      </Switch>
+    </RenderPageContainer>
   );
 };
 
 const Layout: FC = () => {
   return (
-    <>
-      <div>
-        <Sidebar />
+    <Grid>
+      <LeftSide />
+      <Main>
         <RenderPage />
-      </div>
-      <Player />
-    </>
+        <Player />
+      </Main>
+      <RightSide />
+    </Grid>
   );
 };
 
@@ -59,5 +59,31 @@ export default App;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 20rem 1fr 20rem;
+  grid-template-areas:
+    "left main right"
+    "left main right"
+    "left main right";
+  /* grid-gap: 10rem; */
+`;
+
+const Main = styled.main`
+  display: grid;
+  grid-template-rows: 1fr 10rem;
+`;
+
+const RenderPageContainer = styled.div`
+  padding: 0 1rem;
+  height: calc(100vh - 10rem);
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    width: 0;
+  }
 `;
