@@ -84,7 +84,7 @@ const Register = () => {
               type={"primary"}
               block
             >
-              登录
+              注册
             </Button>
           </Form.Item>
           <Form.Item>
