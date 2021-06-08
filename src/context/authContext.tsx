@@ -17,8 +17,8 @@ const AuthContext =
   React.createContext<
     | {
         user: auth.User | null;
-        login: (form: AuthLoginForm) => Promise<void>;
-        register: (form: AuthRegisterForm) => Promise<void>;
+        login: (form: AuthLoginForm, cb: () => {}) => Promise<void>;
+        register: (form: AuthRegisterForm, cb: () => {}) => Promise<void>;
         loginOut: () => Promise<void>;
       }
     | undefined
@@ -28,12 +28,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<auth.User | null>(null);
 
   // 函数式编程中的 point free 概念
-  const login = (form: AuthLoginForm) => auth.login(form).then(setUser);
-  const register = (form: AuthRegisterForm) =>
-    auth.register(form).then(setUser);
+  const login = (form: AuthLoginForm, cb: () => {}) =>
+    auth
+      .login(form)
+      .then(setUser)
+      .finally(() => cb());
+  const register = (form: AuthRegisterForm, cb: () => {}) =>
+    auth
+      .register(form)
+      .then(setUser)
+      .finally(() => cb());
   const loginOut = () => auth.loginOut().then(() => setUser(null));
 
-  return <AuthContext.Provider value={{ user, login, register, loginOut }} />;
+  return (
+    <AuthContext.Provider
+      value={{ user, login, register, loginOut }}
+      children={children}
+    />
+  );
 };
 
 export const useAuth = () => {

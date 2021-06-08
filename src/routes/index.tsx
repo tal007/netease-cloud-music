@@ -1,23 +1,24 @@
-import './index.less';
-import { FC } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { FC } from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import SearchHeader from 'components/SearchHeader';
-import Found from 'pages/Found/index';
-import FM from 'pages/FM/index';
-import NewMusic from 'pages/NewMusic';
-import SongListDetail from 'pages/SongListDetail'
+// import SearchHeader from 'components/SearchHeader';
+import Home from "pages/Found/index";
+import FM from "pages/FM/index";
+import NewMusic from "pages/NewMusic";
+import SongListDetail from "pages/SongListDetail";
+import Login from "pages/Login";
+import Register from "pages/Register";
 
-import Sidebar from 'components/Sidebar/index';
-import Player from 'components/Player';
-import { useTimeoutWithUnmount } from 'hooks/useTimeoutWithUnmount';
+import Sidebar from "components/Sidebar/index";
+import styled from "@emotion/styled";
+import Player from "components/Player";
 
 const RenderPage: FC = () => {
   return (
-    <div className="app-render-page">
-      <div className="app-content">
+    <div>
+      <div>
         <Switch>
-          <Route path="/" exact component={Found} />
+          <Route path="/" exact component={Home} />
           <Route path="/fm" component={FM} />
           <Route path="/new-music" component={NewMusic} />
           <Route path="/song-list-detail" component={SongListDetail} />
@@ -29,32 +30,34 @@ const RenderPage: FC = () => {
 
 const Layout: FC = () => {
   return (
-    <div className="app">
-      <div className="app-content">
+    <>
+      <div>
         <Sidebar />
         <RenderPage />
       </div>
       <Player />
-    </div>
+    </>
   );
 };
 
 const App: FC = () => {
-  useTimeoutWithUnmount(
-    () => {
-      console.log('页面加载');
-    },
-    () => {
-      console.log('页面卸载');
-    },
-    1000
-  );
-
   return (
     <BrowserRouter>
-      <Layout />
+      <Container>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/" component={Layout} />
+        </Switch>
+      </Container>
     </BrowserRouter>
   );
 };
 
 export default App;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
