@@ -6,6 +6,7 @@ export interface User {
     userId: number;
     avatarUrl: string;
   };
+  cookie: string;
   token: string;
 }
 

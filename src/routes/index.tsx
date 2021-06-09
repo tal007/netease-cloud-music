@@ -13,6 +13,7 @@ import styled from "@emotion/styled";
 import Player from "components/Player";
 import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
+import Album from "pages/Album";
 
 const RenderPage: FC = () => {
   return (
@@ -22,6 +23,7 @@ const RenderPage: FC = () => {
         <Route path="/fm" component={FM} />
         <Route path="/new-music" component={NewMusic} />
         <Route path="/song-list-detail" component={SongListDetail} />
+        <Route path="/albums" component={Album} />
       </Switch>
     </RenderPageContainer>
   );

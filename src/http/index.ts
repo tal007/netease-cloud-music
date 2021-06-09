@@ -6,17 +6,17 @@ export const baseUrl = "https://netease-cloud-music-wheat.vercel.app";
 
 interface Config extends RequestInit {
   data?: object;
-  token?: string;
+  cookie?: string;
 }
 
 export const http = async (
   endpoint: string,
-  { data, token, headers, credentials, mode, ...customConfig }: Config
+  { data, cookie, headers, credentials, mode, ...customConfig }: Config = {}
 ) => {
   const config = {
     method: "GET",
     headers: {
-      Authorization: token ? `Bearer ${token}` : "",
+      // Authorization: token ? `Bearer ${token}` : "",
       "Content-Type": data ? "application/json;charset=UTF-8" : "",
     },
     credentials: "include" as RequestCredentials,
@@ -25,10 +25,11 @@ export const http = async (
   };
 
   if (config.method.toUpperCase() === "GET") {
-    endpoint += `?${queryString.stringify(data || {})}`;
+    endpoint += `?cookie=${cookie}&${queryString.stringify(data || {})}`;
   } else {
-    config.body = JSON.stringify(data || {});
+    config.body = JSON.stringify({ ...data, cookie } || {});
   }
+  console.log("config", config);
 
   return window
     .fetch(`${baseUrl}/${endpoint}`, config)
@@ -53,6 +54,6 @@ export const http = async (
 export const useHttp = () => {
   const { user } = useAuth();
 
-  return ([endpoint, config]: Parameters<typeof http>) =>
-    http(endpoint, { ...config, token: user?.token });
+  return (...[endpoint, config]: Parameters<typeof http>) =>
+    http(endpoint, { ...config, cookie: user?.cookie });
 };

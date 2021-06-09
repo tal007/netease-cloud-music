@@ -4,7 +4,6 @@ import { Avatar, Space, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import Pubsub from "pubsub-js";
 
-import Login from "../Login/index";
 import { LOGINDATA, ISLOGIN } from "../../constant";
 import styled from "@emotion/styled";
 
@@ -67,7 +66,6 @@ const User: FC = () => {
           )}
         </Space>
       </div>
-      {showLogin && <Login setShowLogin={setShowLogin} />}
     </Container>
   );
 };

@@ -1,8 +1,10 @@
 import styled from "@emotion/styled";
 import { Button } from "antd";
 
-export const FlexBoxCenter = styled.div`
-  height: 100%;
+export const FlexBoxCenter = styled.div<{
+  height?: string;
+}>`
+  height: ${(props) => (props.height ? props.height : "100%")};
   display: flex;
   justify-content: center;
   align-items: center;

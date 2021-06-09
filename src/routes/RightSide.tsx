@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import React, { FC } from "react";
 
-import { FlexBoxCenter, MyButton } from "style";
-import { Divider } from "antd";
+import { FlexBoxCenter } from "style";
+import { Avatar, Image } from "antd";
 import { useAuth } from "context/authContext";
 import { Link } from "react-router-dom";
 
@@ -19,12 +19,13 @@ const RightSide: FC = () => {
     );
   }
 
+  console.log(user);
   return (
     <Container>
-      <MyButton block ml={"5%"} width={"90%"}>
-        Made For You
-      </MyButton>
-      <Divider />
+      <FlexBoxCenter height={"5rem"}>
+        <Avatar icon={<Image src={user.profile.avatarUrl} />} />
+        <span style={{ marginLeft: "1rem" }}>{user.profile.nickname}</span>
+      </FlexBoxCenter>
     </Container>
   );
 };
