@@ -37,7 +37,7 @@ export const http = async (
       // 未登录或者token失效
       if (response.status === 401) {
         await loginOut();
-        window.location.reload();
+        // window.location.reload();
         return Promise.reject("请重新登录");
       }
       const data = await response.json();

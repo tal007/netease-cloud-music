@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Input } from "antd";
+import React, { useEffect } from "react";
+import { Button, Form, Input, Typography } from "antd";
 import styled from "@emotion/styled";
 import loginBg from "img/login-bg.png";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "context/authContext";
+import { useAsync } from "hooks/useAsync";
 
 const Login = () => {
   const history = useHistory();
   const { user, login } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { run, error, isLoading } = useAsync();
 
   const onFinish = (values: { account: string; password: string }) => {
-    setLoading(true);
-    login(values).finally(() => setLoading(false));
+    run(login(values));
   };
 
   useEffect(() => {
@@ -21,8 +21,6 @@ const Login = () => {
       history.replace("/");
     }
   }, [user, history]);
-
-  console.log(user);
 
   return (
     <Container>
@@ -55,9 +53,16 @@ const Login = () => {
               prefix={<LockOutlined className="site-form-item-icon" />}
             />
           </Form.Item>
+
+          {error && (
+            <Form.Item>
+              <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+            </Form.Item>
+          )}
+
           <Form.Item>
             <Button
-              loading={loading}
+              loading={isLoading}
               htmlType={"submit"}
               size={"large"}
               type={"primary"}

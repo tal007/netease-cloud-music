@@ -58,10 +58,15 @@ const login = (data: { account: string; password: string }) => {
     mode: "cors",
     body: JSON.stringify(passData),
   }).then(async (response: Response) => {
+    const result = await response.json();
     if (response.ok) {
-      return handleUserResponse(await response.json());
+      if (result.code === 200) {
+        return handleUserResponse(result);
+      } else {
+        return Promise.reject({ ...result, message: "用户名或者密码错误" });
+      }
     } else {
-      return Promise.reject(data);
+      return Promise.reject(result);
     }
   });
 };
@@ -92,8 +97,13 @@ const register = (data: {
     mode: "cors",
     body: JSON.stringify(data),
   }).then(async (response: Response) => {
+    const result = await response.json();
     if (response.ok) {
-      return handleUserResponse(await response.json());
+      if (result.code === 200) {
+        return handleUserResponse(result);
+      } else {
+        return Promise.reject({ ...result, message: "用户名或者密码错误" });
+      }
     } else {
       return Promise.reject(data);
     }

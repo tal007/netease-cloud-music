@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Method } from "axios";
 
-import { http } from "../ajax/index";
+import { ajax as http } from "../ajax/index";
 
 function useURLLoader() {
   const [result, setResult] = useState<null | {}>(null);

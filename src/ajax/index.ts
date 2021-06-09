@@ -54,7 +54,7 @@ interface Config extends RequestInit {
   cookie?: string;
 }
 
-export const http = async (
+export const ajax = async (
   endpoint: string,
   { data, cookie, headers, credentials, mode, ...customConfig }: Config = {}
 ) => {
@@ -74,6 +74,6 @@ export const http = async (
 export const useAjax = () => {
   const { user } = useAuth();
 
-  return (...[endpoint, config]: Parameters<typeof http>) =>
-    http(endpoint, { ...config, cookie: user?.cookie });
+  return (...[endpoint, config]: Parameters<typeof ajax>) =>
+    ajax(endpoint, { ...config, cookie: user?.cookie });
 };
