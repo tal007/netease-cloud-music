@@ -1,6 +1,5 @@
 import Axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { message } from "antd";
-import queryString from "query-string";
 import { useAuth } from "context/authContext";
 
 export interface AxiosResponse<T = any> {
@@ -22,7 +21,6 @@ const request: AxiosInstance = Axios.create({
 
 request.interceptors.response.use(
   (response) => {
-    console.log(response);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {
       status,
@@ -37,13 +35,12 @@ request.interceptors.response.use(
         return Promise.reject<AxiosResponse>(response);
       }
       // message.success(`${url}--数据请求成功`)
-      return Promise.resolve<AxiosResponse>(response);
+      return Promise.resolve<AxiosResponse>(response.data);
     }
     return Promise.reject<AxiosResponse>(response);
   },
   (err) => {
-    console.log(err);
-    const { status } = err.response;
+    const { status } = err;
     message.warn(`HTTP状态 ${status}, ${err.response.data.messag}`);
     // switch (status) {
     //   case 404:

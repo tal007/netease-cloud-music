@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-09 10:50:43
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-09 13:32:11
+ * @Last Modified time: 2021-06-09 13:41:01
  * 专辑
  */
 
@@ -14,13 +14,13 @@ import { FC } from "react";
 
 const Album: FC = () => {
   const client = useAjax();
-  const { run } = useAsync();
+  const { run, isLoading, data } = useAsync();
 
   useMount(() => {
-    run(client("/album/newest")).then((result) => {
-      console.log(result);
-    });
+    run(client("/album/newest"));
   });
+
+  console.log(isLoading, data);
 
   return <Container>abbum</Container>;
 };

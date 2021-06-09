@@ -19,7 +19,6 @@ const RightSide: FC = () => {
     );
   }
 
-  console.log(user);
   return (
     <Container>
       <FlexBoxCenter height={"5rem"}>
