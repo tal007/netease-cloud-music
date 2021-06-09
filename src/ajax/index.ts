@@ -21,6 +21,7 @@ const request: AxiosInstance = Axios.create({
 
 request.interceptors.response.use(
   (response) => {
+    console.log(response);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {
       status,
@@ -58,7 +59,7 @@ export const ajax = async (
   endpoint: string,
   { data, cookie, headers, credentials, mode, ...customConfig }: Config = {}
 ) => {
-  return request({
+  const config: AxiosRequestConfig = {
     url: endpoint,
     method: "GET",
     headers: {
@@ -66,9 +67,18 @@ export const ajax = async (
       "Content-Type": data ? "application/json;charset=UTF-8" : "",
     },
     withCredentials: true,
-    data: { ...data, cookie },
+    data,
     ...(customConfig as AxiosRequestConfig),
-  });
+  };
+
+  if (config.method?.toUpperCase() === "GET") {
+    config.url += `?cookie=${cookie}`;
+  }
+  if (config.method?.toUpperCase() === "POST") {
+    config.data.cookie = cookie;
+  }
+
+  return request(config);
 };
 
 export const useAjax = () => {
