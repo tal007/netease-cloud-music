@@ -5,6 +5,7 @@ import { FlexBoxCenter } from "style";
 import { Avatar, Image } from "antd";
 import { useAuth } from "context/authContext";
 import { Link } from "react-router-dom";
+import { Uploader } from "components/Uploader";
 
 const RightSide: FC = () => {
   const { user } = useAuth();
@@ -25,6 +26,7 @@ const RightSide: FC = () => {
         <Avatar icon={<Image src={user.profile.avatarUrl} />} />
         <span style={{ marginLeft: "1rem" }}>{user.profile.nickname}</span>
       </FlexBoxCenter>
+      <Uploader />
     </Container>
   );
 };

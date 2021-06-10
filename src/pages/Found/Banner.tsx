@@ -1,30 +1,22 @@
-import { FC, useEffect, useState } from 'react';
-import { Carousel, Image } from 'antd';
+import { FC } from "react";
+import { Carousel, Image } from "antd";
 
-import useUrlLoader from '../../hooks/useURLLoader';
-import Loading from '../../components/Loading';
+import Loading from "../../components/Loading";
+import { useAjax } from "ajax";
+import { useAsync } from "hooks/useAsync";
+import { useMount } from "hooks/useMount";
 
 type Banners = Banner[];
-interface BannerResponse {
-  banners: Banners;
-}
 
 const Banner: FC = () => {
-  const { ajax, loading } = useUrlLoader();
-  const [banners, setBanners] = useState<Banners>([]);
+  const client = useAjax();
+  const { run, data: banners, isLoading } = useAsync<{ banners: Banners }>();
 
-  useEffect(() => {
-    ajax<BannerResponse>('/banner', 'GET', {})
-      .then((response) => {
-        setBanners(response.banners);
-      })
-      .catch((error) => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useMount(() => {
+    run(client("/banner"));
+  });
 
-  if (loading) return (
-      <Loading></Loading>
-  );
+  if (isLoading) return <Loading></Loading>;
 
   return (
     <div className="app-found-banner">
@@ -33,9 +25,14 @@ const Banner: FC = () => {
         autoplay
         // centerMode
       >
-        {banners.map((banner) => (
-          <Image preview={false} src={banner.imageUrl} key={banner.targetId} />
-        ))}
+        {banners &&
+          banners.banners.map((banner) => (
+            <Image
+              preview={false}
+              src={banner.imageUrl}
+              key={banner.targetId}
+            />
+          ))}
       </Carousel>
     </div>
   );

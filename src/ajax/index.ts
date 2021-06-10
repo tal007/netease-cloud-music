@@ -21,7 +21,6 @@ const request: AxiosInstance = Axios.create({
 
 request.interceptors.response.use(
   (response) => {
-    console.log(response);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {
       status,
@@ -36,13 +35,14 @@ request.interceptors.response.use(
         return Promise.reject<AxiosResponse>(response);
       }
       // message.success(`${url}--数据请求成功`)
-      return Promise.resolve<AxiosResponse>(response.data);
+      return Promise.resolve<AxiosResponse>(response);
     }
     return Promise.reject<AxiosResponse>(response);
   },
   (err) => {
     const { status } = err;
-    message.warn(`HTTP状态 ${status}, ${err.response.data.messag}`);
+    console.log(err);
+    // message.warn(`HTTP状态 ${status}, ${err.response.data.messag}`);
     // switch (status) {
     //   case 404:
     // }
@@ -57,28 +57,36 @@ interface Config extends RequestInit {
 
 export const ajax = async (
   endpoint: string,
-  { data, cookie, headers, credentials, mode, ...customConfig }: Config = {}
+  { data, cookie, headers, ...customConfig }: Config = {}
 ) => {
   const config: AxiosRequestConfig = {
     url: endpoint,
     method: "GET",
-    headers: {
+    headers: headers || {
       // Authorization: token ? `Bearer ${token}` : "",
       "Content-Type": data ? "application/json;charset=UTF-8" : "",
     },
     withCredentials: true,
-    data,
     ...(customConfig as AxiosRequestConfig),
   };
 
   if (config.method?.toUpperCase() === "GET") {
-    config.url += `?cookie=${cookie}`;
+    if (data) {
+      if (cookie)
+        data = { ...data, ...{ cookie: `${encodeURIComponent(cookie)}` } };
+      config.params = data;
+    } else {
+      if (cookie) config.url += `?cookie=${encodeURIComponent(cookie)}`;
+    }
   }
   if (config.method?.toUpperCase() === "POST") {
-    config.data.cookie = cookie;
+    config.data = data;
+    if (cookie) config.url += `?cookie=${encodeURIComponent(cookie)}`;
   }
+  console.log(config);
 
-  return request(config);
+  if (config)
+    return request(config).then((response) => Promise.resolve(response.data));
 };
 
 export const useAjax = () => {
