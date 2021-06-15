@@ -1,7 +1,6 @@
 import React, { FC } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
-// import SearchHeader from 'components/SearchHeader';
 import Home from "pages/Found/index";
 import FM from "pages/FM/index";
 import NewMusic from "pages/NewMusic";
@@ -17,28 +16,15 @@ import Album from "pages/Album";
 import SearchHeader from "components/SearchHeader";
 import Artists from "pages/Artists";
 
-const RenderPage: FC = () => {
-  return (
-    <RenderPageContainer>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/fm" component={FM} />
-        <Route path="/new-music" component={NewMusic} />
-        <Route path="/song-list-detail" component={SongListDetail} />
-        <Route path="/albums" component={Album} />
-        <Route path="/artists" component={Artists} />
-      </Switch>
-    </RenderPageContainer>
-  );
-};
-
 const Layout: FC = () => {
   return (
     <Grid>
       <LeftSide />
       <Main>
         <SearchHeader />
-        <RenderPage />
+        <RenderPageContainer>
+          <Outlet />
+        </RenderPageContainer>
         <Player />
       </Main>
       <RightSide />
@@ -50,11 +36,18 @@ const App: FC = () => {
   return (
     <BrowserRouter>
       <Container>
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/" component={Layout} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="" element={<Home />} />
+            <Route path="fm" element={<FM />} />
+            <Route path="new-music" element={<NewMusic />} />
+            <Route path="song-list-detail" element={<SongListDetail />} />
+            <Route path="albums" element={<Album />} />
+            <Route path="artists" element={<Artists />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
       </Container>
     </BrowserRouter>
   );

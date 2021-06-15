@@ -28,7 +28,7 @@ const LinkItem: FC<{ name: string; to: string; icon: string }> = ({
   icon,
 }) => {
   return (
-    <Item exact to={to}>
+    <Item end to={to}>
       <MyIcon type={icon} />
       <LinkItemText>{name}</LinkItemText>
     </Item>

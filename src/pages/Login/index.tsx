@@ -3,12 +3,12 @@ import { Button, Form, Input, Typography } from "antd";
 import styled from "@emotion/styled";
 import loginBg from "img/login-bg.png";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "context/authContext";
 import { useAsync } from "hooks/useAsync";
 
 const Login = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { user, login } = useAuth();
   const { run, error, isLoading } = useAsync();
 
@@ -18,9 +18,9 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      history.replace("/");
+      navigate("/", { replace: true });
     }
-  }, [user, history]);
+  }, [user, navigate]);
 
   return (
     <Container>
