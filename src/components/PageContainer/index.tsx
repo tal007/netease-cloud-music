@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 11:25:25
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-15 12:36:34
+ * @Last Modified time: 2021-06-15 15:08:18
  * 页面容器，loading，数据渲染等功能
  */
 
@@ -40,5 +40,4 @@ const LoadingContainer = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
 `;

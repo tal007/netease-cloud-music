@@ -15,6 +15,7 @@ import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
 import Album from "pages/Album";
 import SearchHeader from "components/SearchHeader";
+import Artists from "pages/Artists";
 
 const RenderPage: FC = () => {
   return (
@@ -25,6 +26,7 @@ const RenderPage: FC = () => {
         <Route path="/new-music" component={NewMusic} />
         <Route path="/song-list-detail" component={SongListDetail} />
         <Route path="/albums" component={Album} />
+        <Route path="/artists" component={Artists} />
       </Switch>
     </RenderPageContainer>
   );
