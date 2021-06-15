@@ -14,6 +14,7 @@ import Player from "components/Player";
 import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
 import Album from "pages/Album";
+import SearchHeader from "components/SearchHeader";
 
 const RenderPage: FC = () => {
   return (
@@ -34,6 +35,7 @@ const Layout: FC = () => {
     <Grid>
       <LeftSide />
       <Main>
+        <SearchHeader />
         <RenderPage />
         <Player />
       </Main>
@@ -77,12 +79,14 @@ const Grid = styled.div`
 
 const Main = styled.main`
   display: grid;
-  grid-template-rows: 1fr 10rem;
+  grid-template-rows: 8rem 1fr 10rem;
+  background: linear-gradient(180deg, #000c1d 0%, #08152d 100%);
+  color: #fff;
 `;
 
 const RenderPageContainer = styled.div`
   padding: 0 1rem;
-  height: calc(100vh - 10rem);
+  height: calc(100vh - 16rem);
   overflow-y: scroll;
 
   ::-webkit-scrollbar {

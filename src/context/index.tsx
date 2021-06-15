@@ -5,7 +5,7 @@ import { AuthProvider } from "./authContext";
 export const AppProviders = ({ children }: { children: ReactNode }) => {
   return (
     <ErrorBoundary fallbackRender={FullPageErrorCallback}>
-      <AuthProvider children={children} />;
+      <AuthProvider children={children} />
     </ErrorBoundary>
   );
 };
