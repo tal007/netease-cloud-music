@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-09 10:50:43
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-15 15:12:30
+ * @Last Modified time: 2021-06-15 17:33:48
  * 专辑
  */
 
@@ -33,7 +33,7 @@ const Album: FC = () => {
   return (
     <>
       <MyPageHeader title={"最新专辑"} subTitle={"Albums"} />
-      <PageContainer isLoading={isLoading} data={data?.albums || []}>
+      <PageContainer isLoading={isLoading}>
         <Row gutter={[30, 30]}>
           {data &&
             data.albums.map((value) => <AlbumItem key={value.id} {...value} />)}

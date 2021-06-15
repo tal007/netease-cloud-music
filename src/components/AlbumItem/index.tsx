@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 11:23:05
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-15 15:00:59
+ * @Last Modified time: 2021-06-15 17:40:02
  * 专辑项
  */
 
@@ -20,7 +20,7 @@ interface Props extends AlbumItemProps {
 export const AlbumItem = (props: Props) => {
   return (
     <Container data-id={props.id} span={props?.span || 6} md={6} xl={4}>
-      <Link to={`song-list-detail?id=${props.id}`}>
+      <Link to={`${props.id}`}>
         <CustomImage url={props.picUrl} />
         <Typography.Text ellipsis={false}>{props.name}</Typography.Text>
       </Link>

@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-09 10:50:43
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-15 15:50:21
+ * @Last Modified time: 2021-06-15 17:33:57
  * 专辑
  */
 
@@ -31,12 +31,10 @@ const Artists: FC = () => {
     run(client("/top/artists", { data: { limit: 60 } }));
   });
 
-  console.log(data);
-
   return (
     <>
       <MyPageHeader title={"热门歌手 Top 60"} subTitle={"Artists"} />
-      <PageContainer isLoading={isLoading} data={data?.artists || []}>
+      <PageContainer isLoading={isLoading}>
         <Row gutter={[30, 30]}>
           {data &&
             data.artists.map((value) => (

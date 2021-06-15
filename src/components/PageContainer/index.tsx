@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 11:25:25
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-15 15:08:18
+ * @Last Modified time: 2021-06-15 17:33:34
  * 页面容器，loading，数据渲染等功能
  */
 
@@ -11,15 +11,12 @@ import { FlexBoxCenter } from "style";
 import Loading from "components/Loading";
 import { ReactNode } from "react";
 
-interface PageContainerProps<T> {
+interface PageContainerProps {
   isLoading: boolean;
-  data: T;
   children: ReactNode;
 }
 
-export const PageContainer = <T extends Object>(
-  props: PageContainerProps<T>
-) => {
+export const PageContainer = (props: PageContainerProps) => {
   if (props.isLoading) {
     return (
       <LoadingContainer>

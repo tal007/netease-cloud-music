@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 15:17:04
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-15 15:28:11
+ * @Last Modified time: 2021-06-15 17:10:31
  * 歌手
  */
 
@@ -19,7 +19,7 @@ interface Props extends ArtistsItemProps {
 export const ArtistItem = (props: Props) => {
   return (
     <Container data-id={props.id} span={props?.span || 6} md={6} xl={4}>
-      <Link to={`song-list-detail?id=${props.id}`}>
+      <Link to={`${props.id}`}>
         <CustomImage url={props.img1v1Url} />
         <Typography.Text ellipsis={false}>
           {props.name}

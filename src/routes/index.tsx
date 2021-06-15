@@ -15,6 +15,8 @@ import RightSide from "./RightSide";
 import Album from "pages/Album";
 import SearchHeader from "components/SearchHeader";
 import Artists from "pages/Artists";
+import { Artist } from "pages/Artist";
+import { AlbumDetail } from "pages/AlbumDetail";
 
 const Layout: FC = () => {
   return (
@@ -42,8 +44,14 @@ const App: FC = () => {
             <Route path="fm" element={<FM />} />
             <Route path="new-music" element={<NewMusic />} />
             <Route path="song-list-detail" element={<SongListDetail />} />
-            <Route path="albums" element={<Album />} />
-            <Route path="artists" element={<Artists />} />
+            <Route path="albums">
+              <Route path="/" element={<Album />} />
+              <Route path=":id" element={<AlbumDetail />} />
+            </Route>
+            <Route path="artists">
+              <Route path="/" element={<Artists />} />
+              <Route path=":id" element={<Artist />} />
+            </Route>
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
