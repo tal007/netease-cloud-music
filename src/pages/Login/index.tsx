@@ -6,6 +6,7 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "context/authContext";
 import { useAsync } from "hooks/useAsync";
+import Helmet from "react-helmet";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Login = () => {
 
   return (
     <Container>
+      <Helmet title={"登录"} />
       <Inner>
         <Logo>
           <LogoSpan backgroundColor={"#032C9E"}>E</LogoSpan>

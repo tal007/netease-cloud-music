@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 14:50:57
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-15 15:04:19
+ * @Last Modified time: 2021-06-16 14:23:57
  * 图片替换
  */
 
@@ -16,8 +16,14 @@ interface CustomImageProps extends ImageProps {
 
 export const CustomImage = (props: CustomImageProps) => {
   const [src, setSrc] = useState("error");
+  // const imageNode = useRef<null>(null);
 
   useMount(() => {
+    // const callback = () => {
+
+    // }
+
+    // const observer = new IntersectionObserver(callback)
     const image = new Image();
     image.src = props.url;
     image.onload = () => {

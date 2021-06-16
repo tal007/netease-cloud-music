@@ -5,6 +5,7 @@ import loginBg from "img/login-bg.png";
 import { LockOutlined, MobileOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "context/authContext";
+import Helmet from "react-helmet";
 
 const Register = () => {
   const { register } = useAuth();
@@ -24,6 +25,7 @@ const Register = () => {
 
   return (
     <Container>
+      <Helmet title={"注册"} />
       <Inner>
         <Logo>
           <LogoSpan backgroundColor={"#032C9E"}>E</LogoSpan>
