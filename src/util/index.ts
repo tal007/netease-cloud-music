@@ -6,15 +6,15 @@ export function checkIsEmpty(value: string | number): boolean {
   return !value.trim().length;
 }
 
-export function fillNumber(value: number) {
+export function fillNumber(value: number | string) {
   return value < 10 ? "0" + value : value;
 }
 
 // 音乐毫秒转换
 export function formatTime(value: string | number) {
-  value = parseInt(String(value), 10);
+  value = parseInt(String(value), 10) / 1000;
   const min = fillNumber(parseInt(String(value / 60), 10));
-  const sec = fillNumber(value % 60);
+  const sec = fillNumber(parseInt(String(value % 60), 10));
   return `${min}:${sec}`;
 }
 
