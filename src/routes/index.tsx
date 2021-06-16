@@ -37,37 +37,29 @@ const Layout: FC = () => {
 const App: FC = () => {
   return (
     <BrowserRouter>
-      <Container>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route path="" element={<Home />} />
-            <Route path="fm" element={<FM />} />
-            <Route path="new-music" element={<NewMusic />} />
-            <Route path="song-list-detail" element={<SongListDetail />} />
-            <Route path="albums">
-              <Route path="/" element={<Album />} />
-              <Route path=":id" element={<AlbumDetail />} />
-            </Route>
-            <Route path="artists">
-              <Route path="/" element={<Artists />} />
-              <Route path=":id" element={<Artist />} />
-            </Route>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="" element={<Home />} />
+          <Route path="fm" element={<FM />} />
+          <Route path="new-music" element={<NewMusic />} />
+          <Route path="song-list-detail" element={<SongListDetail />} />
+          <Route path="albums">
+            <Route path="/" element={<Album />} />
+            <Route path=":id" element={<AlbumDetail />} />
           </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </Container>
+          <Route path="artists">
+            <Route path="/" element={<Artists />} />
+            <Route path=":id" element={<Artist />} />
+          </Route>
+        </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </BrowserRouter>
   );
 };
 
 export default App;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
 
 const Grid = styled.div`
   display: grid;
@@ -82,7 +74,7 @@ const Grid = styled.div`
 
 const Main = styled.main`
   display: grid;
-  grid-template-rows: 8rem 1fr 10rem;
+  grid-template-rows: 8rem 1fr 8rem;
   background: linear-gradient(180deg, #000c1d 0%, #08152d 100%);
   color: #fff;
 `;
