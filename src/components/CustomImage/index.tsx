@@ -2,12 +2,13 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 14:50:57
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-16 14:23:57
+ * @Last Modified time: 2021-06-16 16:56:38
  * 图片替换
  */
 
 import { Image as AntdImage, ImageProps } from "antd";
 import { useMount } from "hooks/useMount";
+import { useMountedRef } from "hooks/useMountedRef";
 import { useState } from "react";
 
 interface CustomImageProps extends ImageProps {
@@ -15,6 +16,7 @@ interface CustomImageProps extends ImageProps {
 }
 
 export const CustomImage = (props: CustomImageProps) => {
+  const mountedRef = useMountedRef();
   const [src, setSrc] = useState("error");
   // const imageNode = useRef<null>(null);
 
@@ -27,7 +29,7 @@ export const CustomImage = (props: CustomImageProps) => {
     const image = new Image();
     image.src = props.url;
     image.onload = () => {
-      setSrc(props.url);
+      if (mountedRef.current) setSrc(props.url);
     };
   });
 

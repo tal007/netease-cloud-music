@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMountedRef } from "./useMountedRef";
 
 interface State<D> {
   error: Error | null;
@@ -25,6 +26,7 @@ export const useAsync = <D>(
     ...defaultInitialState,
     ...initalState,
   });
+  const mountedRef = useMountedRef();
 
   const setData = (data: D) =>
     setState({
@@ -44,14 +46,14 @@ export const useAsync = <D>(
     if (!promise) {
       throw new Error(`${promise} 必须是一个 Promise 类型的数据`);
     }
-    setState({ ...state, status: "loading" });
+    if (mountedRef.current) setState({ ...state, status: "loading" });
     return promise
       .then((data) => {
-        setData(data);
+        if (mountedRef.current) setData(data);
         return data;
       })
       .catch((error) => {
-        setError(error);
+        if (mountedRef.current) setError(error);
         if (config.throwOnError) return Promise.reject(error);
         return Promise;
       });
