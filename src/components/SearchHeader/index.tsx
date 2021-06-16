@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 15:12:20
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-01 15:27:52
+ * @Last Modified time: 2021-06-16 18:04:23
  * 搜索头部
  */
 
@@ -19,7 +19,7 @@ const SearchHeader: FC = () => {
       <Input.Search
         placeholder="搜索一下吧"
         enterButton
-        style={{ width: "40rem" }}
+        style={{ width: "60%", maxWidth: "40rem" }}
       />
       <FlexBoxCenter>
         <Image src={logo} preview={false} height={"3.2rem"} width={"3.2rem"} />
