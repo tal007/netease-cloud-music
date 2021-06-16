@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 10:42:58
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-04 18:32:16
+ * @Last Modified time: 2021-06-16 17:36:29
  * 带 Link 的模块导航 Title
  */
 
@@ -29,6 +29,7 @@ const EntryTitle: FC<{ titleName: string; to?: string }> = ({
 export default EntryTitle;
 
 const MyTitle = styled(Title)`
+  margin-top: 1rem;
   color: var(--text-color);
 
   a {

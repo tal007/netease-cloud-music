@@ -1,10 +1,9 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Carousel, Image } from "antd";
 
 import Loading from "../../components/Loading";
 import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
-import { useMount } from "hooks/useMount";
 
 type Banners = Banner[];
 
@@ -12,14 +11,14 @@ const Banner: FC = () => {
   const client = useAjax();
   const { run, data: banners, isLoading } = useAsync<{ banners: Banners }>();
 
-  useMount(() => {
+  useEffect(() => {
     run(client("/banner"));
-  });
+  }, [client, run]);
 
   if (isLoading) return <Loading></Loading>;
 
   return (
-    <div className="app-found-banner">
+    <div>
       <Carousel
         infinite
         autoplay
