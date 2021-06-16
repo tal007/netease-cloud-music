@@ -6,7 +6,7 @@
  * 上传组件
  */
 
-import { useAjax } from "ajax";
+import { useAjax } from "hooks/useAjax";
 import { Button } from "antd";
 import React, { ChangeEvent, FC, useState } from "react";
 

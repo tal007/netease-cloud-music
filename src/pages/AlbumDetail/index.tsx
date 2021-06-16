@@ -7,7 +7,7 @@
  */
 
 import styled from "@emotion/styled";
-import { useAjax } from "ajax";
+import { useAjax } from "hooks/useAjax";
 import { Divider, Menu, Tag, Typography } from "antd";
 import { CustomImage } from "components/CustomImage";
 import { PageContainer } from "components/PageContainer";

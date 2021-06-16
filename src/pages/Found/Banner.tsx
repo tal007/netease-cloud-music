@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Carousel, Image } from "antd";
 
 import Loading from "../../components/Loading";
-import { useAjax } from "ajax";
+import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
 import { useMount } from "hooks/useMount";
 

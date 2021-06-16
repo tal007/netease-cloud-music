@@ -2,40 +2,33 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 14:28:41
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-05 11:39:48
+ * @Last Modified time: 2021-06-16 17:24:10
  * 新歌速递
  */
 
-import { FC, useState, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { Row, Skeleton } from "antd";
 
 import { fillNumber } from "../../util";
 import EntryTitle from "../../components/EntryTitle/index";
 import Loading from "../../components/Loading/index";
-import useUrlLoader from "../../hooks/useURLLoader";
 import NewMusicItem from "../../components/MusicItem/NewMusicItem";
-
-interface MusicItemListResponse {
-  data: MusicItem[];
-}
+import { useAjax } from "hooks/useAjax";
+import { useAsync } from "hooks/useAsync";
 
 const NewMusic: FC = () => {
-  const { ajax, loading } = useUrlLoader();
-  const [newMusicList, setNewMusicList] = useState<MusicList>([]);
+  const client = useAjax();
+  const { run, isLoading, data: newMusicList } = useAsync<MusicList>();
 
   useEffect(() => {
     // limt 最大30
     // ajax<MusicItemListResponse>('/personalized/newsong?limit=10', 'GET')
-    ajax<MusicItemListResponse>("/top/song?type=0", "GET")
-      .then((response) => {
-        const res = response.data.slice(0, 10);
-        setNewMusicList(res);
-      })
-      .catch((err) => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    run(client("/top/song?type=0"));
+  }, [client, run]);
 
-  if (loading)
+  console.log(newMusicList);
+
+  if (isLoading)
     return (
       <Loading showIcon={false}>
         <Skeleton avatar paragraph={{ rows: 2 }} />
@@ -46,7 +39,7 @@ const NewMusic: FC = () => {
     <div className="app-found-new-music">
       <EntryTitle titleName="新歌速递" to="/new-music" />
       <Row gutter={[30, 30]} className="app-found-new-music-list">
-        {newMusicList.map((music, index) => {
+        {/* {newMusicList.map((music, index) => {
           return (
             <NewMusicItem
               music={music}
@@ -55,7 +48,7 @@ const NewMusic: FC = () => {
               musicList={newMusicList}
             />
           );
-        })}
+        })} */}
       </Row>
     </div>
   );

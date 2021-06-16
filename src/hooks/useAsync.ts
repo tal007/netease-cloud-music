@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useMountedRef } from "./useMountedRef";
 
 interface State<D> {
@@ -28,36 +28,46 @@ export const useAsync = <D>(
   });
   const mountedRef = useMountedRef();
 
-  const setData = (data: D) =>
-    setState({
-      data,
-      error: null,
-      status: "success",
-    });
+  const setData = useCallback(
+    (data: D) =>
+      setState({
+        data,
+        error: null,
+        status: "success",
+      }),
+    []
+  );
 
-  const setError = (error: Error) =>
-    setState({
-      error,
-      data: null,
-      status: "error",
-    });
+  const setError = useCallback(
+    (error: Error) =>
+      setState({
+        error,
+        data: null,
+        status: "error",
+      }),
+    []
+  );
 
-  const run = (promise: Promise<D>) => {
-    if (!promise) {
-      throw new Error(`${promise} 必须是一个 Promise 类型的数据`);
-    }
-    if (mountedRef.current) setState({ ...state, status: "loading" });
-    return promise
-      .then((data) => {
-        if (mountedRef.current) setData(data);
-        return data;
-      })
-      .catch((error) => {
-        if (mountedRef.current) setError(error);
-        if (config.throwOnError) return Promise.reject(error);
-        return Promise;
-      });
-  };
+  const run = useCallback(
+    (promise: Promise<D>) => {
+      if (!promise) {
+        throw new Error(`${promise} 必须是一个 Promise 类型的数据`);
+      }
+      if (mountedRef.current)
+        setState((prevState) => ({ ...prevState, status: "loading" }));
+      return promise
+        .then((data) => {
+          if (mountedRef.current) setData(data);
+          return data;
+        })
+        .catch((error) => {
+          if (mountedRef.current) setError(error);
+          if (config.throwOnError) return Promise.reject(error);
+          return Promise;
+        });
+    },
+    [config.throwOnError, mountedRef, setData, setError]
+  );
 
   return {
     run,

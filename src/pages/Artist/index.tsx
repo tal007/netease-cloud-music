@@ -7,7 +7,7 @@
  */
 
 import styled from "@emotion/styled";
-import { useAjax } from "ajax";
+import { useAjax } from "hooks/useAjax";
 import { PageContainer } from "components/PageContainer";
 import { useAsync } from "hooks/useAsync";
 import { useMount } from "hooks/useMount";

@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-28 13:48:42
+ * @Last Modified time: 2021-06-16 17:17:50
  * 歌词
  */
 
@@ -13,13 +13,13 @@ import {
   useRef,
   useCallback,
   WheelEvent,
-} from 'react';
-import useUrlLoader from '../../hooks/useURLLoader';
-import useWindowResize from '../../hooks/useWindowResize';
-import useAnimationFrame from '../../hooks/useAnimationFrame';
+} from "react";
+import useUrlLoader from "../../hooks/useURLLoader";
+import useWindowResize from "../../hooks/useWindowResize";
+import useAnimationFrame from "../../hooks/useAnimationFrame";
 
-import { dealWithLyric, debounce } from '../../util';
-import Loading from '../../components/Loading';
+import { dealWithLyric, debounce } from "../../util";
+import Loading from "../../components/Loading";
 interface LyricResponse {
   lrc: {
     lyric: string;
@@ -40,26 +40,17 @@ const MusicLyric: FC<{
   const [lyricScroll, setLyricScroll] = useState<boolean>(true);
   const { ajax, loading } = useUrlLoader();
 
-  useEffect(() => {
-    ajax<LyricResponse>(`lyric?id=${id}`, 'GET')
-      .then((response) => {
-        setLyric(dealWithLyric(response.lrc.lyric));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  useEffect(() => {}, []);
 
   useAnimationFrame(() => {
     if (container.current && lyricProgressNode.current) {
       const containerHeight = windowInnerHeight - 60;
       const halfWindowInnerHeight = containerHeight / 2;
-      const passNodeList = document.querySelectorAll('.pass').length;
+      const passNodeList = document.querySelectorAll(".pass").length;
       const passHeight = halfWindowInnerHeight - (passNodeList * 40 + 8);
       container.current.style.transform = `translateY(${passHeight}px)`;
-      const scrollBarPassHeight = percent / 100 * (containerHeight - 50)
-      lyricProgressNode.current.style.transform = `translateY(${scrollBarPassHeight}px)`
+      const scrollBarPassHeight = (percent / 100) * (containerHeight - 50);
+      lyricProgressNode.current.style.transform = `translateY(${scrollBarPassHeight}px)`;
     }
   }, runing && lyricScroll);
 
@@ -93,7 +84,7 @@ const MusicLyric: FC<{
   return (
     <div
       className={
-        hidden ? 'music-lyric-container hidden' : 'music-lyric-container'
+        hidden ? "music-lyric-container hidden" : "music-lyric-container"
       }
       style={{ height: hidden ? 0 : windowInnerHeight - 60 }}
     >

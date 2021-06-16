@@ -2,26 +2,26 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-28 11:52:24
+ * @Last Modified time: 2021-06-16 17:17:35
  * 音乐播放组件
  */
 
-import './index.less';
-import { FC, useEffect, useState, useRef } from 'react';
-import Pubsub from 'pubsub-js';
-import { Avatar, Image, Spin, Space, message } from 'antd';
+import "./index.less";
+import { FC, useEffect, useState, useRef } from "react";
+import Pubsub from "pubsub-js";
+import { Avatar, Image, Spin, Space, message } from "antd";
 
-import MyIcon from '../../Icons';
+import MyIcon from "../../Icons";
 
-import useUrlLoader from '../../hooks/useURLLoader';
-import useAnimationFrame from '../../hooks/useAnimationFrame';
-import { MUSICID, MUISCLIST } from '../../constant';
-import { formatTime } from '../../util';
+import useUrlLoader from "../../hooks/useURLLoader";
+import useAnimationFrame from "../../hooks/useAnimationFrame";
+import { MUSICID, MUISCLIST } from "../../constant";
+import { formatTime } from "../../util";
 
-import MusicName from '../../components/MusicName';
-import Progress from './Progress';
-import MusicList from './MusicList';
-import MusicLyric from './MusicLyric';
+import MusicName from "../../components/MusicName";
+import Progress from "./Progress";
+import MusicList from "./MusicList";
+import MusicLyric from "./MusicLyric";
 
 interface Music {
   name: string;
@@ -45,7 +45,7 @@ interface MusicResponse {
   songs: Music[];
 }
 
-type playType = 'NEXT' | 'PREV' | 'RANDOM' | 'CYCLE';
+type playType = "NEXT" | "PREV" | "RANDOM" | "CYCLE";
 
 const Player: FC = () => {
   const audioNode = useRef<HTMLAudioElement | null>(null);
@@ -65,7 +65,7 @@ const Player: FC = () => {
       const percent =
         audioNode.current.currentTime / audioNode.current.duration;
       if (percent >= 1) {
-        PubSub.publish(MUSICID, findMusic('NEXT').id);
+        PubSub.publish(MUSICID, findMusic("NEXT").id);
       }
       setPercent(percent * 100);
       setCurrentTime(audioNode.current.currentTime);
@@ -80,29 +80,13 @@ const Player: FC = () => {
         playOrPauseMusic();
       }
     }
-    
-    window.addEventListener('keydown', keydownPauseOrPlay)
-    
+
+    window.addEventListener("keydown", keydownPauseOrPlay);
+
     const pubsubNusicID = Pubsub.subscribe(
       MUSICID,
       (msg: string, data: number | string) => {
         setRunning(false);
-        ajax<MusicResponse>(`/song/detail?ids=${data}`, 'GET')
-          .then((response) => {
-            let playUrl = `https://music.163.com/song/media/outer/url?id=${data}.mp3`;
-
-            setCurrentMusicID(data);
-            setRunning(true);
-            setMusic(Object.assign(response.songs[0], { playUrl }));
-            setPercent(0);
-            setCurrentTime(0);
-          })
-          .catch((err) => {
-            console.log(err.message);
-            if (err === '没有版权，播放下一首') {
-              message.info(err);
-            }
-          });
       }
     );
 
@@ -119,7 +103,7 @@ const Player: FC = () => {
       Pubsub.unsubscribe(pubsubNusicID);
       Pubsub.unsubscribe(pubsubNusicList);
 
-      window.removeEventListener('keydown', keydownPauseOrPlay)
+      window.removeEventListener("keydown", keydownPauseOrPlay);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -146,9 +130,9 @@ const Player: FC = () => {
     });
 
     switch (type) {
-      case 'NEXT':
+      case "NEXT":
         return i < musicList.length - 1 ? musicList[i + 1] : musicList[0];
-      case 'PREV':
+      case "PREV":
         return i < 1 ? musicList[musicList.length - 1] : musicList[i - 1];
       default:
         return i < musicList.length - 1 ? musicList[i + 1] : musicList[0];
@@ -156,11 +140,11 @@ const Player: FC = () => {
   };
 
   const platNextMusic = () => {
-    PubSub.publish(MUSICID, findMusic('NEXT').id);
+    PubSub.publish(MUSICID, findMusic("NEXT").id);
   };
 
   const playPreviousMusic = () => {
-    PubSub.publish(MUSICID, findMusic('PREV').id);
+    PubSub.publish(MUSICID, findMusic("PREV").id);
   };
 
   const showLyric = () => {
@@ -192,7 +176,7 @@ const Player: FC = () => {
               <div>
                 <MusicName name={music.name} alia={music.alia} />
                 <div>
-                  {formatTime(audioNode.current.currentTime)} /{' '}
+                  {formatTime(audioNode.current.currentTime)} /{" "}
                   {formatTime(audioNode.current.duration)}
                 </div>
               </div>

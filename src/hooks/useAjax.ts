@@ -1,6 +1,7 @@
 import Axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { message } from "antd";
 import { useAuth } from "context/authContext";
+import { useCallback } from "react";
 
 export interface AxiosResponse<T = any> {
   data: T; // 服务端返回的数据
@@ -92,6 +93,9 @@ export const ajax = async (
 export const useAjax = () => {
   const { user } = useAuth();
 
-  return (...[endpoint, config]: Parameters<typeof ajax>) =>
-    ajax(endpoint, { ...config, cookie: user?.cookie });
+  return useCallback(
+    (...[endpoint, config]: Parameters<typeof ajax>) =>
+      ajax(endpoint, { ...config, cookie: user?.cookie }),
+    [user?.cookie]
+  );
 };

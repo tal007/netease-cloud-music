@@ -2,22 +2,22 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 15:57:07
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-01 18:21:35
+ * @Last Modified time: 2021-06-16 17:24:40
  * 歌单详情
  */
 
-import './index.less';
-import { FC, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import queryString from 'query-string';
-import dayjs from 'dayjs';
-import { Image, Avatar, Typography, Space } from 'antd';
+import "./index.less";
+import { FC, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import queryString from "query-string";
+import dayjs from "dayjs";
+import { Image, Avatar, Typography, Space } from "antd";
 
-import useUrlLoader from '../../hooks/useURLLoader';
+import useUrlLoader from "../../hooks/useURLLoader";
 
-import Loading from '../../components/Loading';
+import Loading from "../../components/Loading";
 
-import Item from './Item';
+import Item from "./Item";
 
 interface SongList {
   name: string;
@@ -38,12 +38,12 @@ interface SongListResponse {
 
 export interface MusicItem {
   name: string;
-  al: {name: string, id: number}
-  ar: {name: string, id: number}[]
-  dt: number
+  al: { name: string; id: number };
+  ar: { name: string; id: number }[];
+  dt: number;
 }
 
-type MusicList = MusicItem[]
+type MusicList = MusicItem[];
 
 const SongListDetail: FC = () => {
   const id = queryString.parse(window.location.search).id;
@@ -52,33 +52,32 @@ const SongListDetail: FC = () => {
   const [musicList, setMusicList] = useState<MusicList>([]);
 
   function ids(arr: { id: number }[]) {
-    let s = '';
+    let s = "";
     let len = arr.length;
     for (let i = 0; i < len; i++) {
       if (i === len - 1) {
         s += arr[i].id;
       } else {
-        s += arr[i].id + ',';
+        s += arr[i].id + ",";
       }
     }
     return s;
   }
 
   useEffect(() => {
-    ajax<SongListResponse>(`/playlist/detail?id=${id}`, 'GET')
-      .then((playlistResponse) => {
-        console.log(playlistResponse.playlist);
-        setSongListDetail(playlistResponse.playlist);
-        let trackIds = ids(playlistResponse.playlist.trackIds);
-
-        ajax<{ songs: MusicList }>(`/song/detail?ids=${trackIds}`, 'GET')
-          .then((songResponse) => {
-            console.log(songResponse);
-            setMusicList(songResponse.songs);
-          })
-          .catch((err) => console.log(err));
-      })
-      .catch((error) => console.log(error));
+    // ajax<SongListResponse>(`/playlist/detail?id=${id}`, 'GET')
+    //   .then((playlistResponse) => {
+    //     console.log(playlistResponse.playlist);
+    //     setSongListDetail(playlistResponse.playlist);
+    //     let trackIds = ids(playlistResponse.playlist.trackIds);
+    //     ajax<{ songs: MusicList }>(`/song/detail?ids=${trackIds}`, 'GET')
+    //       .then((songResponse) => {
+    //         console.log(songResponse);
+    //         setMusicList(songResponse.songs);
+    //       })
+    //       .catch((err) => console.log(err));
+    //   })
+    //   .catch((error) => console.log(error));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -107,12 +106,12 @@ const SongListDetail: FC = () => {
               />
               <Link to="">{songListDetail.creator.nickname}</Link>
               <span>
-                {dayjs(songListDetail.createTime).format('YYYY-MM-DD')}创建
+                {dayjs(songListDetail.createTime).format("YYYY-MM-DD")}创建
               </span>
             </Space>
             <div>
               <span>标签：</span>
-              <span>{songListDetail.tags.join('/')}</span>
+              <span>{songListDetail.tags.join("/")}</span>
             </div>
             <div>
               <span>简介：{songListDetail.description}</span>
