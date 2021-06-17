@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 16:36:59
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 13:00:42
+ * @Last Modified time: 2021-06-17 17:53:08
  * 新歌速递页面
  */
 
@@ -43,6 +43,7 @@ const NewMusic: FC = () => {
       <PageContainer isLoading={isLoading}>
         {data && (
           <List
+            split={false}
             dataSource={data.data}
             // header={}
             rowKey={(value) => `${value.id}`}
