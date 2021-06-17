@@ -2,45 +2,26 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 16:36:59
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 10:13:49
+ * @Last Modified time: 2021-06-17 13:00:42
  * 新歌速递页面
  */
 
 import { FC, useState, useEffect } from "react";
 import { List, Menu } from "antd";
-import Item from "./Item";
 import { useAsync } from "hooks/useAsync";
 import { useAjax } from "hooks/useAjax";
 import { PageContainer } from "components/PageContainer";
 import { menus } from "./menus";
 import styled from "@emotion/styled";
+import MusicItem, { MusicItemProps } from "components/MusicItem";
 
 type Type = 0 | 7 | 96 | 8 | 16;
-
-export interface ResponseDataItem {
-  name: string;
-  id: number;
-  duration: number;
-  alias: string[];
-  album: {
-    id: number;
-    name: string;
-    picUrl: string;
-    publishTime: number;
-  };
-  artists: [
-    {
-      name: string;
-      id: number;
-    }
-  ];
-}
 
 const NewMusic: FC = () => {
   const [type, setType] = useState<Type>(0);
   const client = useAjax();
   const { run, isLoading, data } =
-    useAsync<{ code: number; data: ResponseDataItem[] }>();
+    useAsync<{ code: number; data: MusicItemProps[] }>();
 
   useEffect(() => {
     run(client("/top/song", { data: { type } }));
@@ -60,18 +41,13 @@ const NewMusic: FC = () => {
         ))}
       </Menus>
       <PageContainer isLoading={isLoading}>
-        {/* {
-          data && data.data.map((value, index) => {
-            return <Item key={value.id} music={value} musicList={data.data} i={index + 1}/>;
-          })
-        } */}
         {data && (
           <List
             dataSource={data.data}
             // header={}
             rowKey={(value) => `${value.id}`}
             renderItem={(value, index) => (
-              <Item
+              <MusicItem
                 key={value.id}
                 music={value}
                 musicList={data.data}

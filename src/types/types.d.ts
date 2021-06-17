@@ -83,28 +83,6 @@ interface Banner {
   typeTitle: "独家";
 }
 
-// 新歌速递
-// 1844442105
-interface MusicItem {
-  name: string;
-  id: number;
-  mvid: number;
-  alias: string[];
-  artists: [
-    {
-      name: string;
-      id: number;
-    }
-  ];
-  album: {
-    picUrl: string;
-    name: string;
-  };
-  duration: number;
-}
-
-type MusicList = MusicItem[];
-
 // 歌词
 interface Lyric {
   time: string;

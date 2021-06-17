@@ -2,55 +2,24 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 14:34:24
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-05-27 14:19:36
+ * @Last Modified time: 2021-06-17 12:57:32
  * 播放列表
  */
 
-import { FC } from 'react';
-import Pubsub from 'pubsub-js';
-import { Avatar, Image } from 'antd';
+import { FC } from "react";
+import Pubsub from "pubsub-js";
+import { Avatar, Image } from "antd";
 
-import {  MUSICID } from '../../constant';
-import { fillNumber } from '../../util';
-import useWindowResize from '../../hooks/useWindowResize';
-import MusicName from '../../components/MusicName';
+import { MUSICID } from "../../constant";
+import { fillNumber } from "../../util";
+import useWindowResize from "../../hooks/useWindowResize";
+import MusicName from "../../components/MusicName";
+import { MusicItemProps } from "components/MusicItem";
 
-const MusicItem: FC<{ music: MusicItem; i: number }> = ({ music, i }) => {
-  const play = () => Pubsub.publish(MUSICID, music.id);
+const MusicList: FC = () => {
+  // const { windowInnerHeight } = useWindowResize();
 
-  return (
-    <li className="music-list-item" onDoubleClick={play}>
-      <span className="index">{fillNumber(i + 1)}</span>
-      <Avatar
-        className="img"
-        shape="square"
-        icon={<Image preview={false} src={music.album.picUrl} />}
-      />
-      <MusicName name={music.name} alia={music.alias} />
-    </li>
-  );
-};
-
-const MusicList: FC<{ hidden: boolean; musicList: MusicList }> = ({
-  hidden,
-  musicList,
-}) => {
-  const { windowInnerHeight } = useWindowResize();
-
-  return (
-    <div
-      className={
-        hidden ? `muisc-list-container hidden` : 'muisc-list-container'
-      }
-      style={{ height: windowInnerHeight - 60 }}
-    >
-      <ul className="music-list">
-        {musicList.map((music, index) => (
-          <MusicItem key={music.id} i={index} music={music} />
-        ))}
-      </ul>
-    </div>
-  );
+  return <div></div>;
 };
 
 export default MusicList;

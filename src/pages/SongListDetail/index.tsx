@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 15:57:07
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 11:42:11
+ * @Last Modified time: 2021-06-17 13:01:18
  * 歌单详情
  */
 
@@ -10,14 +10,14 @@ import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
 import dayjs from "dayjs";
-import { Image, Avatar, Typography, Space, Divider, Tag } from "antd";
+import { Image, Avatar, Typography, Space, Divider, Tag, List } from "antd";
 
-import Item from "./Item";
 import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
 import styled from "@emotion/styled";
 import { CustomImage } from "components/CustomImage";
+import MusicItem, { MusicItemProps } from "components/MusicItem";
 
 interface SongList {
   name: string;
@@ -33,16 +33,6 @@ interface SongList {
   trackIds: { id: number }[];
 }
 
-export interface MusicItem {
-  name: string;
-  al: { name: string; id: number; picUrl: string };
-  ar: { name: string; id: number }[];
-  alia: string[];
-  dt: number;
-  publishTime: number;
-  id: number;
-}
-
 const SongListDetail: FC = () => {
   const id = queryString.parse(window.location.search).id;
   const client = useAjax();
@@ -55,7 +45,7 @@ const SongListDetail: FC = () => {
     run: getMusicList,
     isLoading: musicListLoading,
     data: musicList,
-  } = useAsync<{ code: number; songs: MusicItem[] }>();
+  } = useAsync<{ code: number; songs: MusicItemProps[] }>();
 
   function ids(arr: { id: number }[]) {
     let s = "";
@@ -83,9 +73,6 @@ const SongListDetail: FC = () => {
       );
     }
   }, [client, getMusicList, songList]);
-
-  console.log(songList);
-  console.log(musicList);
 
   return (
     <PageContainer isLoading={songListLoading && musicListLoading}>
@@ -132,20 +119,23 @@ const SongListDetail: FC = () => {
             </Infos>
           </Header>
           <Divider />
-          <div>
-            <Typography.Title level={5}>歌曲列表</Typography.Title>
-            <ul>
-              {musicList &&
-                musicList.songs.map((music, index) => (
-                  <Item
-                    key={music.id}
-                    music={music}
-                    i={index}
-                    musicList={musicList.songs}
-                  />
-                ))}
-            </ul>
-          </div>
+          <Typography.Title level={5}>歌曲列表</Typography.Title>
+          {musicList && (
+            <List
+              dataSource={musicList.songs}
+              // header={}
+              rowKey={(value) => `${value.id}`}
+              style={{ color: "#FFF" }}
+              renderItem={(value, index) => (
+                <MusicItem
+                  key={value.id}
+                  music={value}
+                  musicList={musicList.songs}
+                  i={index + 1}
+                />
+              )}
+            />
+          )}
         </>
       )}
     </PageContainer>

@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-16 17:17:35
+ * @Last Modified time: 2021-06-17 12:49:48
  * 音乐播放组件
  */
 
@@ -22,36 +22,15 @@ import MusicName from "../../components/MusicName";
 import Progress from "./Progress";
 import MusicList from "./MusicList";
 import MusicLyric from "./MusicLyric";
-
-interface Music {
-  name: string;
-  id: number;
-  mv: number;
-  playUrl: string;
-  // 版权 0 免费
-  copyright: number;
-  ar: [
-    {
-      id: number;
-      name: string;
-    }
-  ];
-  alia: string[];
-  al: {
-    picUrl: string;
-  };
-}
-interface MusicResponse {
-  songs: Music[];
-}
+import { MusicItemProps } from "components/MusicItem";
 
 type playType = "NEXT" | "PREV" | "RANDOM" | "CYCLE";
 
 const Player: FC = () => {
   const audioNode = useRef<HTMLAudioElement | null>(null);
   const [currentMusicID, setCurrentMusicID] = useState<number | string>(0);
-  const [music, setMusic] = useState<Music | null>(null);
-  const [musicList, setMusicList] = useState<MusicList>([]);
+  const [music, setMusic] = useState<MusicItemProps | null>(null);
+  const [musicList, setMusicList] = useState<MusicItemProps[]>([]);
   const [percent, setPercent] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [runing, setRunning] = useState<boolean>(false);
@@ -92,7 +71,7 @@ const Player: FC = () => {
 
     const pubsubNusicList = Pubsub.subscribe(
       MUISCLIST,
-      (msg: string, data: MusicList) => {
+      (msg: string, data: MusicItemProps[]) => {
         if (data !== musicList) {
           setMusicList(data);
         }
@@ -156,7 +135,7 @@ const Player: FC = () => {
 
   return (
     <div className="music-player">
-      <audio ref={audioNode} src={music.playUrl} autoPlay />
+      {/* <audio ref={audioNode} src={music.playUrl} autoPlay />
       {!loading && audioNode.current ? (
         <div className="controler">
           <Progress current={percent} />
@@ -229,7 +208,7 @@ const Player: FC = () => {
         currentTime={currentTime}
         percent={percent}
         runing={runing}
-      />
+      /> */}
     </div>
   );
 };
