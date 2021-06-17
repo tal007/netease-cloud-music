@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 16:16:40
+ * @Last Modified time: 2021-06-17 16:39:35
  * 音乐播放组件
  */
 
@@ -25,6 +25,7 @@ import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
 import styled from "@emotion/styled";
+import { FlexBoxCenter } from "style";
 
 type playType = "NEXT" | "PREV" | "RANDOM" | "CYCLE";
 
@@ -142,8 +143,7 @@ const Player: FC = () => {
     setHiddenLyric(!hiddenLyric);
   };
 
-  if (!music)
-    return <div className="music-player-no-music">请选择要播放的音乐</div>;
+  if (!music) return <FlexBoxCenter>请选择要播放的音乐</FlexBoxCenter>;
 
   return (
     <PageContainer isLoading={isLoading}>

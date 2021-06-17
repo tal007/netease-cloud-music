@@ -1,4 +1,4 @@
-import Axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import { message } from "antd";
 import { useAuth } from "context/authContext";
 import { useCallback } from "react";
@@ -39,14 +39,11 @@ request.interceptors.response.use(
     }
     return Promise.reject<AxiosResponse>(response);
   },
-  (err) => {
-    const { status } = err;
-    console.log(err);
-    message.warn(`HTTP状态 ${status}, ${err.response.data.messag}`);
-    switch (status) {
-      case 404:
-    }
-    return Promise.reject<AxiosResponse>(err.response);
+  (err: AxiosError) => {
+    const { config } = err;
+    const { url } = config;
+    message.warn(`请求 ${url} 错误，${err.message}`);
+    return Promise.reject<AxiosResponse>(err);
   }
 );
 
