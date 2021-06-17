@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 17:21:04
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 15:52:46
+ * @Last Modified time: 2021-06-17 18:24:21
  * 播放进度
  */
 
@@ -47,6 +47,7 @@ const Current = styled.div`
 const Dot = styled.div`
   position: absolute;
   right: 0;
+  z-index: 99;
   top: 50%;
   width: 1rem;
   height: 1rem;
