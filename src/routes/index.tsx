@@ -81,14 +81,14 @@ const Main = styled.main`
   min-width: 900px;
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: 8rem 1fr 8rem;
+  grid-template-rows: 8rem 1fr 6rem;
   background: linear-gradient(180deg, #000c1d 0%, #08152d 100%);
   color: #fff;
 `;
 
 const RenderPageContainer = styled.div`
   padding: 0 1rem;
-  height: calc(100vh - 16rem);
+  height: calc(100vh - 14rem);
   overflow-y: scroll;
   overflow-x: hidden;
 

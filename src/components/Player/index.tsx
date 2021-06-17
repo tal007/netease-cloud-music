@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 14:49:08
+ * @Last Modified time: 2021-06-17 15:37:03
  * 音乐播放组件
  */
 
@@ -22,13 +22,15 @@ import Progress from "./Progress";
 import MusicList from "./MusicList";
 import MusicLyric from "./MusicLyric";
 import { MusicItemProps } from "components/MusicItem";
+import { useAjax } from "hooks/useAjax";
+import { useAsync } from "hooks/useAsync";
+import { PageContainer } from "components/PageContainer";
 
 type playType = "NEXT" | "PREV" | "RANDOM" | "CYCLE";
 
 const Player: FC = () => {
   const audioNode = useRef<HTMLAudioElement | null>(null);
   const [currentMusicID, setCurrentMusicID] = useState<number | string>(0);
-  const [music, setMusic] = useState<MusicItemProps | null>(null);
   const [musicList, setMusicList] = useState<MusicItemProps[]>([]);
   const [percent, setPercent] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -36,6 +38,13 @@ const Player: FC = () => {
   // 音乐列表
   const [hiddenList, setHiddenList] = useState<boolean>(true);
   const [hiddenLyric, setHiddenLyric] = useState<boolean>(true);
+
+  const client = useAjax();
+  const {
+    run,
+    isLoading,
+    data: music,
+  } = useAsync<{ songs: MusicItemProps[] }>();
 
   const setProgress = () => {
     if (audioNode.current) {
@@ -64,26 +73,29 @@ const Player: FC = () => {
       MUSICID,
       (msg: string, data: number | string) => {
         setRunning(false);
+        run(client("/song/detail", { data: { ids: data } }));
+        setCurrentMusicID(data);
       }
     );
 
-    const pubsubNusicList = Pubsub.subscribe(
-      MUISCLIST,
-      (msg: string, data: MusicItemProps[]) => {
-        if (data !== musicList) {
-          setMusicList(data);
-        }
-      }
-    );
+    // const pubsubNusicList = Pubsub.subscribe(
+    //   MUISCLIST,
+    //   (msg: string, data: MusicItemProps[]) => {
+    //     if (data !== musicList) {
+    //       setMusicList(data);
+    //     }
+    //   }
+    // );
 
     return () => {
       Pubsub.unsubscribe(pubsubNusicID);
-      Pubsub.unsubscribe(pubsubNusicList);
+      // Pubsub.unsubscribe(pubsubNusicList);
 
       window.removeEventListener("keydown", keydownPauseOrPlay);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [client, run]);
+
+  useEffect(() => {}, []);
 
   const playOrPauseMusic = () => {
     if (audioNode.current) {
@@ -132,82 +144,87 @@ const Player: FC = () => {
     return <div className="music-player-no-music">请选择要播放的音乐</div>;
 
   return (
-    <div className="music-player">
-      {/* <audio ref={audioNode} src={music.playUrl} autoPlay />
-      {!loading && audioNode.current ? (
-        <div className="controler">
-          <Progress current={percent} />
-          <div className="info">
-            <Space size={10} className="muisc">
-              <Avatar
-                shape="square"
-                size={40}
-                icon={
-                  <Image
-                    preview={false}
-                    src={music.al.picUrl}
-                    onClick={showLyric}
-                  />
-                }
-              />
-              <div>
-                <MusicName name={music.name} alia={music.alia} />
+    <PageContainer isLoading={isLoading}>
+      <div className="music-player">
+        <audio
+          ref={audioNode}
+          src={`https://music.163.com/song/media/outer/url?id=${currentMusicID}.mp3`}
+          autoPlay
+        />
+        {audioNode.current && (
+          <div className="controler">
+            <Progress current={percent} />
+            <div className="info">
+              <Space size={10} className="muisc">
+                <Avatar
+                  shape="square"
+                  size={40}
+                  icon={
+                    <Image
+                      preview={false}
+                      src={music.songs[0].al?.picUrl}
+                      onClick={showLyric}
+                    />
+                  }
+                />
                 <div>
-                  {formatTime(audioNode.current.currentTime)} /{" "}
-                  {formatTime(audioNode.current.duration)}
+                  <MusicName
+                    name={music.songs[0].al?.name || ""}
+                    alia={music.songs[0].alia || []}
+                  />
+                  <div>
+                    {formatTime(audioNode.current.currentTime)} /{" "}
+                    {formatTime(audioNode.current.duration)}
+                  </div>
                 </div>
-              </div>
-            </Space>
-            <Space size={10} className="control">
-              <MyIcon
-                type="icon-shangyiqu1"
-                className="prev"
-                onClick={playPreviousMusic}
-              />
-              {audioNode.current.paused ? (
+              </Space>
+              <Space size={10} className="control">
                 <MyIcon
-                  type="icon-bofang"
-                  className="pause"
-                  onClick={playOrPauseMusic}
+                  type="icon-shangyiqu1"
+                  className="prev"
+                  onClick={playPreviousMusic}
                 />
-              ) : (
+                {audioNode.current.paused ? (
+                  <MyIcon
+                    type="icon-bofang"
+                    className="pause"
+                    onClick={playOrPauseMusic}
+                  />
+                ) : (
+                  <MyIcon
+                    type="icon-zantingtingzhi"
+                    className="play"
+                    onClick={playOrPauseMusic}
+                  />
+                )}
                 <MyIcon
-                  type="icon-zantingtingzhi"
-                  className="play"
-                  onClick={playOrPauseMusic}
+                  type="icon-xiayiqu"
+                  className="next"
+                  onClick={platNextMusic}
                 />
-              )}
-              <MyIcon
-                type="icon-xiayiqu"
-                className="next"
-                onClick={platNextMusic}
-              />
-            </Space>
-            <Space className="list">
-              <MyIcon type="icon-yinliang" className="vioce" />
-              <MyIcon
-                type="icon-bofangliebiao"
-                className="musiclist"
-                onClick={showMusicList}
-              />
-              <MyIcon type="icon-shunxubofang" className="playtype" />
-            </Space>
+              </Space>
+              <Space className="list">
+                <MyIcon type="icon-yinliang" className="vioce" />
+                <MyIcon
+                  type="icon-bofangliebiao"
+                  className="musiclist"
+                  onClick={showMusicList}
+                />
+                <MyIcon type="icon-shunxubofang" className="playtype" />
+              </Space>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="music-player-no-music">
-          <Spin />
-        </div>
-      )}
-      <MusicList hidden={hiddenList} musicList={musicList} />
-      <MusicLyric
-        hidden={hiddenLyric}
-        id={currentMusicID}
-        currentTime={currentTime}
-        percent={percent}
-        runing={runing}
-      /> */}
-    </div>
+        )}
+        {/* <MusicList hidden={hiddenList} musicList={musicList} /> */}
+        <MusicLyric
+          hidden={hiddenLyric}
+          id={currentMusicID}
+          currentTime={currentTime}
+          percent={percent}
+          runing={runing}
+        />
+      </div>
+    </PageContainer>
   );
 };
 
