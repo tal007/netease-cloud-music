@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Button, Form, Input, Typography } from "antd";
 import styled from "@emotion/styled";
-import loginBg from "img/login-bg.png";
+import loginBg from "assets/img/login-bg.png";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "context/authContext";

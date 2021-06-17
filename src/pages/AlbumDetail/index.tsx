@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 17:38:40
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-16 10:59:43
+ * @Last Modified time: 2021-06-17 09:16:18
  * 专辑详情
  */
 
@@ -101,7 +101,6 @@ const Content = ({
   const [current, setCurrent] = useState("list");
 
   const handleClick = (e: any) => {
-    console.log(e.key);
     setCurrent(e.key);
   };
 

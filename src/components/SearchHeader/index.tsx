@@ -2,14 +2,14 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 15:12:20
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-16 18:04:23
+ * @Last Modified time: 2021-06-17 10:26:12
  * 搜索头部
  */
 
 import styled from "@emotion/styled";
 import { Input, Image, Typography } from "antd";
 import { FC } from "react";
-import logo from "img/logo.svg";
+import logo from "assets/img/logo.svg";
 import { FlexBoxCenter } from "style";
 
 const SearchHeader: FC = () => {

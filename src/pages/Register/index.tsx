@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Input } from "antd";
 import styled from "@emotion/styled";
-import loginBg from "img/login-bg.png";
+import loginBg from "assets/img/login-bg.png";
 import { LockOutlined, MobileOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "context/authContext";
