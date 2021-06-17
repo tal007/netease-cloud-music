@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 17:42:16
+ * @Last Modified time: 2021-06-17 17:51:18
  * 音乐播放组件
  */
 
@@ -206,7 +206,7 @@ const Player: FC = () => {
                     onClick={platNextMusic}
                   />
                 </Control>
-                <List>
+                <List split={false}>
                   <MyIcon type="icon-yinliang" className="vioce" />
                   <MyIcon
                     type="icon-bofangliebiao"
