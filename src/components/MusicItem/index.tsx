@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 18:23:27
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 13:00:30
+ * @Last Modified time: 2021-06-17 13:51:24
  */
 
 /*
@@ -77,9 +77,7 @@ const MusicItem: FC<{
           size={48}
           icon={<CustomImage url={imageUrl} />}
         />
-        {music.alias && (
-          <MusicName name={music.name} alia={music.alia || music.alias} />
-        )}
+        <MusicName name={music.name} alia={music.alia || music.alias || []} />
       </Space>
       <div>
         <AlbumAndSinger>{singer}</AlbumAndSinger>

@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 10:49:18
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 10:28:36
+ * @Last Modified time: 2021-06-17 14:09:22
  */
 
 import { FC, useEffect } from "react";
@@ -47,7 +47,7 @@ const RecommendedPlaylist: FC = () => {
   return (
     <PageContainer isLoading={isLoading}>
       <div>
-        <EntryTitle titleName="推荐歌单" />
+        <EntryTitle titleName="推荐歌单" to="/songlist" />
         <Row gutter={[30, 30]}>
           {recommendedPlaylist &&
             recommendedPlaylist.result.map((playlistItem) => (
@@ -74,7 +74,7 @@ const RecommendedPlaylistItem: FC<{
 }> = ({ name, imageUrl, id, span = 6 }) => {
   return (
     <Container data-id={id} span={span} md={6} xl={4}>
-      <Link to={`song-list-detail?id=${id}`}>
+      <Link to={`song-list-detail/${id}`}>
         <CustomImage url={imageUrl} />
         {name}
       </Link>

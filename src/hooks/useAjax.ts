@@ -31,11 +31,10 @@ request.interceptors.response.use(
     } = response;
     if (status === 200) {
       if (code !== 200) {
-        // message.success(`${url}--数据请求成功，但是内部状态为 ${code} `)
-        // message.warning(data?.message || '登陆失败');
+        message.success(`${url}--数据请求成功，但是内部状态为 ${code} `);
+        message.warning(data?.message || "登陆失败");
         return Promise.reject<AxiosResponse>(response);
       }
-      // message.success(`${url}--数据请求成功`)
       return Promise.resolve<AxiosResponse>(response);
     }
     return Promise.reject<AxiosResponse>(response);
@@ -43,10 +42,10 @@ request.interceptors.response.use(
   (err) => {
     const { status } = err;
     console.log(err);
-    // message.warn(`HTTP状态 ${status}, ${err.response.data.messag}`);
-    // switch (status) {
-    //   case 404:
-    // }
+    message.warn(`HTTP状态 ${status}, ${err.response.data.messag}`);
+    switch (status) {
+      case 404:
+    }
     return Promise.reject<AxiosResponse>(err.response);
   }
 );
@@ -84,7 +83,6 @@ export const ajax = async (
     config.data = data;
     if (cookie) config.url += `?cookie=${encodeURIComponent(cookie)}`;
   }
-  console.log(config);
 
   if (config)
     return request(config).then((response) => Promise.resolve(response.data));

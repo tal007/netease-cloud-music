@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 14:28:41
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-16 18:30:28
+ * @Last Modified time: 2021-06-17 14:10:56
  * 新歌速递
  */
 
@@ -57,7 +57,7 @@ const NewMusic: FC = () => {
   return (
     <PageContainer isLoading={isLoading}>
       <div>
-        <EntryTitle titleName="新歌速递" to="/new-music" />
+        <EntryTitle titleName="新歌速递" to="/newmusic" />
         <Row gutter={[30, 30]}>
           {data &&
             data.result.map((music, index) => {

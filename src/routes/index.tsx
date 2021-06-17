@@ -17,6 +17,7 @@ import SearchHeader from "components/SearchHeader";
 import Artists from "pages/Artists";
 import { Artist } from "pages/Artist";
 import { AlbumDetail } from "pages/AlbumDetail";
+import SongList from "pages/SongList";
 
 const Layout: FC = () => {
   return (
@@ -41,8 +42,9 @@ const App: FC = () => {
         <Route path="/" element={<Layout />}>
           <Route path="" element={<Home />} />
           <Route path="fm" element={<FM />} />
-          <Route path="new-music" element={<NewMusic />} />
-          <Route path="song-list-detail" element={<SongListDetail />} />
+          <Route path="newmusic" element={<NewMusic />} />
+          <Route path="songlist" element={<SongList />} />
+          <Route path="song-list-detail/:id" element={<SongListDetail />} />
           <Route path="albums">
             <Route path="/" element={<Album />} />
             <Route path=":id" element={<AlbumDetail />} />
@@ -70,9 +72,12 @@ const Grid = styled.div`
     "left main right"
     "left main right";
   /* grid-gap: 10rem; */
+  overflow: hidden;
 `;
 
 const Main = styled.main`
+  min-width: 900px;
+  box-sizing: border-box;
   display: grid;
   grid-template-rows: 8rem 1fr 8rem;
   background: linear-gradient(180deg, #000c1d 0%, #08152d 100%);
@@ -83,6 +88,7 @@ const RenderPageContainer = styled.div`
   padding: 0 1rem;
   height: calc(100vh - 16rem);
   overflow-y: scroll;
+  overflow-x: hidden;
 
   ::-webkit-scrollbar {
     width: 0;

@@ -2,13 +2,12 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 15:57:07
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 13:01:18
+ * @Last Modified time: 2021-06-17 13:56:25
  * 歌单详情
  */
 
 import { FC, useEffect } from "react";
-import { Link } from "react-router-dom";
-import queryString from "query-string";
+import { Link, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { Image, Avatar, Typography, Space, Divider, Tag, List } from "antd";
 
@@ -34,13 +33,10 @@ interface SongList {
 }
 
 const SongListDetail: FC = () => {
-  const id = queryString.parse(window.location.search).id;
+  const { id } = useParams();
   const client = useAjax();
-  const {
-    run: getSongList,
-    isLoading: songListLoading,
-    data: songList,
-  } = useAsync<{ code: number; playlist: SongList }>();
+  const { run: getSongList, data: songList } =
+    useAsync<{ code: number; playlist: SongList }>();
   const {
     run: getMusicList,
     isLoading: musicListLoading,
@@ -75,7 +71,7 @@ const SongListDetail: FC = () => {
   }, [client, getMusicList, songList]);
 
   return (
-    <PageContainer isLoading={songListLoading && musicListLoading}>
+    <PageContainer isLoading={musicListLoading}>
       {songList && (
         <>
           <Header>
@@ -149,6 +145,7 @@ const Header = styled.header`
   top: 0;
   z-index: 10;
   display: flex;
+  background: var(--light-gradient);
 
   .ant-image {
     border-radius: 8px;
