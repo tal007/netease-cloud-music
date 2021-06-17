@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 15:15:43
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-04 18:19:45
+ * @Last Modified time: 2021-06-17 17:38:13
  * 音乐名字处理
  */
 
@@ -13,7 +13,7 @@ import styled from "@emotion/styled";
 const MusicName: FC<{ name: string; alia: string[] }> = ({ name, alia }) => {
   return (
     <Container>
-      {mySubString(name, 35)}{" "}
+      {mySubString(name, 20)}{" "}
       {name.length < 10 && (
         <Alia className="alia">
           {alia[0] &&

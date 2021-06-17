@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 16:39:35
+ * @Last Modified time: 2021-06-17 17:42:16
  * 音乐播放组件
  */
 
@@ -146,86 +146,88 @@ const Player: FC = () => {
   if (!music) return <FlexBoxCenter>请选择要播放的音乐</FlexBoxCenter>;
 
   return (
-    <PageContainer isLoading={isLoading}>
+    <PageContainer isLoading={false}>
       <audio
         ref={audioNode}
         src={`https://music.163.com/song/media/outer/url?id=${currentMusicID}.mp3`}
         autoPlay
       />
-      <MusicPlayer>
-        {audioNode.current && (
-          <ControlerContainer>
-            <Progress current={percent} />
-            <Info>
-              <Music size={10}>
-                <Avatar
-                  shape="square"
-                  size={40}
-                  icon={
-                    <Image
-                      preview={false}
-                      src={music.songs[0].al?.picUrl}
-                      onClick={showLyric}
-                    />
-                  }
-                />
-                <div>
-                  <MusicName
-                    name={music.songs[0].al?.name || ""}
-                    alia={music.songs[0].alia || []}
+      <PageContainer isLoading={isLoading}>
+        <MusicPlayer>
+          {audioNode.current && (
+            <ControlerContainer>
+              <Progress current={percent} />
+              <Info>
+                <Music size={10}>
+                  <Avatar
+                    shape="square"
+                    size={40}
+                    icon={
+                      <Image
+                        preview={false}
+                        src={music.songs[0].al?.picUrl}
+                        onClick={showLyric}
+                      />
+                    }
                   />
                   <div>
-                    {formatTime(audioNode.current.currentTime * 1000)} /{" "}
-                    {formatTime(audioNode.current.duration * 1000)}
+                    <MusicName
+                      name={music.songs[0]?.name || ""}
+                      alia={music.songs[0].alia || []}
+                    />
+                    <div>
+                      {formatTime(audioNode.current.currentTime * 1000)} /{" "}
+                      {formatTime(audioNode.current.duration * 1000)}
+                    </div>
                   </div>
-                </div>
-              </Music>
-              <Control size={10}>
-                <MyIcon
-                  type="icon-shangyiqu1"
-                  className="prev"
-                  onClick={playPreviousMusic}
-                />
-                {audioNode.current.paused ? (
+                </Music>
+                <Control size={10}>
                   <MyIcon
-                    type="icon-bofang"
-                    className="pause"
-                    onClick={playOrPauseMusic}
+                    type="icon-shangyiqu1"
+                    className="prev"
+                    onClick={playPreviousMusic}
                   />
-                ) : (
+                  {audioNode.current.paused ? (
+                    <MyIcon
+                      type="icon-bofang"
+                      className="pause"
+                      onClick={playOrPauseMusic}
+                    />
+                  ) : (
+                    <MyIcon
+                      type="icon-zantingtingzhi"
+                      className="play"
+                      onClick={playOrPauseMusic}
+                    />
+                  )}
                   <MyIcon
-                    type="icon-zantingtingzhi"
-                    className="play"
-                    onClick={playOrPauseMusic}
+                    type="icon-xiayiqu"
+                    className="next"
+                    onClick={platNextMusic}
                   />
-                )}
-                <MyIcon
-                  type="icon-xiayiqu"
-                  className="next"
-                  onClick={platNextMusic}
-                />
-              </Control>
-              <List>
-                <MyIcon type="icon-yinliang" className="vioce" />
-                <MyIcon
-                  type="icon-bofangliebiao"
-                  className="musiclist"
-                  onClick={showMusicList}
-                />
-                <MyIcon type="icon-shunxubofang" className="playtype" />
-              </List>
-            </Info>
-          </ControlerContainer>
-        )}
-        <MusicList hidden={hiddenList} musicList={musicList} />
-        <MusicLyric
-          hidden={hiddenLyric}
-          id={currentMusicID}
-          currentTime={currentTime}
-          percent={percent}
-          runing={runing}
-        />
-      </MusicPlayer>
+                </Control>
+                <List>
+                  <MyIcon type="icon-yinliang" className="vioce" />
+                  <MyIcon
+                    type="icon-bofangliebiao"
+                    className="musiclist"
+                    onClick={showMusicList}
+                  />
+                  <MyIcon type="icon-shunxubofang" className="playtype" />
+                </List>
+              </Info>
+            </ControlerContainer>
+          )}
+        </MusicPlayer>
+      </PageContainer>
+      <MusicList hidden={hiddenList} musicList={musicList} />
+      <MusicLyric
+        hidden={hiddenLyric}
+        id={currentMusicID}
+        currentTime={currentTime}
+        percent={percent}
+        runing={runing}
+      />
     </PageContainer>
   );
 };
