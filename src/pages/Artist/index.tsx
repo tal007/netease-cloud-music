@@ -2,17 +2,16 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 17:05:54
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-15 17:37:59
+ * @Last Modified time: 2021-06-17 14:50:17
  * 歌手详情
  */
 
-import styled from "@emotion/styled";
 import { useAjax } from "hooks/useAjax";
 import { PageContainer } from "components/PageContainer";
 import { useAsync } from "hooks/useAsync";
-import { useMount } from "hooks/useMount";
 import { useParams } from "react-router-dom";
 import { MyPageHeader } from "style";
+import { useEffect } from "react";
 
 interface ArtistDetail {
   videoCount: number;
@@ -36,11 +35,10 @@ export const Artist = () => {
     isLoading: artistDetailLoading,
     data: artistDetail,
   } = useAsync<{ code: number; message: string; data: ArtistDetail }>();
-  useMount(() => {
-    getArtistDetail(client(`/artist/detail?id=${id}`, { data: { limit: 60 } }));
-  });
 
-  console.log(artistDetail);
+  useEffect(() => {
+    getArtistDetail(client(`/artist/detail?id=${id}`, { data: { limit: 60 } }));
+  }, [client, getArtistDetail, id]);
 
   return (
     <PageContainer isLoading={artistDetailLoading}>
@@ -48,5 +46,3 @@ export const Artist = () => {
     </PageContainer>
   );
 };
-
-const Container = styled.div``;

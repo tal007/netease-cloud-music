@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 15:29:21
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 14:39:53
+ * @Last Modified time: 2021-06-17 14:45:30
  * 歌单页面
  */
 
@@ -25,10 +25,9 @@ const SongList: FC = () => {
     }>();
 
   useEffect(() => {
+    // TODO 目前只是精品歌单，而且没有做请求更多处理
     run(client("/top/playlist/highquality"));
   }, [client, run]);
-
-  console.log(data);
 
   return (
     <PageContainer isLoading={isLoading}>

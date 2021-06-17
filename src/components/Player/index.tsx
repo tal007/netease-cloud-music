@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 12:49:48
+ * @Last Modified time: 2021-06-17 14:49:08
  * 音乐播放组件
  */
 
@@ -13,7 +13,6 @@ import { Avatar, Image, Spin, Space, message } from "antd";
 
 import MyIcon from "../../Icons";
 
-import useUrlLoader from "../../hooks/useURLLoader";
 import useAnimationFrame from "../../hooks/useAnimationFrame";
 import { MUSICID, MUISCLIST } from "../../constant";
 import { formatTime } from "../../util";
@@ -37,7 +36,6 @@ const Player: FC = () => {
   // 音乐列表
   const [hiddenList, setHiddenList] = useState<boolean>(true);
   const [hiddenLyric, setHiddenLyric] = useState<boolean>(true);
-  const { ajax, loading } = useUrlLoader();
 
   const setProgress = () => {
     if (audioNode.current) {

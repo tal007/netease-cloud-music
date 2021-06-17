@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-16 17:17:50
+ * @Last Modified time: 2021-06-17 14:50:07
  * 歌词
  */
 
@@ -14,7 +14,6 @@ import {
   useCallback,
   WheelEvent,
 } from "react";
-import useUrlLoader from "../../hooks/useURLLoader";
 import useWindowResize from "../../hooks/useWindowResize";
 import useAnimationFrame from "../../hooks/useAnimationFrame";
 
@@ -38,7 +37,6 @@ const MusicLyric: FC<{
   const { windowInnerHeight } = useWindowResize();
   const [lyric, setLyric] = useState<Lyric[]>([]);
   const [lyricScroll, setLyricScroll] = useState<boolean>(true);
-  const { ajax, loading } = useUrlLoader();
 
   useEffect(() => {}, []);
 
@@ -64,22 +62,8 @@ const MusicLyric: FC<{
 
   const scroll = (e: WheelEvent) => {
     setLyricScroll(false);
-
-    // if (container.current && lyricProgressNode.current) {
-    //   const direction = (e.deltaY || e.detail) > 0 ? 'UP' : 'DOWN';
-    //   let currentTranslateY: number | string = container.current.style.transform;
-    //   currentTranslateY = parseFloat(currentTranslateY.split('(')[1]);
-
-    //   if (direction === 'UP') {
-    //     container.current.style.transform = `translateY(${currentTranslateY + 10}px)`;
-    //   } else {
-    //     container.current.style.transform = `translateY(${currentTranslateY - 10}px)`;
-    //   }
-    // }
     scrollFn();
   };
-
-  if (loading) return <Loading />;
 
   return (
     <div
