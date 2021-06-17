@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 14:34:24
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 17:47:49
+ * @Last Modified time: 2021-06-17 18:09:51
  * 播放列表
  */
 
@@ -32,7 +32,7 @@ const MusicItem: FC<{ music: MusicItemProps; i: number }> = ({ music, i }) => {
         avatar={
           <Avatar
             shape="square"
-            icon={<Image preview={false} src={imageUrl} />}
+            icon={<Image preview={false} src={music.picUrl || imageUrl} />}
           />
         }
         title={

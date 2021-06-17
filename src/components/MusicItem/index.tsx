@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 18:23:27
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 17:48:28
+ * @Last Modified time: 2021-06-17 18:09:24
  */
 
 /*
@@ -24,6 +24,8 @@ import { CustomImage } from "components/CustomImage";
 export interface MusicItemProps {
   name: string;
   id: number;
+  picUrl?: string;
+  fee?: number;
   dt?: number;
   alia?: string[];
   al?: { name: string; id: number; picUrl: string };
@@ -69,6 +71,8 @@ const MusicItem: FC<{
     ? music.ar[0].name
     : "";
 
+  // ! 8 才是免费的 1是购买单曲 3是购买专辑
+  if (music.fee !== 8) return null;
   return (
     <ListItem onDoubleClick={handleDBClick}>
       <Space size={20}>
