@@ -43,8 +43,10 @@ const App: FC = () => {
           <Route path="" element={<Home />} />
           <Route path="fm" element={<FM />} />
           <Route path="newmusic" element={<NewMusic />} />
-          <Route path="songlist" element={<SongList />} />
-          <Route path="song-list-detail/:id" element={<SongListDetail />} />
+          <Route path="songlist">
+            <Route path="/" element={<SongList />} />
+            <Route path="detail/:id" element={<SongListDetail />} />
+          </Route>
           <Route path="albums">
             <Route path="/" element={<Album />} />
             <Route path=":id" element={<AlbumDetail />} />

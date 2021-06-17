@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 15:57:07
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 13:56:25
+ * @Last Modified time: 2021-06-17 14:12:13
  * 歌单详情
  */
 
@@ -35,8 +35,11 @@ interface SongList {
 const SongListDetail: FC = () => {
   const { id } = useParams();
   const client = useAjax();
-  const { run: getSongList, data: songList } =
-    useAsync<{ code: number; playlist: SongList }>();
+  const {
+    run: getSongList,
+    isLoading: songListLoading,
+    data: songList,
+  } = useAsync<{ code: number; playlist: SongList }>();
   const {
     run: getMusicList,
     isLoading: musicListLoading,
@@ -71,7 +74,7 @@ const SongListDetail: FC = () => {
   }, [client, getMusicList, songList]);
 
   return (
-    <PageContainer isLoading={musicListLoading}>
+    <PageContainer isLoading={songListLoading || musicListLoading}>
       {songList && (
         <>
           <Header>
