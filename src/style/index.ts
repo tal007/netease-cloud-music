@@ -23,17 +23,19 @@ export const MyPageHeader = styled(PageHeader)<{
   }
 `;
 
-export const MyButton = styled(Button)<{
-  width?: number | string;
-  ml?: number | string;
-}>`
+export const MyButton = styled(Button)`
   background: var(--button-gradient);
-  margin-left: ${(props) => (props.ml ? props.ml : undefined)};
-  width: ${(props) => (props.width ? props.width : undefined)};
   height: 3.5rem;
   color: #212020;
   font-size: 1.6rem;
   text-transform: uppercase;
   border: none;
   border-radius: 10rem;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: #212020;
+    background: var(--button-gradient);
+  }
 `;

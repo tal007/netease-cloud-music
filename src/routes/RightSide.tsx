@@ -2,10 +2,10 @@ import styled from "@emotion/styled";
 import React, { FC } from "react";
 
 import { FlexBoxCenter } from "style";
-import { Avatar, Image } from "antd";
+import { Avatar } from "antd";
 import { useAuth } from "context/authContext";
 import { Link } from "react-router-dom";
-import { Uploader } from "components/Uploader";
+import { CustomImage } from "components/CustomImage";
 
 const RightSide: FC = () => {
   const { user } = useAuth();
@@ -23,10 +23,10 @@ const RightSide: FC = () => {
   return (
     <Container>
       <FlexBoxCenter height={"5rem"}>
-        <Avatar icon={<Image src={user.profile.avatarUrl} />} />
+        <Avatar icon={<CustomImage url={user.profile.avatarUrl} />} />
         <span style={{ marginLeft: "1rem" }}>{user.profile.nickname}</span>
       </FlexBoxCenter>
-      <Uploader />
+      {/* <Uploader /> */}
     </Container>
   );
 };

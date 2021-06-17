@@ -2,13 +2,13 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 17:38:40
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 09:16:18
+ * @Last Modified time: 2021-06-17 17:33:47
  * 专辑详情
  */
 
 import styled from "@emotion/styled";
 import { useAjax } from "hooks/useAjax";
-import { Divider, Menu, Tag, Typography } from "antd";
+import { Divider, List, Menu, Tag, Typography } from "antd";
 import { CustomImage } from "components/CustomImage";
 import { PageContainer } from "components/PageContainer";
 import dayjs from "dayjs";
@@ -17,7 +17,9 @@ import { useMount } from "hooks/useMount";
 import { FC, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FlexBoxCenter, MyButton } from "style";
-import { fillNumber, formatTime } from "util/index";
+import MusicItem, { MusicItemProps } from "components/MusicItem";
+import { MUISCLIST, MUSICID } from "constant";
+import Pubsub from "pubsub-js";
 
 interface AlbumData {
   name: string;
@@ -31,14 +33,6 @@ interface AlbumData {
   };
 }
 
-interface Song {
-  id: number;
-  name: string;
-  mv: number;
-  ar: { id: number; name: string }[];
-  dt: number;
-}
-
 export const AlbumDetail = () => {
   const { id } = useParams();
 
@@ -48,7 +42,7 @@ export const AlbumDetail = () => {
       code: number;
       resourceState: boolean;
       album: AlbumData;
-      songs: Song[];
+      songs: MusicItemProps[];
     }>();
   useMount(() => {
     run(client(`/album?id=${id}`, { data: { limit: 60 } }));
@@ -58,7 +52,7 @@ export const AlbumDetail = () => {
     <PageContainer isLoading={isLoading}>
       {data && (
         <>
-          <Header album={data.album} />
+          <Header album={data.album} songs={data.songs} />
           <Divider />
           <Content songs={data.songs} description={data.album.description} />
         </>
@@ -67,7 +61,15 @@ export const AlbumDetail = () => {
   );
 };
 
-const Header: FC<{ album: AlbumData }> = ({ album }) => {
+const Header: FC<{ album: AlbumData; songs: MusicItemProps[] }> = ({
+  album,
+  songs,
+}) => {
+  const palyAll = () => {
+    Pubsub.publish(MUISCLIST, songs);
+    Pubsub.publish(MUSICID, songs[0].id);
+  };
+
   return (
     <HeaderContainer>
       <CustomImage url={album.picUrl} width={"20rem"} height={"20rem"} />
@@ -85,7 +87,7 @@ const Header: FC<{ album: AlbumData }> = ({ album }) => {
           <Link to={`/artists/${album.artist.id}`}>{album.artist.name}</Link>
         </p>
         <p>时间：{dayjs(album.publishTime).format("YYYY-MM-DD")}</p>
-        <MyButton>播放全部</MyButton>
+        <MyButton onClick={palyAll}>播放全部</MyButton>
       </Description>
     </HeaderContainer>
   );
@@ -95,7 +97,7 @@ const Content = ({
   songs,
   description,
 }: {
-  songs: Song[];
+  songs: MusicItemProps[];
   description: string;
 }) => {
   const [current, setCurrent] = useState("list");
@@ -125,23 +127,18 @@ const Content = ({
   );
 };
 
-const MusicList = ({ songs }: { songs: Song[] }) => (
-  <MusicListContainer>
+const MusicList = ({ songs }: { songs: MusicItemProps[] }) => (
+  <List>
     {songs.map((value, index) => (
-      <MusicListItem key={value.id} i={index + 1} {...value} />
+      <MusicItem
+        key={value.id}
+        i={index + 1}
+        showImage={false}
+        music={value}
+        musicList={songs}
+      />
     ))}
-  </MusicListContainer>
-);
-
-const MusicListItem = (props: Song & { i: number | string }) => (
-  <MusicListItemStyle>
-    <span className={"index"}>{fillNumber(props.i)}</span>
-    <span className={"name"}>{props.name}</span>
-    <span className={"singer"}>
-      {props.ar.map((value) => value.name + "/")}
-    </span>
-    <span className={"duration"}>{formatTime(props.dt)}</span>
-  </MusicListItemStyle>
+  </List>
 );
 
 const AlbumDescription = ({ description }: { description: string }) => {
@@ -149,25 +146,14 @@ const AlbumDescription = ({ description }: { description: string }) => {
 };
 
 const HeaderContainer = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--light-gradient);
   display: flex;
   flex-direction: row;
 `;
 
 const Description = styled.div`
   margin-left: 2rem;
-`;
-
-const MusicListContainer = styled.ul``;
-
-const MusicListItemStyle = styled.li`
-  height: 4rem;
-  line-height: 1.4;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-
-  .index {
-  }
 `;

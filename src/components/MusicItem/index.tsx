@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 18:23:27
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 15:21:31
+ * @Last Modified time: 2021-06-17 17:23:37
  */
 
 /*
@@ -50,7 +50,8 @@ const MusicItem: FC<{
   music: MusicItemProps;
   i: number;
   musicList: MusicItemProps[];
-}> = ({ music, i, musicList }) => {
+  showImage?: boolean;
+}> = ({ music, i, musicList, showImage = true }) => {
   const handleDBClick = () => {
     Pubsub.publish(MUSICID, music.id);
     Pubsub.publish(MUISCLIST, musicList);
@@ -72,11 +73,13 @@ const MusicItem: FC<{
     <ListItem onDoubleClick={handleDBClick}>
       <Space size={20}>
         <SerialNumber>{fillNumber(i)}</SerialNumber>
-        <Avatar
-          shape="square"
-          size={48}
-          icon={<CustomImage url={imageUrl} />}
-        />
+        {showImage && (
+          <Avatar
+            shape="square"
+            size={48}
+            icon={<CustomImage url={imageUrl} />}
+          />
+        )}
         <MusicName name={music.name} alia={music.alia || music.alias || []} />
       </Space>
       <div>
