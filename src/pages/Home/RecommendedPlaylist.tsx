@@ -2,17 +2,19 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 10:49:18
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-16 17:48:01
+ * @Last Modified time: 2021-06-17 10:28:36
  */
 
 import { FC, useEffect } from "react";
-import { Row } from "antd";
+import { Col, Row } from "antd";
 
 import EntryTitle from "../../components/EntryTitle/index";
-import RecommendedPlaylistItem from "../../components/RecommendedPlaylistItem";
 import { PageContainer } from "components/PageContainer";
 import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
+import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
+import { CustomImage } from "components/CustomImage";
 
 interface ResultItem {
   id: number;
@@ -63,3 +65,30 @@ const RecommendedPlaylist: FC = () => {
 };
 
 export default RecommendedPlaylist;
+
+const RecommendedPlaylistItem: FC<{
+  name: string;
+  imageUrl: string;
+  id: number;
+  span?: number;
+}> = ({ name, imageUrl, id, span = 6 }) => {
+  return (
+    <Container data-id={id} span={span} md={6} xl={4}>
+      <Link to={`song-list-detail?id=${id}`}>
+        <CustomImage url={imageUrl} />
+        {name}
+      </Link>
+    </Container>
+  );
+};
+
+const Container = styled(Col)`
+  cursor: pointer;
+  a {
+    color: var(--text-color);
+  }
+  .ant-image {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+`;

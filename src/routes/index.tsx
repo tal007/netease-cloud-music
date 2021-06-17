@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
-import Home from "pages/Found/index";
+import Home from "pages/Home/index";
 import FM from "pages/FM/index";
 import NewMusic from "pages/NewMusic";
 import SongListDetail from "pages/SongListDetail";
