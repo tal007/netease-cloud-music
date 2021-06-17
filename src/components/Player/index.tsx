@@ -2,14 +2,13 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 15:37:03
+ * @Last Modified time: 2021-06-17 16:16:40
  * 音乐播放组件
  */
 
-import "./index.less";
 import { FC, useEffect, useState, useRef } from "react";
 import Pubsub from "pubsub-js";
-import { Avatar, Image, Spin, Space, message } from "antd";
+import { Avatar, Image, Space } from "antd";
 
 import MyIcon from "../../Icons";
 
@@ -25,6 +24,7 @@ import { MusicItemProps } from "components/MusicItem";
 import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
+import styled from "@emotion/styled";
 
 type playType = "NEXT" | "PREV" | "RANDOM" | "CYCLE";
 
@@ -75,25 +75,27 @@ const Player: FC = () => {
         setRunning(false);
         run(client("/song/detail", { data: { ids: data } }));
         setCurrentMusicID(data);
+        setRunning(true);
+        setPercent(0);
       }
     );
 
-    // const pubsubNusicList = Pubsub.subscribe(
-    //   MUISCLIST,
-    //   (msg: string, data: MusicItemProps[]) => {
-    //     if (data !== musicList) {
-    //       setMusicList(data);
-    //     }
-    //   }
-    // );
+    const pubsubNusicList = Pubsub.subscribe(
+      MUISCLIST,
+      (msg: string, data: MusicItemProps[]) => {
+        if (data !== musicList) {
+          setMusicList(data);
+        }
+      }
+    );
 
     return () => {
       Pubsub.unsubscribe(pubsubNusicID);
-      // Pubsub.unsubscribe(pubsubNusicList);
+      Pubsub.unsubscribe(pubsubNusicList);
 
       window.removeEventListener("keydown", keydownPauseOrPlay);
     };
-  }, [client, run]);
+  }, [client, musicList, run]);
 
   useEffect(() => {}, []);
 
@@ -145,17 +147,17 @@ const Player: FC = () => {
 
   return (
     <PageContainer isLoading={isLoading}>
-      <div className="music-player">
-        <audio
-          ref={audioNode}
-          src={`https://music.163.com/song/media/outer/url?id=${currentMusicID}.mp3`}
-          autoPlay
-        />
+      <audio
+        ref={audioNode}
+        src={`https://music.163.com/song/media/outer/url?id=${currentMusicID}.mp3`}
+        autoPlay
+      />
+      <MusicPlayer>
         {audioNode.current && (
-          <div className="controler">
+          <ControlerContainer>
             <Progress current={percent} />
-            <div className="info">
-              <Space size={10} className="muisc">
+            <Info>
+              <Music size={10}>
                 <Avatar
                   shape="square"
                   size={40}
@@ -173,12 +175,12 @@ const Player: FC = () => {
                     alia={music.songs[0].alia || []}
                   />
                   <div>
-                    {formatTime(audioNode.current.currentTime)} /{" "}
-                    {formatTime(audioNode.current.duration)}
+                    {formatTime(audioNode.current.currentTime * 1000)} /{" "}
+                    {formatTime(audioNode.current.duration * 1000)}
                   </div>
                 </div>
-              </Space>
-              <Space size={10} className="control">
+              </Music>
+              <Control size={10}>
                 <MyIcon
                   type="icon-shangyiqu1"
                   className="prev"
@@ -202,8 +204,8 @@ const Player: FC = () => {
                   className="next"
                   onClick={platNextMusic}
                 />
-              </Space>
-              <Space className="list">
+              </Control>
+              <List>
                 <MyIcon type="icon-yinliang" className="vioce" />
                 <MyIcon
                   type="icon-bofangliebiao"
@@ -211,11 +213,11 @@ const Player: FC = () => {
                   onClick={showMusicList}
                 />
                 <MyIcon type="icon-shunxubofang" className="playtype" />
-              </Space>
-            </div>
-          </div>
+              </List>
+            </Info>
+          </ControlerContainer>
         )}
-        {/* <MusicList hidden={hiddenList} musicList={musicList} /> */}
+        <MusicList hidden={hiddenList} musicList={musicList} />
         <MusicLyric
           hidden={hiddenLyric}
           id={currentMusicID}
@@ -223,9 +225,67 @@ const Player: FC = () => {
           percent={percent}
           runing={runing}
         />
-      </div>
+      </MusicPlayer>
     </PageContainer>
   );
 };
 
 export default Player;
+
+const MusicPlayer = styled.div`
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  background-color: linear-gradient(360deg, #020814 0%, #030d20 100%);
+`;
+
+const ControlerContainer = styled.div`
+  height: 100%;
+`;
+
+const Info = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 100%;
+`;
+
+const Music = styled(Space)`
+  display: flex;
+  flex-direction: row;
+  flex-basis: 250px;
+
+  .ant-avatar {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+`;
+
+const Control = styled(Space)`
+  margin: 0 auto;
+  font-size: 20px;
+
+  .next,
+  .prev,
+  .play,
+  .pause {
+    color: var(--text-color);
+  }
+
+  .play,
+  .pause {
+    margin: 0 10px;
+    transform: scale(1.3);
+  }
+`;
+
+const List = styled(Space)`
+  direction: rtl;
+  font-size: 16px;
+  flex-basis: 250px;
+  color: var(--text-color);
+
+  .musiclist {
+    margin: 0 20px;
+  }
+`;

@@ -13,8 +13,10 @@ export function fillNumber(value: number | string) {
 // 音乐毫秒转换
 export function formatTime(value: string | number) {
   value = parseInt(String(value), 10) / 1000;
-  const min = fillNumber(parseInt(String(value / 60), 10));
-  const sec = fillNumber(parseInt(String(value % 60), 10));
+  let min = fillNumber(parseInt(String(value / 60), 10));
+  let sec = fillNumber(parseInt(String(value % 60), 10));
+  min = isNaN(min as number) ? "00" : min;
+  sec = isNaN(sec as number) ? "00" : sec;
   return `${min}:${sec}`;
 }
 
