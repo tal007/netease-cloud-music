@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 18:23:27
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 17:23:37
+ * @Last Modified time: 2021-06-17 17:48:28
  */
 
 /*
@@ -95,7 +95,6 @@ export default MusicItem;
 
 const ListItem = styled(List.Item)`
   color: #fff;
-  border-bottom: 0 !important;
 `;
 
 const SerialNumber = styled.span`

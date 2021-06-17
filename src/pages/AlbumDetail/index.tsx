@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 17:38:40
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 17:33:47
+ * @Last Modified time: 2021-06-17 17:48:54
  * 专辑详情
  */
 
@@ -128,7 +128,7 @@ const Content = ({
 };
 
 const MusicList = ({ songs }: { songs: MusicItemProps[] }) => (
-  <List>
+  <List split={false}>
     {songs.map((value, index) => (
       <MusicItem
         key={value.id}

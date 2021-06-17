@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 14:34:24
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 16:32:20
+ * @Last Modified time: 2021-06-17 17:47:49
  * 播放列表
  */
 
@@ -26,7 +26,7 @@ const MusicItem: FC<{ music: MusicItemProps; i: number }> = ({ music, i }) => {
     ? music.al.picUrl
     : "";
   return (
-    <ListItem onDoubleClick={play}>
+    <List.Item onDoubleClick={play}>
       <Index>{fillNumber(i + 1)}</Index>
       <List.Item.Meta
         avatar={
@@ -39,7 +39,7 @@ const MusicItem: FC<{ music: MusicItemProps; i: number }> = ({ music, i }) => {
           <MusicName name={music.name} alia={music.alias || music.alia || []} />
         }
       />
-    </ListItem>
+    </List.Item>
   );
 };
 
@@ -53,7 +53,7 @@ const MusicList: FC<{ hidden: boolean; musicList: MusicItemProps[] }> = ({
     <MusicListContainer
       style={{ width: hidden ? 0 : `40rem`, height: windowInnerHeight - 60 }}
     >
-      <List>
+      <List split={false}>
         {musicList.map((music, index) => (
           <MusicItem key={music.id} i={index} music={music} />
         ))}
@@ -75,10 +75,6 @@ const MusicListContainer = styled.div`
   box-shadow: 0 0 5px var(--color-middle);
   overflow-y: scroll;
   transition: width 0.3s ease;
-`;
-
-const ListItem = styled(List.Item)`
-  border-bottom: 0 !important;
 `;
 
 const Index = styled.span`
