@@ -110,5 +110,7 @@ const register = (data: {
   });
 };
 
-export const loginOut = async () =>
-  window.localStorage.removeItem(localStorageKey);
+export const loginOut = async () => {
+  window.localStorage.clear();
+  window.location.reload();
+};
