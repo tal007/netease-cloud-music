@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 17:51:18
+ * @Last Modified time: 2021-06-17 18:31:13
  * 音乐播放组件
  */
 
@@ -224,9 +224,11 @@ const Player: FC = () => {
       <MusicLyric
         hidden={hiddenLyric}
         id={currentMusicID}
+        music={music.songs[0]}
         currentTime={currentTime}
         percent={percent}
         runing={runing}
+        setHiddenLyric={setHiddenLyric}
       />
     </PageContainer>
   );

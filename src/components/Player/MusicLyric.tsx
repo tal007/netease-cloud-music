@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 18:22:36
+ * @Last Modified time: 2021-06-18 09:31:00
  * 歌词
  */
 
@@ -21,31 +21,30 @@ import { dealWithLyric, debounce } from "util/index";
 import styled from "@emotion/styled";
 import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
-interface LyricResponse {
-  lrc: {
-    lyric: string;
-  };
-}
+import { PageContainer } from "components/PageContainer";
+import { MusicItemProps } from "components/MusicItem";
+import { FlexBoxCenter } from "style";
+import { CustomImage } from "components/CustomImage";
+import MyIcon from "Icons";
+import { Typography } from "antd";
+import { Link } from "react-router-dom";
 
 const MusicLyric: FC<{
   id: number | string;
+  music: MusicItemProps;
+  setHiddenLyric: React.Dispatch<React.SetStateAction<boolean>>;
   hidden: boolean;
   currentTime: number;
   percent: number;
   runing: boolean;
-}> = ({ id, hidden, currentTime, percent, runing }) => {
+}> = ({ id, hidden, currentTime, percent, runing, music, setHiddenLyric }) => {
   const container = useRef<HTMLDivElement | null>(null);
   const lyricProgressNode = useRef<HTMLDivElement | null>(null);
   const { windowInnerHeight } = useWindowResize();
   const [lyricScroll, setLyricScroll] = useState<boolean>(true);
 
   const client = useAjax();
-  const { run, isLoading, data } =
-    useAsync<{
-      lrc: {
-        lyric: string;
-      };
-    }>();
+  const { run, isLoading, data } = useAsync<{ lrc: { lyric: string } }>();
 
   useEffect(() => {
     run(client("/lyric", { data: { id } }));
@@ -55,7 +54,7 @@ const MusicLyric: FC<{
     if (container.current && lyricProgressNode.current) {
       const containerHeight = windowInnerHeight - 60;
       const halfWindowInnerHeight = containerHeight / 2;
-      const passNodeList = document.querySelectorAll(".pass").length;
+      const passNodeList = container.current.querySelectorAll("div").length;
       const passHeight = halfWindowInnerHeight - (passNodeList * 40 + 8);
       container.current.style.transform = `translateY(${passHeight}px)`;
       const scrollBarPassHeight = (percent / 100) * (containerHeight - 50);
@@ -63,53 +62,108 @@ const MusicLyric: FC<{
     }
   }, runing && lyricScroll);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const scrollFn = useCallback(
+  const scrollFn = useCallback(() => {
     debounce(() => {
       setLyricScroll(true);
-    }, 2000),
-    []
-  );
+    }, 2000);
+  }, []);
 
-  const scroll = (e: WheelEvent) => {
-    setLyricScroll(false);
-    scrollFn();
-  };
+  const lyricArray = useCallback(() => {
+    return dealWithLyric(data?.lrc.lyric || "");
+  }, [data?.lrc.lyric]);
 
   return (
-    <MusicLyricContainer
+    <Fullscreen
       style={{
-        width: hidden ? 0 : "100%",
-        height: hidden ? 0 : windowInnerHeight - 60,
+        height: hidden ? 0 : "100vh",
       }}
     >
-      <LyricContainer ref={container} onWheel={(e) => scroll(e)}>
-        {data &&
-          dealWithLyric(data.lrc.lyric).map((value) => {
-            if (value.duration <= currentTime) {
-              return <LyricDiv key={value.duration}>{value.text}</LyricDiv>;
-            }
-            return <LyricP key={value.duration}>{value.text}</LyricP>;
-          })}
-      </LyricContainer>
-      <ScrollBar>
-        <Progress ref={lyricProgressNode}></Progress>
-      </ScrollBar>
-    </MusicLyricContainer>
+      <CloseIcon type="icon-scale1" onClick={() => setHiddenLyric(true)} />
+      <PageContainer isLoading={isLoading}>
+        <FlexBoxCenter>
+          <div>
+            <CustomImage
+              width={300}
+              height={300}
+              url={music.al?.picUrl || ""}
+            />
+            <Typography.Title level={2}>{music.name}</Typography.Title>
+            <Typography.Title level={4}>
+              {music.ar && (
+                <Link to={`/artists/${music.ar[0].id}`}>
+                  {music.ar[0].name}
+                </Link>
+              )}
+            </Typography.Title>
+          </div>
+          <MusicLyricContainer>
+            <LyricContainer ref={container}>
+              {data &&
+                lyricArray().map((value, index) => {
+                  if (value.duration <= currentTime) {
+                    return <LyricDiv key={value.time}>{value.text}</LyricDiv>;
+                  }
+                  return <LyricP key={value.time}>{value.text}</LyricP>;
+                })}
+            </LyricContainer>
+            <ScrollBar>
+              <Progress ref={lyricProgressNode}></Progress>
+            </ScrollBar>
+          </MusicLyricContainer>
+        </FlexBoxCenter>
+      </PageContainer>
+    </Fullscreen>
   );
 };
 
 export default MusicLyric;
 
-const MusicLyricContainer = styled.div`
-  position: absolute;
+const Fullscreen = styled.div`
+  position: fixed;
   left: 0;
-  bottom: 100%;
-  z-index: 20;
+  bottom: 0;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  background: var(--light-gradient);
+  transition: all 0.3s linear;
+  overflow: hidden;
+`;
 
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-light);
+const CloseIcon = styled(MyIcon)`
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+  cursor: pointer;
+  font-size: 30px;
+  z-index: 998;
+
+  &:hover {
+    animation: scale 3s linear infinite;
+  }
+
+  @keyframes scale {
+    0% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(1.2);
+    }
+    50% {
+      transform: scale(0.8);
+    }
+    75% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+`;
+
+const MusicLyricContainer = styled.div`
+  width: 60%;
+  height: 60%;
   overflow: hidden;
   transition: height 0.3s ease;
 

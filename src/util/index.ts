@@ -63,14 +63,14 @@ export function dealWithLyric(str: string): Lyric[] {
   const lyricArr = str.split("\n");
   lyricArr.pop();
   return lyricArr.map((item) => {
-    const time = item.slice(0, 11);
-    const min: any = time.slice(1, 3);
-    const sec: any = time.slice(4, 10);
-    const duration = min * 60 + sec * 1;
+    const time = item.split("]")[0].split("[")[1];
+    const min: number = parseFloat(time.split(":")[0]);
+    const sec: number = parseFloat(time.split(":")[1]);
+    const duration: number = min * 60 + sec * 1;
     return {
       time,
       duration,
-      text: item.slice(11, item.length),
+      text: item.split("]")[1].trim(),
     };
   });
 }
