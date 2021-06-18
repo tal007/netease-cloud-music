@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { Button, Form, Input } from "antd";
 import styled from "@emotion/styled";
 import registerBg from "assets/img/register-bg.png";
-import logo from "assets/img/logo.svg";
 import { LockOutlined, MobileOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "context/authContext";
 import Helmet from "react-helmet";
 import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
-import { CustomImage } from "components/CustomImage";
 import { Logo } from "components/Logo";
 
 const Register = () => {
