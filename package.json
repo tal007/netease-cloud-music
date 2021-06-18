@@ -38,7 +38,7 @@
   },
   "scripts": {
     "dev": "craco start",
-    "build": "craco build",
+    "build": "CI=false craco build",
     "test": "craco test",
     "prepare": "husky install"
   },
