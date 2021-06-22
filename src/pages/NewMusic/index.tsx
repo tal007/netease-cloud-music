@@ -31,8 +31,6 @@ const NewMusic: FC = () => {
     setType(e.key);
   };
 
-  console.log(data);
-
   return (
     <>
       <Menus onClick={handleClick} selectedKeys={[`${type}`]} mode="horizontal">

@@ -31,8 +31,6 @@ const RecommendedPlaylist: FC = () => {
     run(client("/personalized", { data: { limit: 12 } }));
   }, [client, run]);
 
-  console.log(recommendedPlaylist);
-
   return (
     <PageContainer isLoading={isLoading}>
       <div>

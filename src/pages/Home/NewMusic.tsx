@@ -52,8 +52,6 @@ const NewMusic: FC = () => {
     run(client("/personalized/newsong"));
   }, [client, run]);
 
-  console.log(data);
-
   return (
     <PageContainer isLoading={isLoading}>
       <div>
