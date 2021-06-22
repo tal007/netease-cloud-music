@@ -14,7 +14,12 @@ import { ReactNode } from "react";
 interface PageContainerProps {
   isLoading: boolean;
   children: ReactNode;
+  // data: any;
 }
+
+// const PageContent = ({data, children}: {data: any, children: ReactNode}) => {
+//   return data ? <>{children}</> : null;
+// }
 
 export const PageContainer = (props: PageContainerProps) => {
   if (props.isLoading) {
@@ -27,7 +32,12 @@ export const PageContainer = (props: PageContainerProps) => {
     );
   }
 
-  return <Container>{props.children}</Container>;
+  return (
+    <Container>
+      {props.children}
+      {/* <PageContent children={props.children} data={props.data}/> */}
+    </Container>
+  );
 };
 
 const LoadingContainer = styled.div`

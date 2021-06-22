@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { MUISCLIST, MUSICID } from "constant";
 import pubsub from "pubsub-js";
 import { CustomImage } from "components/CustomImage";
+import { useQuery } from "react-query";
 
 interface ResultItem {
   alg: string;
@@ -43,14 +44,12 @@ interface ResultItem {
 
 const NewMusic: FC = () => {
   const client = useAjax();
-  const { run, isLoading, data } =
-    useAsync<{ category: number; code: number; result: ResultItem[] }>();
 
-  useEffect(() => {
-    // limt 最大30
-    // ajax<MusicItemListResponse>('/personalized/newsong?limit=10', 'GET')
-    run(client("/personalized/newsong"));
-  }, [client, run]);
+  const { isLoading, error, data } = useQuery<{
+    category: number;
+    code: number;
+    result: ResultItem[];
+  }>("newsong", () => client("/personalized/newsong"));
 
   return (
     <PageContainer isLoading={isLoading}>

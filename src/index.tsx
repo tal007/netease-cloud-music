@@ -7,13 +7,18 @@ import reportWebVitals from "./reportWebVitals";
 import { AppProviders } from "./context";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/lib/locale/zh_CN";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
     <ConfigProvider locale={zhCN}>
-      <AppProviders>
-        <App />
-      </AppProviders>
+      <QueryClientProvider client={queryClient}>
+        <AppProviders>
+          <App />
+        </AppProviders>
+      </QueryClientProvider>
     </ConfigProvider>
   </React.StrictMode>,
   document.getElementById("root")
