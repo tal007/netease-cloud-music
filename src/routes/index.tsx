@@ -11,7 +11,6 @@ import Register from "pages/Register";
 import styled from "@emotion/styled";
 import Player from "components/Player";
 import LeftSide from "./LeftSide";
-import RightSide from "./RightSide";
 import Album from "pages/Album";
 import SearchHeader from "components/SearchHeader";
 import Artists from "pages/Artists";
@@ -30,7 +29,6 @@ const Layout: FC = () => {
         </RenderPageContainer>
         <Player />
       </Main>
-      <RightSide />
     </Grid>
   );
 };
@@ -68,11 +66,11 @@ export default App;
 const Grid = styled.div`
   display: grid;
   height: 100vh;
-  grid-template-columns: 20rem 1fr 20rem;
+  grid-template-columns: 20rem 1fr;
   grid-template-areas:
-    "left main right"
-    "left main right"
-    "left main right";
+    "left main"
+    "left main"
+    "left main";
   /* grid-gap: 10rem; */
   overflow: hidden;
 `;

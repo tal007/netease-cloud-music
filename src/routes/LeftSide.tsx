@@ -1,20 +1,24 @@
 import styled from "@emotion/styled";
 import React, { FC } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import MyIcon from "Icons";
-import { MyButton } from "style";
-import { Divider } from "antd";
+import { FlexBoxCenter, MyButton } from "style";
+import { Avatar, Button, Divider } from "antd";
+import { useAuth } from "context/authContext";
+import { CustomImage } from "components/CustomImage";
+import { loginOut } from "authProvider";
 
 interface NavItem {
   name: string;
   icon: string;
   to: string;
+  auth?: boolean;
 }
 
 const quickAccess = [
   { name: "首页", icon: "icon-xuanzhongshangcheng", to: "/" },
-  { name: "私人FM", icon: "icon-fm", to: "/fm" },
+  { name: "私人FM", icon: "icon-fm", to: "/fm", auth: true },
 ];
 
 const Library = [
@@ -35,18 +39,42 @@ const LinkItem: FC<{ name: string; to: string; icon: string }> = ({
   );
 };
 
-const Group: FC<{ data: NavItem[]; title: string }> = ({ data, title }) => (
-  <GroupContainer>
-    <GroupTitle>{title}</GroupTitle>
-    {data.map((value) => (
-      <LinkItem key={value.name} {...value} />
-    ))}
-  </GroupContainer>
-);
+const Group: FC<{ data: NavItem[]; title: string }> = ({ data, title }) => {
+  const { user } = useAuth();
+
+  return (
+    <GroupContainer>
+      <GroupTitle>{title}</GroupTitle>
+      {data.map((value) => {
+        if (value.auth) {
+          return user ? <LinkItem key={value.name} {...value} /> : null;
+        }
+        return <LinkItem key={value.name} {...value} />;
+      })}
+    </GroupContainer>
+  );
+};
 
 const LeftSide: FC = () => {
+  const { user } = useAuth();
+
   return (
     <Container>
+      {user ? (
+        <>
+          <FlexBoxCenter height={"5rem"}>
+            <Avatar icon={<CustomImage url={user.profile.avatarUrl} />} />
+            <span style={{ marginLeft: "1rem" }}>{user.profile.nickname}</span>
+          </FlexBoxCenter>
+          <Button type={"link"} onClick={loginOut}>
+            退出登录
+          </Button>
+        </>
+      ) : (
+        <FlexBoxCenter height={"5rem"}>
+          未登录，<Link to="/login">点击去登录</Link>
+        </FlexBoxCenter>
+      )}
       <MyButton block style={{ width: "90%", marginLeft: "5%" }}>
         Made For You
       </MyButton>
@@ -66,6 +94,7 @@ const Container = styled.div`
   background: var(--light-gradient);
   /* filter: blur(1px); */
   opacity: 0.91;
+  color: #afafaf;
 `;
 
 const GroupContainer = styled.div`
