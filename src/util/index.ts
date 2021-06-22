@@ -1,3 +1,5 @@
+import { Lyric } from "types/lyric";
+
 export function checkIsEmpty(value: string | number): boolean {
   if (typeof value === "number") {
     value = value.toString();

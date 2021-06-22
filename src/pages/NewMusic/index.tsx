@@ -13,7 +13,8 @@ import { useAjax } from "hooks/useAjax";
 import { PageContainer } from "components/PageContainer";
 import { menus } from "./menus";
 import styled from "@emotion/styled";
-import MusicItem, { MusicItemProps } from "components/MusicItem";
+import MusicItem from "components/MusicItem";
+import { MusicItemProps } from "types/musicItem";
 
 type Type = 0 | 7 | 96 | 8 | 16;
 

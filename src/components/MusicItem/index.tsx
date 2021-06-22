@@ -21,32 +21,7 @@ import MusicName from "components/MusicName";
 import { formatTime, fillNumber, mySubString } from "util/index";
 import styled from "@emotion/styled";
 import { CustomImage } from "components/CustomImage";
-export interface MusicItemProps {
-  name: string;
-  id: number;
-  picUrl?: string;
-  fee?: number;
-  dt?: number;
-  alia?: string[];
-  al?: { name: string; id: number; picUrl: string };
-  ar?: { name: string; id: number }[];
-  publishTime?: number;
-
-  duration?: number;
-  alias?: string[];
-  album?: {
-    id: number;
-    name: string;
-    picUrl: string;
-    publishTime: number;
-  };
-  artists?: [
-    {
-      name: string;
-      id: number;
-    }
-  ];
-}
+import { MusicItemProps } from "types/musicItem";
 
 const MusicItem: FC<{
   music: MusicItemProps;

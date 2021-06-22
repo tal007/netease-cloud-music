@@ -9,11 +9,11 @@
 */
 
 import { CustomImage } from "components/CustomImage";
-import { MusicItemProps } from "components/MusicItem";
 import { PageContainer } from "components/PageContainer";
 import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
 import { FC, useEffect, useState } from "react";
+import { MusicItemProps } from "types/musicItem";
 
 const FM: FC = () => {
   const [current, setCurrent] = useState<MusicItemProps | null>(null);

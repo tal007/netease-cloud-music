@@ -6,11 +6,14 @@ import Pubsub from "pubsub-js";
 
 import { LOGINDATA, ISLOGIN } from "../../constant";
 import styled from "@emotion/styled";
+import { LoginProfileProps } from "types/auth";
 
 const User: FC = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [loginData, setLoginData] = useState<LoginProfile>({} as LoginProfile);
+  const [loginData, setLoginData] = useState<LoginProfileProps>(
+    {} as LoginProfileProps
+  );
 
   useEffect(() => {
     // 重新打开页面判断是否登陆

@@ -4,12 +4,15 @@ import { Carousel, Image } from "antd";
 import Loading from "../../components/Loading";
 import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
-
-type Banners = Banner[];
+import { BannerProps } from "types/banner";
 
 const Banner: FC = () => {
   const client = useAjax();
-  const { run, data: banners, isLoading } = useAsync<{ banners: Banners }>();
+  const {
+    run,
+    data: banners,
+    isLoading,
+  } = useAsync<{ banners: BannerProps[] }>();
 
   useEffect(() => {
     run(client("/banner"));

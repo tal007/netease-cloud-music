@@ -16,7 +16,8 @@ import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
 import styled from "@emotion/styled";
 import { CustomImage } from "components/CustomImage";
-import MusicItem, { MusicItemProps } from "components/MusicItem";
+import MusicItem from "components/MusicItem";
+import { MusicItemProps } from "types/musicItem";
 
 interface SongList {
   name: string;

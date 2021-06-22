@@ -17,9 +17,10 @@ import { useMount } from "hooks/useMount";
 import { FC, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FlexBoxCenter, MyButton } from "style";
-import MusicItem, { MusicItemProps } from "components/MusicItem";
+import MusicItem from "components/MusicItem";
 import { MUISCLIST, MUSICID } from "constant";
 import Pubsub from "pubsub-js";
+import { MusicItemProps } from "types/musicItem";
 
 interface AlbumData {
   name: string;

@@ -14,8 +14,8 @@ import { MUSICID } from "constant";
 import { fillNumber } from "util/index";
 import useWindowResize from "hooks/useWindowResize";
 import MusicName from "components/MusicName";
-import { MusicItemProps } from "components/MusicItem";
 import styled from "@emotion/styled";
+import { MusicItemProps } from "types/musicItem";
 
 const MusicItem: FC<{ music: MusicItemProps; i: number }> = ({ music, i }) => {
   const play = () => Pubsub.publish(MUSICID, music.id);

@@ -1,4 +1,4 @@
-interface LoginAccount {
+export interface LoginAccount {
   anonimousUser: boolean;
   ban: number;
   baoyueVersion: number;
@@ -16,7 +16,7 @@ interface LoginAccount {
 }
 
 // 绑定的三方，微博微信QQ等
-interface LoginBinding {
+export interface LoginBinding {
   bindingTime: number;
   expired: boolean;
   expiresIn: number;
@@ -29,7 +29,7 @@ interface LoginBinding {
 }
 
 // 这个才是有用的
-interface LoginProfile {
+export interface LoginProfileProps {
   accountStatus: number;
   authStatus: number;
   authority: number;
@@ -66,26 +66,10 @@ interface LoginProfile {
   vipType: number;
 }
 
-interface LoginData {
+export interface LoginData {
   account: LoginAccount;
   bindings?: Array<LoginBinding>;
   cookie: string;
-  profile: LoginProfile;
+  profile: LoginProfileProps;
   token: string;
-}
-
-// banner
-interface Banner {
-  imageUrl: "http://p1.music.126.net/p-X_FB0qUI0RVwn3CpQeTg==/109951166003834354.jpg";
-  targetId: 1844442105;
-  targetType: 1;
-  titleColor: "red";
-  typeTitle: "独家";
-}
-
-// 歌词
-interface Lyric {
-  time: string;
-  duration: number;
-  text: string;
 }

@@ -22,12 +22,12 @@ import styled from "@emotion/styled";
 import { useAjax } from "hooks/useAjax";
 import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
-import { MusicItemProps } from "components/MusicItem";
 import { FlexBoxCenter } from "style";
 import { CustomImage } from "components/CustomImage";
 import MyIcon from "Icons";
 import { Typography } from "antd";
 import { Link } from "react-router-dom";
+import { MusicItemProps } from "types/musicItem";
 
 // TODO 这个页面图片不对
 
