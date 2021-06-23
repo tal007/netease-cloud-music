@@ -10,10 +10,12 @@ import styled from "@emotion/styled";
 import { FlexBoxCenter } from "style";
 import Loading from "components/Loading";
 import { ReactNode } from "react";
+import { Typography } from "antd";
 
 interface PageContainerProps {
   isLoading: boolean;
   children: ReactNode;
+  error?: Error | null;
   // data: any;
 }
 
@@ -29,6 +31,15 @@ export const PageContainer = (props: PageContainerProps) => {
           <Loading />
         </FlexBoxCenter>
       </LoadingContainer>
+    );
+  }
+
+  if (props.error) {
+    return (
+      <FlexBoxCenter>
+        <Typography.Title>发生错误</Typography.Title>
+        <Typography.Title>错误信息： {props.error.message}</Typography.Title>
+      </FlexBoxCenter>
     );
   }
 

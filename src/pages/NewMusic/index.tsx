@@ -2,31 +2,32 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 16:36:59
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 17:53:08
+ * @Last Modified time: 2021-06-23 16:14:09
  * 新歌速递页面
  */
 
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import { List, Menu } from "antd";
-import { useAsync } from "hooks/useAsync";
 import { useAjax } from "hooks/useAjax";
 import { PageContainer } from "components/PageContainer";
 import { menus } from "./menus";
 import styled from "@emotion/styled";
 import MusicItem from "components/MusicItem";
 import { MusicItemProps } from "types/musicItem";
+import { useQuery } from "react-query";
 
 type Type = 0 | 7 | 96 | 8 | 16;
 
 const NewMusic: FC = () => {
   const [type, setType] = useState<Type>(0);
   const client = useAjax();
-  const { run, isLoading, data } =
-    useAsync<{ code: number; data: MusicItemProps[] }>();
 
-  useEffect(() => {
-    run(client("/top/song", { data: { type } }));
-  }, [client, run, type]);
+  const { isLoading, data, error } = useQuery<
+    { code: number; data: MusicItemProps[] },
+    Error
+  >(["top-songs", { type: Number(type) }], () =>
+    client("/top/song", { data: { type } })
+  );
 
   const handleClick = (e: any) => {
     setType(e.key);
@@ -39,7 +40,7 @@ const NewMusic: FC = () => {
           <Menu.Item key={value.type}>{value.text}</Menu.Item>
         ))}
       </Menus>
-      <PageContainer isLoading={isLoading}>
+      <PageContainer isLoading={isLoading} error={error}>
         {data && (
           <List
             split={false}

@@ -12,8 +12,6 @@ import { Divider, List, Menu, Tag, Typography } from "antd";
 import { CustomImage } from "components/CustomImage";
 import { PageContainer } from "components/PageContainer";
 import dayjs from "dayjs";
-import { useAsync } from "hooks/useAsync";
-import { useMount } from "hooks/useMount";
 import { FC, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FlexBoxCenter, MyButton } from "style";
@@ -21,6 +19,7 @@ import MusicItem from "components/MusicItem";
 import { MUISCLIST, MUSICID } from "constant";
 import Pubsub from "pubsub-js";
 import { MusicItemProps } from "types/musicItem";
+import { useQuery } from "react-query";
 
 interface AlbumData {
   name: string;
@@ -36,21 +35,21 @@ interface AlbumData {
 
 export const AlbumDetail = () => {
   const { id } = useParams();
-
   const client = useAjax();
-  const { run, isLoading, data } =
-    useAsync<{
+  const { isLoading, data, error } = useQuery<
+    {
       code: number;
       resourceState: boolean;
       album: AlbumData;
       songs: MusicItemProps[];
-    }>();
-  useMount(() => {
-    run(client(`/album?id=${id}`, { data: { limit: 60 } }));
-  });
+    },
+    Error
+  >(["album-detail", { id }], () =>
+    client(`/album?id=${id}`, { data: { limit: 60 } })
+  );
 
   return (
-    <PageContainer isLoading={isLoading}>
+    <PageContainer isLoading={isLoading} error={error}>
       {data && (
         <>
           <Header album={data.album} songs={data.songs} />

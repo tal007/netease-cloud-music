@@ -6,13 +6,12 @@
  * 新歌速递
  */
 
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Avatar, Col, Row } from "antd";
 
 import { fillNumber } from "../../util";
 import EntryTitle from "../../components/EntryTitle/index";
 import { useAjax } from "hooks/useAjax";
-import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
 import styled from "@emotion/styled";
 import MusicName from "components/MusicName";
@@ -45,14 +44,17 @@ interface ResultItem {
 const NewMusic: FC = () => {
   const client = useAjax();
 
-  const { isLoading, error, data } = useQuery<{
-    category: number;
-    code: number;
-    result: ResultItem[];
-  }>("newsong", () => client("/personalized/newsong"));
+  const { isLoading, error, data } = useQuery<
+    {
+      category: number;
+      code: number;
+      result: ResultItem[];
+    },
+    Error
+  >("newsong", () => client("/personalized/newsong"));
 
   return (
-    <PageContainer isLoading={isLoading}>
+    <PageContainer isLoading={isLoading} error={error}>
       <div>
         <EntryTitle titleName="新歌速递" to="/newmusic" />
         <Row gutter={[30, 30]}>

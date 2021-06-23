@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 17:05:54
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 14:50:17
+ * @Last Modified time: 2021-06-23 16:17:46
  * 歌手详情
  */
 
@@ -12,6 +12,7 @@ import { useAsync } from "hooks/useAsync";
 import { useParams } from "react-router-dom";
 import { MyPageHeader } from "style";
 import { useEffect } from "react";
+import { useQuery } from "react-query";
 
 interface ArtistDetail {
   videoCount: number;
@@ -30,19 +31,17 @@ export const Artist = () => {
   const { id } = useParams();
 
   const client = useAjax();
-  const {
-    run: getArtistDetail,
-    isLoading: artistDetailLoading,
-    data: artistDetail,
-  } = useAsync<{ code: number; message: string; data: ArtistDetail }>();
 
-  useEffect(() => {
-    getArtistDetail(client(`/artist/detail?id=${id}`, { data: { limit: 60 } }));
-  }, [client, getArtistDetail, id]);
+  const { isLoading, error, data } = useQuery<
+    { code: number; message: string; data: ArtistDetail },
+    Error
+  >(["artist", { id }], () =>
+    client(`/artist/detail?id=${id}`, { data: { limit: 60 } })
+  );
 
   return (
-    <PageContainer isLoading={artistDetailLoading}>
-      <MyPageHeader title={artistDetail?.data.artist.name} />
+    <PageContainer isLoading={isLoading} error={error}>
+      <MyPageHeader title={data?.data.artist.name} />
     </PageContainer>
   );
 };

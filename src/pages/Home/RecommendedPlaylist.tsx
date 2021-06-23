@@ -17,15 +17,18 @@ import { useQuery } from "react-query";
 const RecommendedPlaylist: FC = () => {
   const client = useAjax();
 
-  const { isLoading, error, data } = useQuery<{
-    category: number;
-    code: number;
-    hasTaste: boolean;
-    result: SongListItemProps[];
-  }>("recommendedPlaylist", () => client("personalized"));
+  const { isLoading, error, data } = useQuery<
+    {
+      category: number;
+      code: number;
+      hasTaste: boolean;
+      result: SongListItemProps[];
+    },
+    Error
+  >("recommendedPlaylist", () => client("personalized"));
 
   return (
-    <PageContainer isLoading={isLoading}>
+    <PageContainer isLoading={isLoading} error={error}>
       <div>
         <EntryTitle titleName="推荐歌单" to="/songlist" />
         <Row gutter={[30, 30]}>

@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-18 09:31:00
+ * @Last Modified time: 2021-06-23 16:19:21
  * 歌词
  */
 
@@ -28,6 +28,7 @@ import MyIcon from "Icons";
 import { Typography } from "antd";
 import { Link } from "react-router-dom";
 import { MusicItemProps } from "types/musicItem";
+import { useQuery } from "react-query";
 
 // TODO 这个页面图片不对
 
@@ -46,11 +47,10 @@ const MusicLyric: FC<{
   const [lyricScroll, setLyricScroll] = useState<boolean>(true);
 
   const client = useAjax();
-  const { run, isLoading, data } = useAsync<{ lrc: { lyric: string } }>();
-
-  useEffect(() => {
-    run(client("/lyric", { data: { id } }));
-  }, [client, id, run]);
+  const { isLoading, error, data } = useQuery<
+    { lrc: { lyric: string } },
+    Error
+  >(["lyric", { id }], () => client("/lyric", { data: { id } }));
 
   useAnimationFrame(() => {
     if (container.current && lyricProgressNode.current) {
@@ -81,7 +81,7 @@ const MusicLyric: FC<{
       }}
     >
       <CloseIcon type="icon-scale1" onClick={() => setHiddenLyric(true)} />
-      <PageContainer isLoading={isLoading}>
+      <PageContainer isLoading={isLoading} error={error}>
         <FlexBoxCenter>
           <div>
             <CustomImage

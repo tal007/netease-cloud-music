@@ -7,14 +7,13 @@
  */
 
 import { useAjax } from "hooks/useAjax";
-import { useAsync } from "hooks/useAsync";
-import { useMount } from "hooks/useMount";
 import { FC } from "react";
 import { PageContainer } from "components/PageContainer";
 import { AlbumItem } from "components/AlbumItem";
 import { Row } from "antd";
 import { MyPageHeader } from "style";
 import Helmet from "react-helmet";
+import { useQuery } from "react-query";
 export interface AlbumItemProps {
   name: string;
   picUrl: string;
@@ -24,18 +23,20 @@ export interface AlbumItemProps {
 
 const Album: FC = () => {
   const client = useAjax();
-  const { run, isLoading, data } =
-    useAsync<{ code: number; albums: AlbumItemProps[] }>();
 
-  useMount(() => {
-    run(client("/album/newest"));
-  });
+  const { isLoading, error, data } = useQuery<
+    {
+      code: number;
+      albums: AlbumItemProps[];
+    },
+    Error
+  >("albums", () => client("/album/newest"));
 
   return (
     <>
       <Helmet title={"最新专辑"} />
       <MyPageHeader title={"最新专辑"} subTitle={"Albums"} />
-      <PageContainer isLoading={isLoading}>
+      <PageContainer isLoading={isLoading} error={error}>
         <Row gutter={[30, 30]}>
           {data &&
             data.albums.map((value) => <AlbumItem key={value.id} {...value} />)}

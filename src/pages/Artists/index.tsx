@@ -7,14 +7,13 @@
  */
 
 import { useAjax } from "hooks/useAjax";
-import { useAsync } from "hooks/useAsync";
-import { useMount } from "hooks/useMount";
 import { FC } from "react";
 import { PageContainer } from "components/PageContainer";
 import { Row } from "antd";
 import { MyPageHeader } from "style";
 import { ArtistItem } from "./ArtistItem";
 import Helmet from "react-helmet";
+import { useQuery } from "react-query";
 export interface ArtistsItemProps {
   name: string;
   img1v1Url: string;
@@ -25,18 +24,17 @@ export interface ArtistsItemProps {
 
 const Artists: FC = () => {
   const client = useAjax();
-  const { run, isLoading, data } =
-    useAsync<{ code: number; more: boolean; artists: ArtistsItemProps[] }>();
 
-  useMount(() => {
-    run(client("/top/artists", { data: { limit: 60 } }));
-  });
+  const { isLoading, data, error } = useQuery<
+    { code: number; more: boolean; artists: ArtistsItemProps[] },
+    Error
+  >("artists", () => client("/top/artists", { data: { limit: 60 } }));
 
   return (
     <>
       <Helmet title={"热门歌手"} />
       <MyPageHeader title={"热门歌手 Top 60"} subTitle={"Artists"} />
-      <PageContainer isLoading={isLoading}>
+      <PageContainer isLoading={isLoading} error={error}>
         <Row gutter={[30, 30]}>
           {data &&
             data.artists.map((value) => (
