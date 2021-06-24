@@ -1,3 +1,23 @@
+export interface HomeNewMusicItemProps {
+  alg: string;
+  canDislike: boolean;
+  id: number;
+  name: string;
+  picUrl: string;
+  song: {
+    alias: string[];
+    album: {
+      artists: [
+        {
+          name: string;
+          id: number;
+        }
+      ];
+    };
+    duration: number;
+  };
+}
+
 export interface MusicItemProps {
   name: string;
   id: number;

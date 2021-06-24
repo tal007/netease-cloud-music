@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 17:38:40
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 17:48:54
+ * @Last Modified time: 2021-06-24 17:27:28
  * 专辑详情
  */
 
@@ -16,10 +16,11 @@ import { FC, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FlexBoxCenter, MyButton } from "style";
 import MusicItem from "components/MusicItem";
-import { MUISCLIST, MUSICID } from "constant";
-import Pubsub from "pubsub-js";
 import { MusicItemProps } from "types/musicItem";
 import { useQuery } from "react-query";
+import { useDispatch } from "react-redux";
+import { musicActions } from "store/music.slice";
+import { playListActions } from "store/playList.slice";
 
 interface AlbumData {
   name: string;
@@ -65,9 +66,11 @@ const Header: FC<{ album: AlbumData; songs: MusicItemProps[] }> = ({
   album,
   songs,
 }) => {
+  const dispatch = useDispatch();
+
   const palyAll = () => {
-    Pubsub.publish(MUISCLIST, songs);
-    Pubsub.publish(MUSICID, songs[0].id);
+    dispatch(musicActions.setMusicId(songs[0].id));
+    dispatch(playListActions.setMusicList(songs));
   };
 
   return (

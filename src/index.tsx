@@ -8,6 +8,8 @@ import { AppProviders } from "./context";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/lib/locale/zh_CN";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Provider } from "react-redux";
+import { store } from "store";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
@@ -15,11 +17,13 @@ const queryClient = new QueryClient();
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider locale={zhCN}>
-        <AppProviders>
-          <App />
-        </AppProviders>
-      </ConfigProvider>
+      <Provider store={store}>
+        <ConfigProvider locale={zhCN}>
+          <AppProviders>
+            <App />
+          </AppProviders>
+        </ConfigProvider>
+      </Provider>
       {/* <ReactQueryDevtools initialIsOpen /> */}
     </QueryClientProvider>
   </React.StrictMode>,

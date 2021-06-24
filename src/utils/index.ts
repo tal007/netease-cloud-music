@@ -98,5 +98,10 @@ export function debounce(method: Function, delay: number) {
 // 处理需要收费或者会员的歌曲
 export function filterMusic(musicList: MusicItemProps[]) {
   // * 8 才是免费的 1是购买单曲 3是购买专辑
-  return musicList.filter((music) => music.fee === 8);
+  return musicList.filter((music) => {
+    if (music.fee) {
+      return music.fee === 8;
+    }
+    return music;
+  });
 }

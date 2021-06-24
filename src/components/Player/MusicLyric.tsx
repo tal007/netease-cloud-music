@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-23 18:10:23
+ * @Last Modified time: 2021-06-24 16:57:57
  * 歌词
  */
 
@@ -10,17 +10,17 @@ import { FC, useState, useRef, useCallback } from "react";
 import useWindowResize from "hooks/useWindowResize";
 import useAnimationFrame from "hooks/useAnimationFrame";
 
-import { dealWithLyric, debounce } from "util/index";
+import { dealWithLyric, debounce } from "utils";
 import styled from "@emotion/styled";
 import { useAjax } from "hooks/useAjax";
 import { PageContainer } from "components/PageContainer";
 import { FlexBoxCenter } from "style";
-import { CustomImage } from "components/CustomImage";
 import MyIcon from "Icons";
 import { Typography } from "antd";
 import { Link } from "react-router-dom";
 import { MusicItemProps } from "types/musicItem";
 import { useQuery } from "react-query";
+import { CustomImage } from "components/CustomImage";
 
 // TODO 这个页面图片不对
 
@@ -65,6 +65,8 @@ const MusicLyric: FC<{
   const lyricArray = useCallback(() => {
     return dealWithLyric(data?.lrc.lyric || "");
   }, [data?.lrc.lyric]);
+
+  if (!music) return null;
 
   return (
     <Fullscreen

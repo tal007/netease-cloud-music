@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 18:23:27
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-24 15:45:55
+ * @Last Modified time: 2021-06-24 16:34:02
  */
 
 /*
@@ -14,14 +14,14 @@
 
 import { FC } from "react";
 import { Avatar, List, Space } from "antd";
-import Pubsub from "pubsub-js";
-
-import { MUSICID, MUISCLIST } from "constant";
 import MusicName from "components/MusicName";
-import { formatTime, fillNumber, mySubString, filterMusic } from "util/index";
+import { formatTime, fillNumber, mySubString } from "utils";
 import styled from "@emotion/styled";
 import { CustomImage } from "components/CustomImage";
 import { MusicItemProps } from "types/musicItem";
+import { useDispatch } from "react-redux";
+import { musicActions } from "store/music.slice";
+import { playListActions } from "store/playList.slice";
 
 const MusicItem: FC<{
   music: MusicItemProps;
@@ -29,9 +29,11 @@ const MusicItem: FC<{
   musicList: MusicItemProps[];
   showImage?: boolean;
 }> = ({ music, i, musicList, showImage = true }) => {
+  const dispatch = useDispatch();
+
   const handleDBClick = () => {
-    Pubsub.publish(MUSICID, music.id);
-    Pubsub.publish(MUISCLIST, filterMusic(musicList));
+    dispatch(musicActions.setMusicId(music.id));
+    dispatch(playListActions.setMusicList(musicList));
   };
 
   const imageUrl = music.album
