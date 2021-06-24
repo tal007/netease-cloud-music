@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import MyIcon from "Icons";
-import { FlexBoxCenter, MyButton } from "style";
+import { FlexBoxCenter } from "style";
 import { Avatar, Button, Divider } from "antd";
 import { useAuth } from "context/authContext";
 import { CustomImage } from "components/CustomImage";
@@ -83,6 +83,9 @@ const LeftNavs: FC = () => {
       <Group data={quickAccess} title={"快速通道"} />
       <Group data={Library} title={"藏品"} />
       <Divider />
+      <div style={{ padding: "1rem" }}>
+        说明：有些歌曲因为版权或者需要网易会员才可以播放，这部分是直接剔除了，所以排序可能有问题
+      </div>
     </Container>
   );
 };

@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 14:34:24
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 18:10:54
+ * @Last Modified time: 2021-06-24 15:46:11
  * 播放列表
  */
 
@@ -25,6 +25,9 @@ const MusicItem: FC<{ music: MusicItemProps; i: number }> = ({ music, i }) => {
     : music.al
     ? music.al.picUrl
     : "";
+
+  // ! 8 才是免费的 1是购买单曲 3是购买专辑
+  if (music.fee !== 8) return null;
   return (
     <List.Item onDoubleClick={play}>
       <Index>{fillNumber(i + 1)}</Index>

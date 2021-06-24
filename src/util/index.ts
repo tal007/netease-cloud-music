@@ -1,4 +1,5 @@
 import { Lyric } from "types/lyric";
+import { MusicItemProps } from "types/musicItem";
 
 export function checkIsEmpty(value: string | number): boolean {
   if (typeof value === "number") {
@@ -92,4 +93,10 @@ export function debounce(method: Function, delay: number) {
       method(...args);
     }, delay);
   };
+}
+
+// 处理需要收费或者会员的歌曲
+export function filterMusic(musicList: MusicItemProps[]) {
+  // * 8 才是免费的 1是购买单曲 3是购买专辑
+  return musicList.filter((music) => music.fee === 8);
 }

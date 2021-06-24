@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 18:23:27
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 18:09:24
+ * @Last Modified time: 2021-06-24 15:45:55
  */
 
 /*
@@ -18,7 +18,7 @@ import Pubsub from "pubsub-js";
 
 import { MUSICID, MUISCLIST } from "constant";
 import MusicName from "components/MusicName";
-import { formatTime, fillNumber, mySubString } from "util/index";
+import { formatTime, fillNumber, mySubString, filterMusic } from "util/index";
 import styled from "@emotion/styled";
 import { CustomImage } from "components/CustomImage";
 import { MusicItemProps } from "types/musicItem";
@@ -31,7 +31,7 @@ const MusicItem: FC<{
 }> = ({ music, i, musicList, showImage = true }) => {
   const handleDBClick = () => {
     Pubsub.publish(MUSICID, music.id);
-    Pubsub.publish(MUISCLIST, musicList);
+    Pubsub.publish(MUISCLIST, filterMusic(musicList));
   };
 
   const imageUrl = music.album
