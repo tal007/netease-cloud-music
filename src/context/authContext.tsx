@@ -1,6 +1,5 @@
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import * as auth from "authProvider";
-import { useMount } from "hooks/useMount";
 
 interface AuthLoginForm {
   account: string;
@@ -43,9 +42,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     auth.register(form).then(setUser);
   const loginOut = () => auth.loginOut().then(() => setUser(null));
 
-  useMount(() => {
+  useEffect(() => {
     initialUser().then(setUser);
-  });
+  }, []);
 
   return (
     <AuthContext.Provider
