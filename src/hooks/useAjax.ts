@@ -73,7 +73,9 @@ export const ajax = async (
         data = { ...data, ...{ cookie: `${encodeURIComponent(cookie)}` } };
       config.params = data;
     } else {
+      console.log(cookie);
       if (cookie) config.url += `?cookie=${encodeURIComponent(cookie)}`;
+      console.log(1111);
     }
   }
   if (config.method?.toUpperCase() === "POST") {
@@ -81,16 +83,17 @@ export const ajax = async (
     if (cookie) config.url += `?cookie=${encodeURIComponent(cookie)}`;
   }
 
-  if (config)
-    return request(config).then((response) => Promise.resolve(response.data));
+  return request(config).then((response) => Promise.resolve(response.data));
 };
 
 export const useAjax = () => {
   const { user } = useAuth();
 
   return useCallback(
-    (...[endpoint, config]: Parameters<typeof ajax>) =>
-      ajax(endpoint, { ...config, cookie: user?.cookie }),
+    (...[endpoint, config]: Parameters<typeof ajax>) => {
+      console.log(user?.cookie);
+      return ajax(endpoint, { ...config, cookie: user?.cookie });
+    },
     [user?.cookie]
   );
 };

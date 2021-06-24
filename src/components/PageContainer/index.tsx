@@ -37,8 +37,9 @@ export const PageContainer = (props: PageContainerProps) => {
   if (props.error) {
     return (
       <FlexBoxCenter>
-        <Typography.Title>发生错误</Typography.Title>
-        <Typography.Title>错误信息： {props.error.message}</Typography.Title>
+        <Typography.Title level={3}>
+          错误信息： {props.error.message}
+        </Typography.Title>
       </FlexBoxCenter>
     );
   }

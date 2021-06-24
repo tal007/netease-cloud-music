@@ -135,10 +135,15 @@ const Player: FC = () => {
     setHiddenLyric(!hiddenLyric);
   };
 
-  if (musicId === 0) return <FlexBoxCenter>请选择要播放的音乐</FlexBoxCenter>;
+  if (musicId === 0)
+    return (
+      <MusicPlayer>
+        <FlexBoxCenter>请选择要播放的音乐</FlexBoxCenter>
+      </MusicPlayer>
+    );
 
   return (
-    <PageContainer isLoading={false}>
+    <MusicPlayer>
       <audio
         ref={audioNode}
         src={`https://music.163.com/song/media/outer/url?id=${musicId}.mp3`}
@@ -222,7 +227,7 @@ const Player: FC = () => {
         runing={runing}
         setHiddenLyric={setHiddenLyric}
       />
-    </PageContainer>
+    </MusicPlayer>
   );
 };
 
@@ -231,8 +236,9 @@ export default Player;
 const MusicPlayer = styled.div`
   position: relative;
   box-sizing: border-box;
-  height: 100%;
-  background-color: linear-gradient(360deg, #020814 0%, #030d20 100%);
+  height: 6rem;
+  background-image: linear-gradient(360deg, #020814 0%, #030d20 100%);
+  color: var(--text-color);
 `;
 
 const ControlerContainer = styled.div`

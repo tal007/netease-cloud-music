@@ -70,7 +70,7 @@ const LeftNavs: FC = () => {
             <Avatar icon={<CustomImage url={user.profile.avatarUrl} />} />
             <span style={{ marginLeft: "1rem" }}>{user.profile.nickname}</span>
           </FlexBoxCenter>
-          <Button type={"link"} onClick={loginOut}>
+          <Button type={"link"} block onClick={loginOut}>
             退出登录
           </Button>
         </>

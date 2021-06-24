@@ -28,7 +28,6 @@ const Layout: FC = () => {
         <RenderPageContainer>
           <Outlet />
         </RenderPageContainer>
-        <Player />
       </Main>
     </Grid>
   );
@@ -59,6 +58,7 @@ const App: FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
+      <Player />
     </BrowserRouter>
   );
 };
@@ -67,7 +67,7 @@ export default App;
 
 const Grid = styled.div`
   display: grid;
-  height: 100vh;
+  /* height: 100vh; */
   grid-template-columns: 20rem 1fr;
   grid-template-areas:
     "left main"
@@ -81,7 +81,7 @@ const Main = styled.main`
   min-width: 900px;
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: 8rem 1fr 6rem;
+  grid-template-rows: 8rem 1fr;
   background: linear-gradient(180deg, #000c1d 0%, #08152d 100%);
   color: #fff;
 `;
