@@ -20,8 +20,7 @@ ReactDOM.render(
           <App />
         </AppProviders>
       </ConfigProvider>
-
-      <ReactQueryDevtools initialIsOpen />
+      {/* <ReactQueryDevtools initialIsOpen /> */}
     </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")

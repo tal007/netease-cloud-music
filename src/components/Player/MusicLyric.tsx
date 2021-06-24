@@ -2,25 +2,17 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-23 16:19:21
+ * @Last Modified time: 2021-06-23 18:10:23
  * 歌词
  */
 
-import {
-  FC,
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  WheelEvent,
-} from "react";
+import { FC, useState, useRef, useCallback } from "react";
 import useWindowResize from "hooks/useWindowResize";
 import useAnimationFrame from "hooks/useAnimationFrame";
 
 import { dealWithLyric, debounce } from "util/index";
 import styled from "@emotion/styled";
 import { useAjax } from "hooks/useAjax";
-import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
 import { FlexBoxCenter } from "style";
 import { CustomImage } from "components/CustomImage";

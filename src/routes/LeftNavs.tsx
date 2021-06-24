@@ -16,6 +16,10 @@ interface NavItem {
   auth?: boolean;
 }
 
+const madeForYou = [
+  { name: "为你而生", to: "/madeforyou", icon: "icon-fm", auth: true },
+];
+
 const quickAccess = [
   { name: "首页", icon: "icon-xuanzhongshangcheng", to: "/" },
   { name: "私人FM", icon: "icon-fm", to: "/fm", auth: true },
@@ -55,7 +59,7 @@ const Group: FC<{ data: NavItem[]; title: string }> = ({ data, title }) => {
   );
 };
 
-const LeftSide: FC = () => {
+const LeftNavs: FC = () => {
   const { user } = useAuth();
 
   return (
@@ -75,9 +79,7 @@ const LeftSide: FC = () => {
           未登录，<Link to="/login">点击去登录</Link>
         </FlexBoxCenter>
       )}
-      <MyButton block style={{ width: "90%", marginLeft: "5%" }}>
-        Made For You
-      </MyButton>
+      <Group data={madeForYou} title={"为你而生"} />
       <Group data={quickAccess} title={"快速通道"} />
       <Group data={Library} title={"藏品"} />
       <Divider />
@@ -85,7 +87,7 @@ const LeftSide: FC = () => {
   );
 };
 
-export default LeftSide;
+export default LeftNavs;
 
 const Container = styled.div`
   padding: 1.5rem 0;

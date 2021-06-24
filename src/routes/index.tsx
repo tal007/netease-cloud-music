@@ -10,18 +10,19 @@ import Register from "pages/Register";
 
 import styled from "@emotion/styled";
 import Player from "components/Player";
-import LeftSide from "./LeftSide";
+import LeftNavs from "./LeftNavs";
 import Album from "pages/Album";
 import SearchHeader from "components/SearchHeader";
 import Artists from "pages/Artists";
 import { Artist } from "pages/Artist";
 import { AlbumDetail } from "pages/AlbumDetail";
 import SongList from "pages/SongList";
+import { MadeForYou } from "pages/MadeForYou";
 
 const Layout: FC = () => {
   return (
     <Grid>
-      <LeftSide />
+      <LeftNavs />
       <Main>
         <SearchHeader />
         <RenderPageContainer>
@@ -39,6 +40,7 @@ const App: FC = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="" element={<Home />} />
+          <Route path="/madeforyou" element={<MadeForYou />} />
           <Route path="fm" element={<FM />} />
           <Route path="newmusic" element={<NewMusic />} />
           <Route path="songlist">

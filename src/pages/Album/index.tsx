@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-09 10:50:43
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-16 14:26:12
+ * @Last Modified time: 2021-06-24 15:03:06
  * 专辑
  */
 
@@ -14,12 +14,7 @@ import { Row } from "antd";
 import { MyPageHeader } from "style";
 import Helmet from "react-helmet";
 import { useQuery } from "react-query";
-export interface AlbumItemProps {
-  name: string;
-  picUrl: string;
-  id: number;
-  publishTime: number;
-}
+import { AlbumItemProps } from "types/album";
 
 const Album: FC = () => {
   const client = useAjax();

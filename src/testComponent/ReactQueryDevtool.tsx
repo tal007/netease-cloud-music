@@ -1,5 +1,4 @@
-import React from "react";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 export default function ReactQueryDevtool() {
