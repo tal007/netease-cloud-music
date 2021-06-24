@@ -97,9 +97,17 @@ const MusicLyric: FC<{
               {data &&
                 lyricArray().map((value, index) => {
                   if (value.duration <= currentTime) {
-                    return <LyricDiv key={value.time}>{value.text}</LyricDiv>;
+                    return (
+                      <LyricDiv key={`${value.time}-${value.text}`}>
+                        {value.text}
+                      </LyricDiv>
+                    );
                   }
-                  return <LyricP key={value.time}>{value.text}</LyricP>;
+                  return (
+                    <LyricP key={`${value.time}-${value.text}`}>
+                      {value.text}
+                    </LyricP>
+                  );
                 })}
             </LyricContainer>
             <ScrollBar>
