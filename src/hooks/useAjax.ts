@@ -1,6 +1,5 @@
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import { message } from "antd";
-import { useAuth } from "context/authContext";
 import { useCallback } from "react";
 import { getCookie } from "authProvider";
 

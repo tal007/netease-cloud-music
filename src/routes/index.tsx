@@ -18,6 +18,8 @@ import { Artist } from "pages/Artist";
 import { AlbumDetail } from "pages/AlbumDetail";
 import SongList from "pages/SongList";
 import { MadeForYou } from "pages/MadeForYou";
+import { Search } from "pages/Search";
+import { MV } from "pages/MV";
 
 const Layout: FC = () => {
   return (
@@ -42,6 +44,7 @@ const App: FC = () => {
           <Route path="/madeforyou" element={<MadeForYou />} />
           <Route path="fm" element={<FM />} />
           <Route path="newmusic" element={<NewMusic />} />
+          <Route path="/search" element={<Search />} />
           <Route path="songlist">
             <Route path="/" element={<SongList />} />
             <Route path="detail/:id" element={<SongListDetail />} />
@@ -54,6 +57,7 @@ const App: FC = () => {
             <Route path="/" element={<Artists />} />
             <Route path=":id" element={<Artist />} />
           </Route>
+          <Route path="/mv/:id" element={<MV />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

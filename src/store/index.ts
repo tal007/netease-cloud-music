@@ -9,10 +9,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { currentMusicSlice } from "./music.slice";
 import { playListSlice } from "./playList.slice";
+import { searchTextSlice } from "./searchText.slice";
 
 export const rootReducer = {
   currentMusicID: currentMusicSlice.reducer,
   playList: playListSlice.reducer,
+  searchText: searchTextSlice.reducer,
 };
 
 export const store = configureStore({

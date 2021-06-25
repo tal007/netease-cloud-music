@@ -9,6 +9,17 @@ export function checkIsEmpty(value: string | number): boolean {
   return !value.trim().length;
 }
 
+// export function isViod() {}
+
+// export function clearObject(o:{}) {
+//   const obj = {...o}
+//   for (const key in obj) {
+//     if (obj[key] !== undefined) {
+
+//     }
+//   }
+// }
+
 export function fillNumber(value: number | string) {
   return value < 10 ? "0" + value : value;
 }
