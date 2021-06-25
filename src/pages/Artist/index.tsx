@@ -45,7 +45,7 @@ export const Artist = () => {
     { code: number; message: string; data: ArtistDetail },
     Error
   >(["artist", { id }], () =>
-    client(`/artist/detail?id=${id}`, { data: { limit: 60 } })
+    client(`/artist/detail`, { data: { id, limit: 60 } })
   );
 
   return (
@@ -119,7 +119,7 @@ const MusicTop50 = () => {
   const { data, isLoading, error } = useQuery<
     { songs: MusicItemProps[] },
     Error
-  >(["top-song", { id }], () => client(`/artist/top/song?id=${id}`));
+  >(["top-song", { id }], () => client(`/artist/top/song`, { data: { id } }));
 
   return (
     <ItemContainer>
@@ -144,7 +144,7 @@ const MV = () => {
 
   const { data, isLoading, error } = useQuery<{ mvs: MVProps[] }, Error>(
     ["mv", { id }],
-    () => client(`/artist/mv?id=${id}`)
+    () => client(`/artist/mv`, { data: { id } })
   );
 
   return (
@@ -167,7 +167,9 @@ const Album = () => {
   const { data, isLoading, error } = useQuery<
     { hotAlbums: AlbumItemProps[] },
     Error
-  >(["album", { id }], () => client(`/artist/album?id=${id}&limit=30`));
+  >(["album", { id }], () =>
+    client(`/artist/album`, { data: { id, limit: 30 } })
+  );
 
   return (
     <ItemContainer>

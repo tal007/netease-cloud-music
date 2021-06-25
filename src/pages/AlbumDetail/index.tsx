@@ -46,7 +46,7 @@ export const AlbumDetail = () => {
     },
     Error
   >(["album-detail", { id }], () =>
-    client(`/album?id=${id}`, { data: { limit: 60 } })
+    client(`/album`, { data: { id, limit: 60 } })
   );
 
   return (
