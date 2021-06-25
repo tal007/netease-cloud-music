@@ -20,12 +20,12 @@ const localStorageKey = "__auth_provider_token__";
 const uid = "__uid__";
 const userData = "__user_data__";
 
-export const getToken = () => window.localStorage.getItem(localStorageKey);
+export const getCookie = () => window.localStorage.getItem(localStorageKey);
 export const getUser = () => window.localStorage.getItem(userData);
 export const getUid = () => window.localStorage.getItem(uid);
 
 export const handleUserResponse = (user: User) => {
-  window.localStorage.setItem(localStorageKey, user.token || "");
+  window.localStorage.setItem(localStorageKey, user.cookie || "");
   window.localStorage.setItem(userData, JSON.stringify(user) || "");
   window.localStorage.setItem(uid, String(user.profile.userId) || "");
   return user;
