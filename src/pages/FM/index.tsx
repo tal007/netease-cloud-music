@@ -11,11 +11,13 @@
 import { CustomImage } from "components/CustomImage";
 import { PageContainer } from "components/PageContainer";
 import { useAjax } from "hooks/useAjax";
+import { useLoginoutRedirect } from "hooks/useLoginoutRedrect";
 import { FC, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { MusicItemProps } from "types/musicItem";
 
 const FM: FC = () => {
+  useLoginoutRedirect();
   const [current, setCurrent] = useState<MusicItemProps | null>(null);
   const client = useAjax();
   const { data, isLoading, error } = useQuery<

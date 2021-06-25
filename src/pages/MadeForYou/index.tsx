@@ -11,10 +11,12 @@ import { List, Typography } from "antd";
 import MusicItem from "components/MusicItem";
 import { PageContainer } from "components/PageContainer";
 import { useAjax } from "hooks/useAjax";
+import { useLoginoutRedirect } from "hooks/useLoginoutRedrect";
 import { useQuery } from "react-query";
 import { MusicItemProps } from "types/musicItem";
 
 export const MadeForYou = () => {
+  useLoginoutRedirect();
   const client = useAjax();
   const {
     isLoading,
@@ -24,7 +26,6 @@ export const MadeForYou = () => {
     "recommend-songs",
     () => client("/recommend/songs")
   );
-  console.log(dailySongs);
 
   return (
     <Container>
