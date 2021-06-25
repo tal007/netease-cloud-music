@@ -2,12 +2,12 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 15:12:20
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-25 15:35:50
+ * @Last Modified time: 2021-06-25 15:51:10
  * 搜索头部
  */
 
 import styled from "@emotion/styled";
-import { Input, Image, Typography } from "antd";
+import { Input, Image, Typography, Button } from "antd";
 import { FC } from "react";
 import logo from "assets/img/logo.svg";
 import { FlexBoxCenter } from "style";
@@ -46,6 +46,14 @@ const SearchHeader: FC = () => {
       ) : (
         <Link to="/search">在这里，发现你想要的。点击前往</Link>
       )}
+      <Button
+        type={"link"}
+        style={{ marginLeft: "auto" }}
+        href="https://www.lyt007.cn"
+        target="_blank"
+      >
+        这里是我的博客🤗🤗🤗🤗
+      </Button>
     </Container>
   );
 };
