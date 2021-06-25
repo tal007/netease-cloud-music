@@ -19,7 +19,6 @@ import Progress from "./Progress";
 import MusicList from "./MusicList";
 import MusicLyric from "./MusicLyric";
 import { useAjax } from "hooks/useAjax";
-import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
 import styled from "@emotion/styled";
 import { FlexBoxCenter } from "style";

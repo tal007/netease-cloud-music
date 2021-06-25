@@ -126,6 +126,7 @@ const MusicTop50 = () => {
       <PageContainer isLoading={isLoading} error={error}>
         {data?.songs.map((song, index) => (
           <MusicItem
+            key={song.id}
             music={song}
             i={index + 1}
             musicList={data?.songs || []}
@@ -151,7 +152,7 @@ const MV = () => {
       <PageContainer isLoading={isLoading} error={error}>
         <Row gutter={[30, 30]}>
           {data?.mvs.map((mv) => (
-            <MVItem {...mv} />
+            <MVItem key={mv.id} {...mv} />
           ))}
         </Row>
       </PageContainer>
@@ -173,7 +174,7 @@ const Album = () => {
       <PageContainer isLoading={isLoading} error={error}>
         <Row gutter={[30, 30]}>
           {data?.hotAlbums.map((album) => (
-            <AlbumItem {...album} />
+            <AlbumItem key={album.id} {...album} />
           ))}
         </Row>
       </PageContainer>
