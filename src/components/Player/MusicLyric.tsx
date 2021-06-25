@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-24 16:57:57
+ * @Last Modified time: 2021-06-25 16:00:24
  * 歌词
  */
 
@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { MusicItemProps } from "types/musicItem";
 import { useQuery } from "react-query";
 import { CustomImage } from "components/CustomImage";
+import { url } from "inspector";
 
 // TODO 这个页面图片不对
 
@@ -72,6 +73,7 @@ const MusicLyric: FC<{
     <Fullscreen
       style={{
         height: hidden ? 0 : "100vh",
+        backgroundImage: `url(${music.al?.picUrl || ""})`,
       }}
     >
       <CloseIcon type="icon-scale1" onClick={() => setHiddenLyric(true)} />
@@ -129,9 +131,22 @@ const Fullscreen = styled.div`
   z-index: 999;
   width: 100vw;
   height: 100vh;
-  background: var(--light-gradient);
+  background: no-repeat 100% 100% / center;
   transition: all 0.3s linear;
   overflow: hidden;
+
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* 从父元素继承 background 属性的设置 */
+    background: inherit;
+    filter: blur(4px);
+    z-index: -1;
+  }
 `;
 
 const CloseIcon = styled(MyIcon)`
