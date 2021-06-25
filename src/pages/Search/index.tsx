@@ -112,7 +112,7 @@ const Menus = styled(Menu)`
   position: sticky;
   top: 0;
   color: var(--text-color);
-  z-index: 999;
+  z-index: 1;
 `;
 
 const RenderSongs: FC<{ songs: MusicItemProps[] }> = ({ songs }) => {
