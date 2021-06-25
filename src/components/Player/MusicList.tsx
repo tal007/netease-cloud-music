@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 14:34:24
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-25 16:21:14
+ * @Last Modified time: 2021-06-25 16:27:20
  * 播放列表
  */
 
@@ -15,7 +15,6 @@ import styled from "@emotion/styled";
 import { MusicItemProps } from "types/musicItem";
 import { useDispatch } from "react-redux";
 import { musicActions } from "store/music.slice";
-import { CloseCircleOutlined } from "@ant-design/icons";
 import { playListActions } from "store/playList.slice";
 
 const MusicItem: FC<{ music: MusicItemProps; i: number }> = ({ music, i }) => {

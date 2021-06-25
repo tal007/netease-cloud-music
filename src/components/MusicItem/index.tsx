@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 18:23:27
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-25 16:25:47
+ * @Last Modified time: 2021-06-25 16:27:26
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 import { FC } from "react";
-import { Avatar, Button, Dropdown, List, Space } from "antd";
+import { Avatar, Button, List, Space } from "antd";
 import MusicName from "components/MusicName";
 import { formatTime, fillNumber, mySubString } from "utils";
 import styled from "@emotion/styled";
