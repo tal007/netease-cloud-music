@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 18:23:27
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-24 16:34:02
+ * @Last Modified time: 2021-06-25 16:25:47
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 import { FC } from "react";
-import { Avatar, List, Space } from "antd";
+import { Avatar, Button, Dropdown, List, Space } from "antd";
 import MusicName from "components/MusicName";
 import { formatTime, fillNumber, mySubString } from "utils";
 import styled from "@emotion/styled";
@@ -48,11 +48,22 @@ const MusicItem: FC<{
     ? music.ar[0].name
     : "";
 
+  const addToPlaylist = () => {
+    dispatch(playListActions.addMusic(music));
+  };
+
   // ! 8 才是免费的 1是购买单曲 3是购买专辑
   if (music.fee !== 8) return null;
   return (
-    <ListItem onDoubleClick={handleDBClick}>
-      <Space size={20}>
+    <ListItem
+      onDoubleClick={handleDBClick}
+      actions={[
+        <Button type={"link"} onClick={addToPlaylist}>
+          添加到播放列表
+        </Button>,
+      ]}
+    >
+      <Space size={20} style={{ width: 370 }}>
         <SerialNumber>{fillNumber(i)}</SerialNumber>
         {showImage && (
           <Avatar

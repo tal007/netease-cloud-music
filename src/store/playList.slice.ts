@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-24 15:52:00
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-24 17:30:59
+ * @Last Modified time: 2021-06-25 16:15:58
  * 播放列表切片
  */
 
@@ -25,6 +25,16 @@ export const playListSlice = createSlice({
   reducers: {
     setMusicList(state, action) {
       const newList = filterMusic(action.payload);
+      state.musicList = newList;
+    },
+    addMusic(state, action) {
+      const newList = [...state.musicList];
+      newList.push(action.payload);
+      state.musicList = newList;
+    },
+    removeMusic(state, action) {
+      const newList = [...state.musicList];
+      newList.splice(action.payload, 1);
       state.musicList = newList;
     },
   },

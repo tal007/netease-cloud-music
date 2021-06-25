@@ -2,12 +2,12 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 14:34:24
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-24 17:24:46
+ * @Last Modified time: 2021-06-25 16:21:14
  * 播放列表
  */
 
 import { FC } from "react";
-import { Avatar, Image, List } from "antd";
+import { Avatar, Button, Image, List } from "antd";
 import { fillNumber } from "utils";
 import useWindowResize from "hooks/useWindowResize";
 import MusicName from "components/MusicName";
@@ -15,6 +15,8 @@ import styled from "@emotion/styled";
 import { MusicItemProps } from "types/musicItem";
 import { useDispatch } from "react-redux";
 import { musicActions } from "store/music.slice";
+import { CloseCircleOutlined } from "@ant-design/icons";
+import { playListActions } from "store/playList.slice";
 
 const MusicItem: FC<{ music: MusicItemProps; i: number }> = ({ music, i }) => {
   const dispatch = useDispatch();
@@ -25,12 +27,22 @@ const MusicItem: FC<{ music: MusicItemProps; i: number }> = ({ music, i }) => {
     : music.al
     ? music.al.picUrl
     : "";
+  const removeMusicByIndex = () => {
+    dispatch(playListActions.removeMusic(i));
+  };
 
   // ! 8 才是免费的 1是购买单曲 3是购买专辑
   if (music.fee && music.fee !== 8) return null;
 
   return (
-    <List.Item onDoubleClick={play}>
+    <List.Item
+      onDoubleClick={play}
+      actions={[
+        <Button type={"link"} onClick={removeMusicByIndex}>
+          移除
+        </Button>,
+      ]}
+    >
       <Index>{fillNumber(i + 1)}</Index>
       <List.Item.Meta
         avatar={
