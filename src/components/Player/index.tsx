@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-24 17:03:29
+ * @Last Modified time: 2021-06-28 11:20:32
  * 音乐播放组件
  */
 
@@ -28,6 +28,7 @@ import { currentMusicId, musicActions } from "store/music.slice";
 import { playList } from "store/playList.slice";
 import { useDispatch } from "react-redux";
 import { useQuery } from "react-query";
+import { Vioce } from "./Voice";
 
 type playType = "NEXT" | "PREV" | "RANDOM" | "CYCLE";
 
@@ -203,7 +204,7 @@ const Player: FC = () => {
                   />
                 </Control>
                 <List split={false}>
-                  <MyIcon type="icon-yinliang" className="vioce" />
+                  <Vioce audioNode={audioNode} />
                   <MyIcon
                     type="icon-bofangliebiao"
                     className="musiclist"
