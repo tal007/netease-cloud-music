@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { Button, Form, Input } from "antd";
 import styled from "@emotion/styled";
-import loginBg from "assets/img/login-bg.png";
+import registerBg from "assets/img/register-bg.png";
 import { LockOutlined, MobileOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "context/authContext";
 import Helmet from "react-helmet";
+import { useAjax } from "hooks/useAjax";
+import { useAsync } from "hooks/useAsync";
+import { Logo } from "components/Logo";
 
 const Register = () => {
   const { register } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [captcha, setCaptcha] = useState("");
+
+  const client = useAjax();
+  const { run: getVerificationCode, isLoading: getCodeLoading } = useAsync();
+  const { run: checkCode, isLoading } = useAsync();
 
   const onFinish = (values: {
     nickname: string;
@@ -17,23 +25,24 @@ const Register = () => {
     phone: string;
     captcha: string;
   }) => {
-    setLoading(true);
-    register(values).finally(() => setLoading(false));
+    checkCode(
+      client("/captcha/verify", { data: { captcha, phone: phoneNumber } })
+    ).then(() => {
+      register(values);
+    });
   };
 
-  const onSearch = () => {};
+  const sendVerificationCode = () => {
+    getVerificationCode(
+      client("/captcha/sent", { data: { phone: phoneNumber } })
+    );
+  };
 
   return (
     <Container>
       <Helmet title={"注册"} />
       <Inner>
-        <Logo>
-          <LogoSpan backgroundColor={"#032C9E"}>E</LogoSpan>
-          <LogoSpan backgroundColor={"#0E36A6"}>M</LogoSpan>
-          <LogoSpan backgroundColor={"#1742BB"}>C</LogoSpan>
-          <MusicText>music</MusicText>
-          <span>(Mock 网易云)</span>
-        </Logo>
+        <Logo />
         <Form onFinish={onFinish}>
           <Form.Item
             name={"nickname"}
@@ -64,8 +73,9 @@ const Register = () => {
               placeholder={"请输入手机号"}
               prefix={<MobileOutlined className="site-form-item-icon" />}
               enterButton="获取验证码"
-              onSearch={onSearch}
-              loading
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              onSearch={sendVerificationCode}
+              loading={getCodeLoading}
             />
           </Form.Item>
           <Form.Item
@@ -75,12 +85,13 @@ const Register = () => {
             <Input
               size={"large"}
               placeholder={"请输入验证码"}
+              onChange={(e) => setCaptcha(e.target.value)}
               prefix={<LockOutlined className="site-form-item-icon" />}
             />
           </Form.Item>
           <Form.Item>
             <Button
-              loading={loading}
+              loading={isLoading}
               htmlType={"submit"}
               size={"large"}
               type={"primary"}
@@ -105,34 +116,10 @@ export default Register;
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
-  background: url(${loginBg}) no-repeat center center/cover;
+  height: 100%;
+  background: url(${registerBg}) no-repeat center center/cover;
 `;
 
 const Inner = styled.div`
   margin: auto;
-`;
-
-const Logo = styled.h1`
-  margin-bottom: 10rem;
-  text-transform: uppercase;
-  text-align: center;
-  height: 6.4rem;
-  line-height: 6.4rem;
-`;
-
-const LogoSpan = styled.span<{
-  backgroundColor?: string;
-}>`
-  width: 5.7rem;
-  display: inline-block;
-  text-align: center;
-  background-color: ${(props) =>
-    props.backgroundColor ? props.backgroundColor : undefined};
-  color: white;
-`;
-
-const MusicText = styled.span`
-  letter-spacing: 1.5rem;
-  margin-left: 1rem;
 `;

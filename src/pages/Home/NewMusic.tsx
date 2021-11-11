@@ -2,60 +2,41 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 14:28:41
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 14:10:56
+ * @Last Modified time: 2021-06-24 17:20:12
  * 新歌速递
  */
 
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Avatar, Col, Row } from "antd";
 
-import { fillNumber } from "../../util";
+import { fillNumber } from "../../utils";
 import EntryTitle from "../../components/EntryTitle/index";
 import { useAjax } from "hooks/useAjax";
-import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
 import styled from "@emotion/styled";
 import MusicName from "components/MusicName";
 import { Link } from "react-router-dom";
-import { MUISCLIST, MUSICID } from "constant";
-import pubsub from "pubsub-js";
 import { CustomImage } from "components/CustomImage";
-
-interface ResultItem {
-  alg: string;
-  canDislike: boolean;
-  id: number;
-  name: string;
-  picUrl: string;
-  song: {
-    alias: string[];
-    album: {
-      artists: [
-        {
-          name: string;
-          id: number;
-        }
-      ];
-    };
-    duration: number;
-  };
-}
+import { useQuery } from "react-query";
+import { useDispatch } from "react-redux";
+import { musicActions } from "store/music.slice";
+import { playListActions } from "store/playList.slice";
+import { HomeNewMusicItemProps } from "types/musicItem";
 
 const NewMusic: FC = () => {
   const client = useAjax();
-  const { run, isLoading, data } =
-    useAsync<{ category: number; code: number; result: ResultItem[] }>();
 
-  useEffect(() => {
-    // limt 最大30
-    // ajax<MusicItemListResponse>('/personalized/newsong?limit=10', 'GET')
-    run(client("/personalized/newsong"));
-  }, [client, run]);
-
-  console.log(data);
+  const { isLoading, error, data } = useQuery<
+    {
+      category: number;
+      code: number;
+      result: HomeNewMusicItemProps[];
+    },
+    Error
+  >("newsong", () => client("/personalized/newsong"));
 
   return (
-    <PageContainer isLoading={isLoading}>
+    <PageContainer isLoading={isLoading} error={error}>
       <div>
         <EntryTitle titleName="新歌速递" to="/newmusic" />
         <Row gutter={[30, 30]}>
@@ -79,13 +60,15 @@ const NewMusic: FC = () => {
 export default NewMusic;
 
 const NewMusicItem: FC<{
-  music: ResultItem;
+  music: HomeNewMusicItemProps;
   num: number | string;
-  musicList: ResultItem[];
+  musicList: HomeNewMusicItemProps[];
 }> = ({ music, num, musicList }) => {
+  const dispatch = useDispatch();
+
   const handleClick = (id: number) => {
-    pubsub.publish(MUSICID, id);
-    setTimeout(() => pubsub.publish(MUISCLIST, musicList), 1000);
+    dispatch(musicActions.setMusicId(id));
+    dispatch(playListActions.setMusicList(musicList));
   };
 
   return (

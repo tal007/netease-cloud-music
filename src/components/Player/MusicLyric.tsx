@@ -2,49 +2,54 @@
  * @Author: 刘玉田
  * @Date: 2021-05-27 11:32:33
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 14:50:07
+ * @Last Modified time: 2021-06-25 16:00:24
  * 歌词
  */
 
-import {
-  FC,
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  WheelEvent,
-} from "react";
-import useWindowResize from "../../hooks/useWindowResize";
-import useAnimationFrame from "../../hooks/useAnimationFrame";
+import { FC, useState, useRef, useCallback } from "react";
+import useWindowResize from "hooks/useWindowResize";
+import useAnimationFrame from "hooks/useAnimationFrame";
 
-import { dealWithLyric, debounce } from "../../util";
-import Loading from "../../components/Loading";
-interface LyricResponse {
-  lrc: {
-    lyric: string;
-  };
-}
+import { dealWithLyric, debounce } from "utils";
+import styled from "@emotion/styled";
+import { useAjax } from "hooks/useAjax";
+import { PageContainer } from "components/PageContainer";
+import { FlexBoxCenter } from "style";
+import MyIcon from "Icons";
+import { Typography } from "antd";
+import { Link } from "react-router-dom";
+import { MusicItemProps } from "types/musicItem";
+import { useQuery } from "react-query";
+import { CustomImage } from "components/CustomImage";
+import { url } from "inspector";
+
+// TODO 这个页面图片不对
 
 const MusicLyric: FC<{
   id: number | string;
+  music: MusicItemProps;
+  setHiddenLyric: React.Dispatch<React.SetStateAction<boolean>>;
   hidden: boolean;
   currentTime: number;
   percent: number;
   runing: boolean;
-}> = ({ id, hidden, currentTime, percent, runing }) => {
+}> = ({ id, hidden, currentTime, percent, runing, music, setHiddenLyric }) => {
   const container = useRef<HTMLDivElement | null>(null);
   const lyricProgressNode = useRef<HTMLDivElement | null>(null);
   const { windowInnerHeight } = useWindowResize();
-  const [lyric, setLyric] = useState<Lyric[]>([]);
   const [lyricScroll, setLyricScroll] = useState<boolean>(true);
 
-  useEffect(() => {}, []);
+  const client = useAjax();
+  const { isLoading, error, data } = useQuery<
+    { lrc: { lyric: string } },
+    Error
+  >(["lyric", { id }], () => client("/lyric", { data: { id } }));
 
   useAnimationFrame(() => {
     if (container.current && lyricProgressNode.current) {
       const containerHeight = windowInnerHeight - 60;
       const halfWindowInnerHeight = containerHeight / 2;
-      const passNodeList = document.querySelectorAll(".pass").length;
+      const passNodeList = container.current.querySelectorAll("div").length;
       const passHeight = halfWindowInnerHeight - (passNodeList * 40 + 8);
       container.current.style.transform = `translateY(${passHeight}px)`;
       const scrollBarPassHeight = (percent / 100) * (containerHeight - 50);
@@ -52,51 +57,187 @@ const MusicLyric: FC<{
     }
   }, runing && lyricScroll);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const scrollFn = useCallback(
+  const scrollFn = useCallback(() => {
     debounce(() => {
       setLyricScroll(true);
-    }, 2000),
-    []
-  );
+    }, 2000);
+  }, []);
 
-  const scroll = (e: WheelEvent) => {
-    setLyricScroll(false);
-    scrollFn();
-  };
+  const lyricArray = useCallback(() => {
+    return dealWithLyric(data?.lrc.lyric || "");
+  }, [data?.lrc.lyric]);
+
+  if (!music) return null;
 
   return (
-    <div
-      className={
-        hidden ? "music-lyric-container hidden" : "music-lyric-container"
-      }
-      style={{ height: hidden ? 0 : windowInnerHeight - 60 }}
+    <Fullscreen
+      style={{
+        height: hidden ? 0 : "100vh",
+        backgroundImage: `url(${music.al?.picUrl || ""})`,
+      }}
     >
-      <div
-        className="lyric-container"
-        ref={container}
-        onWheel={(e) => scroll(e)}
-      >
-        {lyric.map((value) => {
-          if (value.duration <= currentTime) {
-            return (
-              <div key={value.duration} className="lyric pass">
-                {value.text}
-              </div>
-            );
-          }
-          return (
-            <p key={value.duration} className="lyric">
-              {value.text}
-            </p>
-          );
-        })}
-      </div>
-      <div className="scroll-bar">
-        <div className="progress" ref={lyricProgressNode}></div>
-      </div>
-    </div>
+      <CloseIcon type="icon-scale1" onClick={() => setHiddenLyric(true)} />
+      <PageContainer isLoading={isLoading} error={error}>
+        <FlexBoxCenter>
+          <div>
+            <CustomImage
+              width={300}
+              height={300}
+              url={music.al?.picUrl || ""}
+            />
+            <Typography.Title level={2}>{music.name}</Typography.Title>
+            <Typography.Title level={4}>
+              {music.ar && (
+                <Link to={`/artists/${music.ar[0].id}`}>
+                  {music.ar[0].name}
+                </Link>
+              )}
+            </Typography.Title>
+          </div>
+          <MusicLyricContainer>
+            <LyricContainer ref={container}>
+              {data &&
+                lyricArray().map((value, index) => {
+                  if (value.duration <= currentTime) {
+                    return (
+                      <LyricDiv key={`${value.time}-${value.text}`}>
+                        {value.text}
+                      </LyricDiv>
+                    );
+                  }
+                  return (
+                    <LyricP key={`${value.time}-${value.text}`}>
+                      {value.text}
+                    </LyricP>
+                  );
+                })}
+            </LyricContainer>
+            <ScrollBar>
+              <Progress ref={lyricProgressNode}></Progress>
+            </ScrollBar>
+          </MusicLyricContainer>
+        </FlexBoxCenter>
+      </PageContainer>
+    </Fullscreen>
   );
 };
 
 export default MusicLyric;
+
+const Fullscreen = styled.div`
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  background: no-repeat 100% 100% / center;
+  transition: all 0.3s linear;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* 从父元素继承 background 属性的设置 */
+    background: inherit;
+    filter: blur(4px);
+    z-index: -1;
+  }
+`;
+
+const CloseIcon = styled(MyIcon)`
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+  cursor: pointer;
+  font-size: 30px;
+  z-index: 998;
+
+  &:hover {
+    animation: scale 3s linear infinite;
+  }
+
+  @keyframes scale {
+    0% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(1.2);
+    }
+    50% {
+      transform: scale(0.8);
+    }
+    75% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+`;
+
+const MusicLyricContainer = styled.div`
+  width: 60%;
+  height: 60%;
+  overflow: hidden;
+  transition: height 0.3s ease;
+
+  color: var(--text-color);
+  text-align: center;
+`;
+
+const LyricContainer = styled.div`
+  transform: translateY(0);
+  width: 100%;
+
+  transition: all 0.3s linear;
+
+  div:last-of-type {
+    color: var(--red);
+    transform: scale(1.4);
+  }
+`;
+
+const LyricDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+  height: 40px;
+  margin: 0;
+  transition: all 0.3s linear;
+`;
+
+const LyricP = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+  height: 40px;
+  margin: 0;
+  transition: all 0.3s linear;
+`;
+
+const ScrollBar = styled.div`
+  position: absolute;
+  right: 2px;
+  top: 0;
+  width: 8px;
+  height: 100%;
+`;
+
+const Progress = styled.div`
+  width: 100%;
+  height: 50px;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: var(--text-color);
+  opacity: 0.2;
+  transition: all 0.3s linear;
+`;

@@ -2,36 +2,52 @@
  * @Author: 刘玉田
  * @Date: 2021-05-25 14:34:24
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 18:09:51
+ * @Last Modified time: 2021-06-25 16:27:20
  * 播放列表
  */
 
 import { FC } from "react";
-import Pubsub from "pubsub-js";
-import { Avatar, Image, List } from "antd";
-
-import { MUSICID } from "../../constant";
-import { fillNumber } from "../../util";
-import useWindowResize from "../../hooks/useWindowResize";
-import MusicName from "../../components/MusicName";
-import { MusicItemProps } from "components/MusicItem";
+import { Avatar, Button, Image, List } from "antd";
+import { fillNumber } from "utils";
+import useWindowResize from "hooks/useWindowResize";
+import MusicName from "components/MusicName";
 import styled from "@emotion/styled";
+import { MusicItemProps } from "types/musicItem";
+import { useDispatch } from "react-redux";
+import { musicActions } from "store/music.slice";
+import { playListActions } from "store/playList.slice";
 
 const MusicItem: FC<{ music: MusicItemProps; i: number }> = ({ music, i }) => {
-  const play = () => Pubsub.publish(MUSICID, music.id);
+  const dispatch = useDispatch();
+  const play = () => dispatch(musicActions.setMusicId(music.id));
 
   const imageUrl = music.album
     ? music.album.picUrl
     : music.al
     ? music.al.picUrl
     : "";
+  const removeMusicByIndex = () => {
+    dispatch(playListActions.removeMusic(i));
+  };
+
+  // ! 8 才是免费的 1是购买单曲 3是购买专辑
+  if (music.fee && music.fee !== 8) return null;
+
   return (
-    <List.Item onDoubleClick={play}>
+    <List.Item
+      onDoubleClick={play}
+      actions={[
+        <Button type={"link"} onClick={removeMusicByIndex}>
+          移除
+        </Button>,
+      ]}
+    >
       <Index>{fillNumber(i + 1)}</Index>
       <List.Item.Meta
         avatar={
           <Avatar
             shape="square"
+            // ? 这里还要兼容首页请求的新歌速递的音乐类型
             icon={<Image preview={false} src={music.picUrl || imageUrl} />}
           />
         }

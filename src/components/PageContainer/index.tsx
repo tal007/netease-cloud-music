@@ -10,11 +10,18 @@ import styled from "@emotion/styled";
 import { FlexBoxCenter } from "style";
 import Loading from "components/Loading";
 import { ReactNode } from "react";
+import { Typography } from "antd";
 
 interface PageContainerProps {
   isLoading: boolean;
   children: ReactNode;
+  error?: Error | null;
+  // data: any;
 }
+
+// const PageContent = ({data, children}: {data: any, children: ReactNode}) => {
+//   return data ? <>{children}</> : null;
+// }
 
 export const PageContainer = (props: PageContainerProps) => {
   if (props.isLoading) {
@@ -27,7 +34,22 @@ export const PageContainer = (props: PageContainerProps) => {
     );
   }
 
-  return <Container>{props.children}</Container>;
+  if (props.error) {
+    return (
+      <FlexBoxCenter>
+        <Typography.Title level={3}>
+          错误信息： {props.error.message}
+        </Typography.Title>
+      </FlexBoxCenter>
+    );
+  }
+
+  return (
+    <Container>
+      {props.children}
+      {/* <PageContent children={props.children} data={props.data}/> */}
+    </Container>
+  );
 };
 
 const LoadingContainer = styled.div`

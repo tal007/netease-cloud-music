@@ -7,7 +7,7 @@
  */
 
 import { FC } from "react";
-import { mySubString } from "../../util";
+import { mySubString } from "../../utils";
 import styled from "@emotion/styled";
 
 const MusicName: FC<{ name: string; alia: string[] }> = ({ name, alia }) => {

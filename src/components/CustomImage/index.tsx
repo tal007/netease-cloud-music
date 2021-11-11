@@ -2,14 +2,13 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 14:50:57
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 10:25:38
+ * @Last Modified time: 2021-06-24 15:30:00
  * 图片替换
  */
 
 import { Image as AntdImage, ImageProps } from "antd";
-import { useMount } from "hooks/useMount";
 import { useMountedRef } from "hooks/useMountedRef";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "assets/img/logo.svg";
 
 interface CustomImageProps extends ImageProps {
@@ -19,20 +18,14 @@ interface CustomImageProps extends ImageProps {
 export const CustomImage = (props: CustomImageProps) => {
   const mountedRef = useMountedRef();
   const [src, setSrc] = useState("error");
-  // const imageNode = useRef<null>(null);
 
-  useMount(() => {
-    // const callback = () => {
-
-    // }
-
-    // const observer = new IntersectionObserver(callback)
+  useEffect(() => {
     const image = new Image();
     image.src = props.url;
     image.onload = () => {
       if (mountedRef.current) setSrc(props.url);
     };
-  });
+  }, [mountedRef, props.url]);
 
   return (
     <AntdImage

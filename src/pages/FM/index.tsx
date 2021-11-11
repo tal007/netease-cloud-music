@@ -9,32 +9,32 @@
 */
 
 import { CustomImage } from "components/CustomImage";
-import { MusicItemProps } from "components/MusicItem";
 import { PageContainer } from "components/PageContainer";
 import { useAjax } from "hooks/useAjax";
-import { useAsync } from "hooks/useAsync";
+import { useLoginoutRedirect } from "hooks/useLoginoutRedrect";
 import { FC, useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { MusicItemProps } from "types/musicItem";
 
 const FM: FC = () => {
+  useLoginoutRedirect();
   const [current, setCurrent] = useState<MusicItemProps | null>(null);
   const client = useAjax();
-  const { run, isLoading, data } =
-    useAsync<{
+  const { data, isLoading, error } = useQuery<
+    {
       code: number;
       data: MusicItemProps[];
       popAdjsust: boolean;
-    }>();
-
-  useEffect(() => {
-    run(client("personal_fm"));
-  }, [client, run]);
+    },
+    Error
+  >("fm", () => client("personal_fm"));
 
   useEffect(() => {
     data && setCurrent(data.data[0]);
   }, [data]);
 
   return (
-    <PageContainer isLoading={isLoading}>
+    <PageContainer isLoading={isLoading} error={error}>
       {current && (
         <CustomImage
           width={300}

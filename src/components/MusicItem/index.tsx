@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-01 18:23:27
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 18:09:24
+ * @Last Modified time: 2021-06-25 16:27:26
  */
 
 /*
@@ -13,40 +13,15 @@
  */
 
 import { FC } from "react";
-import { Avatar, List, Space } from "antd";
-import Pubsub from "pubsub-js";
-
-import { MUSICID, MUISCLIST } from "constant";
+import { Avatar, Button, List, Space } from "antd";
 import MusicName from "components/MusicName";
-import { formatTime, fillNumber, mySubString } from "util/index";
+import { formatTime, fillNumber, mySubString } from "utils";
 import styled from "@emotion/styled";
 import { CustomImage } from "components/CustomImage";
-export interface MusicItemProps {
-  name: string;
-  id: number;
-  picUrl?: string;
-  fee?: number;
-  dt?: number;
-  alia?: string[];
-  al?: { name: string; id: number; picUrl: string };
-  ar?: { name: string; id: number }[];
-  publishTime?: number;
-
-  duration?: number;
-  alias?: string[];
-  album?: {
-    id: number;
-    name: string;
-    picUrl: string;
-    publishTime: number;
-  };
-  artists?: [
-    {
-      name: string;
-      id: number;
-    }
-  ];
-}
+import { MusicItemProps } from "types/musicItem";
+import { useDispatch } from "react-redux";
+import { musicActions } from "store/music.slice";
+import { playListActions } from "store/playList.slice";
 
 const MusicItem: FC<{
   music: MusicItemProps;
@@ -54,9 +29,11 @@ const MusicItem: FC<{
   musicList: MusicItemProps[];
   showImage?: boolean;
 }> = ({ music, i, musicList, showImage = true }) => {
+  const dispatch = useDispatch();
+
   const handleDBClick = () => {
-    Pubsub.publish(MUSICID, music.id);
-    Pubsub.publish(MUISCLIST, musicList);
+    dispatch(musicActions.setMusicId(music.id));
+    dispatch(playListActions.setMusicList(musicList));
   };
 
   const imageUrl = music.album
@@ -71,11 +48,22 @@ const MusicItem: FC<{
     ? music.ar[0].name
     : "";
 
+  const addToPlaylist = () => {
+    dispatch(playListActions.addMusic(music));
+  };
+
   // ! 8 才是免费的 1是购买单曲 3是购买专辑
   if (music.fee !== 8) return null;
   return (
-    <ListItem onDoubleClick={handleDBClick}>
-      <Space size={20}>
+    <ListItem
+      onDoubleClick={handleDBClick}
+      actions={[
+        <Button type={"link"} onClick={addToPlaylist}>
+          添加到播放列表
+        </Button>,
+      ]}
+    >
+      <Space size={20} style={{ width: 370 }}>
         <SerialNumber>{fillNumber(i)}</SerialNumber>
         {showImage && (
           <Avatar

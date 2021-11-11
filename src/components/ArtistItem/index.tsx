@@ -2,7 +2,7 @@
  * @Author: 刘玉田
  * @Date: 2021-06-15 15:17:04
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-15 17:10:31
+ * @Last Modified time: 2021-06-25 14:22:26
  * 歌手
  */
 
@@ -10,7 +10,7 @@ import styled from "@emotion/styled";
 import { Typography, Col } from "antd";
 import { Link } from "react-router-dom";
 import { CustomImage } from "components/CustomImage";
-import { ArtistsItemProps } from ".";
+import { ArtistsItemProps } from "types/artists";
 
 interface Props extends ArtistsItemProps {
   span?: number;

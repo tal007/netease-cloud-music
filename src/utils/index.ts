@@ -1,3 +1,6 @@
+import { Lyric } from "types/lyric";
+import { MusicItemProps } from "types/musicItem";
+
 export function checkIsEmpty(value: string | number): boolean {
   if (typeof value === "number") {
     value = value.toString();
@@ -5,6 +8,17 @@ export function checkIsEmpty(value: string | number): boolean {
 
   return !value.trim().length;
 }
+
+// export function isViod() {}
+
+// export function clearObject(o:{}) {
+//   const obj = {...o}
+//   for (const key in obj) {
+//     if (obj[key] !== undefined) {
+
+//     }
+//   }
+// }
 
 export function fillNumber(value: number | string) {
   return value < 10 ? "0" + value : value;
@@ -63,14 +77,14 @@ export function dealWithLyric(str: string): Lyric[] {
   const lyricArr = str.split("\n");
   lyricArr.pop();
   return lyricArr.map((item) => {
-    const time = item.slice(0, 11);
-    const min: any = time.slice(1, 3);
-    const sec: any = time.slice(4, 10);
-    const duration = min * 60 + sec * 1;
+    const time = item.split("]")[0].split("[")[1];
+    const min: number = parseFloat(time.split(":")[0]);
+    const sec: number = parseFloat(time.split(":")[1]);
+    const duration: number = min * 60 + sec * 1;
     return {
       time,
       duration,
-      text: item.slice(11, item.length),
+      text: item.split("]")[1].trim(),
     };
   });
 }
@@ -90,4 +104,15 @@ export function debounce(method: Function, delay: number) {
       method(...args);
     }, delay);
   };
+}
+
+// 处理需要收费或者会员的歌曲
+export function filterMusic(musicList: MusicItemProps[]) {
+  // * 8 才是免费的 1是购买单曲 3是购买专辑
+  return musicList.filter((music) => {
+    if (music.fee) {
+      return music.fee === 8;
+    }
+    return music;
+  });
 }

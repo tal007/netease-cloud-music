@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "context/authContext";
 import { useAsync } from "hooks/useAsync";
 import Helmet from "react-helmet";
+import { Logo } from "components/Logo";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,13 +28,7 @@ const Login = () => {
     <Container>
       <Helmet title={"登录"} />
       <Inner>
-        <Logo>
-          <LogoSpan backgroundColor={"#032C9E"}>E</LogoSpan>
-          <LogoSpan backgroundColor={"#0E36A6"}>M</LogoSpan>
-          <LogoSpan backgroundColor={"#1742BB"}>C</LogoSpan>
-          <MusicText>music</MusicText>
-          <span>(Mock 网易云)</span>
-        </Logo>
+        <Logo />
         <Form onFinish={onFinish}>
           <Form.Item
             name={"account"}
@@ -89,34 +84,10 @@ export default Login;
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
+  height: 100%;
   background: url(${loginBg}) no-repeat center center/cover;
 `;
 
 const Inner = styled.div`
   margin: auto;
-`;
-
-const Logo = styled.h1`
-  margin-bottom: 10rem;
-  text-transform: uppercase;
-  text-align: center;
-  height: 6.4rem;
-  line-height: 6.4rem;
-`;
-
-const LogoSpan = styled.span<{
-  backgroundColor?: string;
-}>`
-  width: 5.7rem;
-  display: inline-block;
-  text-align: center;
-  background-color: ${(props) =>
-    props.backgroundColor ? props.backgroundColor : undefined};
-  color: white;
-`;
-
-const MusicText = styled.span`
-  letter-spacing: 1.5rem;
-  margin-left: 1rem;
 `;

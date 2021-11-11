@@ -2,37 +2,38 @@
  * @Author: 刘玉田
  * @Date: 2021-05-24 15:40:48
  * @Last Modified by: 刘玉田
- * @Last Modified time: 2021-06-17 17:51:18
+ * @Last Modified time: 2021-06-28 11:20:32
  * 音乐播放组件
  */
 
 import { FC, useEffect, useState, useRef } from "react";
-import Pubsub from "pubsub-js";
 import { Avatar, Image, Space } from "antd";
 
 import MyIcon from "../../Icons";
 
 import useAnimationFrame from "../../hooks/useAnimationFrame";
-import { MUSICID, MUISCLIST } from "../../constant";
-import { formatTime } from "../../util";
+import { formatTime } from "../../utils";
 
 import MusicName from "../../components/MusicName";
 import Progress from "./Progress";
 import MusicList from "./MusicList";
 import MusicLyric from "./MusicLyric";
-import { MusicItemProps } from "components/MusicItem";
 import { useAjax } from "hooks/useAjax";
-import { useAsync } from "hooks/useAsync";
 import { PageContainer } from "components/PageContainer";
 import styled from "@emotion/styled";
 import { FlexBoxCenter } from "style";
+import { MusicItemProps } from "types/musicItem";
+import { useSelector } from "react-redux";
+import { currentMusicId, musicActions } from "store/music.slice";
+import { playList } from "store/playList.slice";
+import { useDispatch } from "react-redux";
+import { useQuery } from "react-query";
+import { Vioce } from "./Voice";
 
 type playType = "NEXT" | "PREV" | "RANDOM" | "CYCLE";
 
 const Player: FC = () => {
   const audioNode = useRef<HTMLAudioElement | null>(null);
-  const [currentMusicID, setCurrentMusicID] = useState<number | string>(0);
-  const [musicList, setMusicList] = useState<MusicItemProps[]>([]);
   const [percent, setPercent] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [runing, setRunning] = useState<boolean>(false);
@@ -40,19 +41,27 @@ const Player: FC = () => {
   const [hiddenList, setHiddenList] = useState<boolean>(true);
   const [hiddenLyric, setHiddenLyric] = useState<boolean>(true);
 
+  const dispatch = useDispatch();
+  const musicId = useSelector(currentMusicId);
+  const musicList = useSelector(playList);
+
   const client = useAjax();
+
   const {
-    run,
     isLoading,
+    error,
     data: music,
-  } = useAsync<{ songs: MusicItemProps[] }>();
+  } = useQuery<{ songs: MusicItemProps[] }, Error>(
+    ["currentMusic", { musicId }],
+    () => client("/song/detail", { data: { ids: musicId } })
+  );
 
   const setProgress = () => {
     if (audioNode.current) {
       const percent =
         audioNode.current.currentTime / audioNode.current.duration;
       if (percent >= 1) {
-        PubSub.publish(MUSICID, findMusic("NEXT").id);
+        dispatch(musicActions.setMusicId(findMusic("NEXT").id));
       }
       setPercent(percent * 100);
       setCurrentTime(audioNode.current.currentTime);
@@ -60,6 +69,12 @@ const Player: FC = () => {
   };
 
   useAnimationFrame(setProgress, runing);
+
+  useEffect(() => {
+    setRunning(false);
+    setRunning(true);
+    setPercent(0);
+  }, [musicId]);
 
   useEffect(() => {
     function keydownPauseOrPlay(e: KeyboardEvent) {
@@ -70,33 +85,10 @@ const Player: FC = () => {
 
     window.addEventListener("keydown", keydownPauseOrPlay);
 
-    const pubsubNusicID = Pubsub.subscribe(
-      MUSICID,
-      (msg: string, data: number | string) => {
-        setRunning(false);
-        run(client("/song/detail", { data: { ids: data } }));
-        setCurrentMusicID(data);
-        setRunning(true);
-        setPercent(0);
-      }
-    );
-
-    const pubsubNusicList = Pubsub.subscribe(
-      MUISCLIST,
-      (msg: string, data: MusicItemProps[]) => {
-        if (data !== musicList) {
-          setMusicList(data);
-        }
-      }
-    );
-
     return () => {
-      Pubsub.unsubscribe(pubsubNusicID);
-      Pubsub.unsubscribe(pubsubNusicList);
-
       window.removeEventListener("keydown", keydownPauseOrPlay);
     };
-  }, [client, musicList, run]);
+  }, []);
 
   useEffect(() => {}, []);
 
@@ -118,7 +110,7 @@ const Player: FC = () => {
 
   const findMusic = (type: playType) => {
     const i = musicList.findIndex((music) => {
-      return music.id === currentMusicID;
+      return music.id === musicId;
     });
 
     switch (type) {
@@ -132,27 +124,32 @@ const Player: FC = () => {
   };
 
   const platNextMusic = () => {
-    PubSub.publish(MUSICID, findMusic("NEXT").id);
+    dispatch(musicActions.setMusicId(findMusic("NEXT").id));
   };
 
   const playPreviousMusic = () => {
-    PubSub.publish(MUSICID, findMusic("PREV").id);
+    dispatch(musicActions.setMusicId(findMusic("PREV").id));
   };
 
   const showLyric = () => {
     setHiddenLyric(!hiddenLyric);
   };
 
-  if (!music) return <FlexBoxCenter>请选择要播放的音乐</FlexBoxCenter>;
+  if (musicId === 0)
+    return (
+      <MusicPlayer>
+        <FlexBoxCenter>请选择要播放的音乐</FlexBoxCenter>
+      </MusicPlayer>
+    );
 
   return (
-    <PageContainer isLoading={false}>
+    <MusicPlayer>
       <audio
         ref={audioNode}
-        src={`https://music.163.com/song/media/outer/url?id=${currentMusicID}.mp3`}
+        src={`https://music.163.com/song/media/outer/url?id=${musicId}.mp3`}
         autoPlay
       />
-      <PageContainer isLoading={isLoading}>
+      <PageContainer isLoading={isLoading} error={error}>
         <MusicPlayer>
           {audioNode.current && (
             <ControlerContainer>
@@ -165,15 +162,15 @@ const Player: FC = () => {
                     icon={
                       <Image
                         preview={false}
-                        src={music.songs[0].al?.picUrl}
+                        src={music?.songs[0].al?.picUrl}
                         onClick={showLyric}
                       />
                     }
                   />
                   <div>
                     <MusicName
-                      name={music.songs[0]?.name || ""}
-                      alia={music.songs[0].alia || []}
+                      name={music?.songs[0]?.name || ""}
+                      alia={music?.songs[0].alia || []}
                     />
                     <div>
                       {formatTime(audioNode.current.currentTime * 1000)} /{" "}
@@ -207,7 +204,7 @@ const Player: FC = () => {
                   />
                 </Control>
                 <List split={false}>
-                  <MyIcon type="icon-yinliang" className="vioce" />
+                  <Vioce audioNode={audioNode} />
                   <MyIcon
                     type="icon-bofangliebiao"
                     className="musiclist"
@@ -223,12 +220,14 @@ const Player: FC = () => {
       <MusicList hidden={hiddenList} musicList={musicList} />
       <MusicLyric
         hidden={hiddenLyric}
-        id={currentMusicID}
+        id={musicId}
+        music={music?.songs[0] || ({} as MusicItemProps)}
         currentTime={currentTime}
         percent={percent}
         runing={runing}
+        setHiddenLyric={setHiddenLyric}
       />
-    </PageContainer>
+    </MusicPlayer>
   );
 };
 
@@ -237,8 +236,9 @@ export default Player;
 const MusicPlayer = styled.div`
   position: relative;
   box-sizing: border-box;
-  height: 100%;
-  background-color: linear-gradient(360deg, #020814 0%, #030d20 100%);
+  height: 6rem;
+  background-image: linear-gradient(360deg, #020814 0%, #030d20 100%);
+  color: var(--text-color);
 `;
 
 const ControlerContainer = styled.div`
